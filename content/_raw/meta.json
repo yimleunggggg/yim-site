@@ -1,0 +1,45 @@
+{
+  "exportedAt": "2026-05-26T15:58:14.606Z",
+  "docs": [
+    {
+      "id": "00-methodology",
+      "title": "AI工具交叉使用解决复杂问题",
+      "url": "https://my.feishu.cn/wiki/MZ1mwAuMTiRMEPkpj5KcgUrDnWb",
+      "originalDate": "2025-03-17"
+    },
+    {
+      "id": "01-w1-language-image",
+      "title": "W1 AI语言构建&生图",
+      "url": "https://my.feishu.cn/wiki/V7Pnw6tmwiwO8pkzpk5c3J5Hnye",
+      "originalDate": "2025-01-20",
+      "week": 1
+    },
+    {
+      "id": "02-prompt-and-video",
+      "title": "W2 提示词&视频&lovart",
+      "url": "https://my.feishu.cn/wiki/BK92wmLtaiOSa1kpnIPcsKPqnte",
+      "originalDate": "2025-01-21",
+      "week": 2
+    },
+    {
+      "id": "03-music-voice-practice",
+      "title": "W3 音乐&作业交流&答疑",
+      "url": "https://my.feishu.cn/wiki/ZVFVwelmPiFXmMkKSTpcwP1NnSd",
+      "originalDate": "2025-01-21",
+      "week": 3
+    },
+    {
+      "id": "04-workflow-advanced",
+      "title": "W4 视频 图片 声音相关内容补充",
+      "url": "https://my.feishu.cn/wiki/H4XFwAaEJimweJkJLrQcwcGangm",
+      "originalDate": "2025-02-02",
+      "week": 4
+    },
+    {
+      "id": "05-non-expert-aigc",
+      "title": "非专业视角玩AIGC",
+      "url": "https://my.feishu.cn/wiki/H0QDwYBBni0B9DkUtC5cFvf5nlh",
+      "originalDate": "2025-03-17"
+    }
+  ]
+}

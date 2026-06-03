@@ -1,0 +1,45 @@
+<PromptBlock title="结构化 · W1">
+角色 (Role) + 任务 (Task) + 背景 (Context) + 限制 (Constraint)
+</PromptBlock>
+
+## 绘图类
+
+<PromptBlock title="结构化 · W1">
+主体 (Subject) + 环境 (Environment) + 构图/光影 (Lighting/Camera) + 风格 (Style)
+</PromptBlock>
+
+## 视频类
+
+<PromptBlock title="基础 · W2">
+景别 + 运镜 + 主体 + 动作/环境 + 风格
+</PromptBlock>
+
+示例：特写镜头 | 环绕运镜 | 发光水晶球悬浮 | 星尘特效 | 赛博朋克风格
+
+## 产品图 / 图生视频
+
+<PromptBlock title="只写变化 · W4">
+Static subject, smoke rising slowly, cinematic lighting change, camera slow zoom in.
+</PromptBlock>
+
+<PromptBlock title="空间锚点 · W4">
+Subject fixed in center frame · Camera locked on subject · Maintain composition
+</PromptBlock>
+
+## 进阶对话技巧
+
+| 技巧 | 首次出现 | 用途 |
+|------|----------|------|
+| 让 AI 选角色 | W2/W3 | 不确定专家视角时 |
+| 让 AI 追问 | W2/W3 | 需求澄清 |
+| 与 AI 辩论 | W2/W3 | 完善逻辑 |
+| Pre-mortem | W2/W3 | 风险预演 |
+| 反向提示 | W2/W3 | 从成品反推 Prompt |
+| 双层解释 | W2 | 先简后繁 |
+| 风格反向提取 | W1/W2 | 抄参考图风格 |
+
+## 抄作业工作流
+
+1. 参考图/视频 → AI 描述（风格非内容）
+2. 替换元素 → 生图
+3. 图生视频 → 剪辑 + 音频

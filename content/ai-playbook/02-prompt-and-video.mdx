@@ -1,0 +1,187 @@
+---
+title: "W2 · 提示词与视频"
+slug: "02-prompt-and-video"
+chapterId: "W02"
+order: 2
+section: core
+week: 2
+originalDate: "2025-01-21"
+readingMinutes: 50
+summary: "视频工具、提示词公式、Lovart、完整工作流"
+notionUrl: "https://www.notion.so/ai-playbook/02-w2"
+source: "feishu://BK92wmLtaiOSa1kpnIPcsKPqnte"
+---
+
+## 上次内容回顾 · W1 生图场景及 AI 语言构建
+
+- **底层逻辑**：AI 是「接龙大师」，不是「大脑」
+- **原理**：没有真正理解，本质是「下一个词预测」
+- **心法**：信息不足时会幻觉 — 为完成接龙而编造
+- **操作**：Prompt 越具体越准；用详细背景锁定概率
+
+**通用公式 · 结构化提示词**
+
+<PromptBlock title="文本类">
+角色 (Role) + 任务 (Task) + 背景 (Context) + 限制 (Constraint)
+</PromptBlock>
+
+<PromptBlock title="绘图类">
+主体 (Subject) + 环境 (Environment) + 构图/光影 (Lighting/Camera) + 风格 (Style)
+</PromptBlock>
+
+### 技巧：如何「抄」出好风格
+
+1. 投喂参考图给 AI（Nano Banana / GPT）
+2. 让它分析视觉风格（光影、配色、材质、镜头语言，**不是内容**）
+3. 将风格关键词（Tri-tone Palette, Commercial Pop Art 等）加入新 Prompt
+
+### 工具亮点：Nano Banana Pro 的独特能力
+
+- 理解现实世界知识 → 科普图表、产品爆炸分解图
+- 文字渲染 → Logo、标语
+- 多图融合 → 人物/风格一致性
+
+### 图生视频 (Image-to-Video) 原理
+
+<PullQuote>
+视频生成的本质是「有记忆的预测」：第 1 帧（参考图）是绝对标准，AI 基于物理规律猜下一帧怎么动。
+</PullQuote>
+
+---
+
+## 1. 常用工具（视频）
+
+参考合集（课堂链接）：AI 视频工具合集、少儿 AI 春晚共学流程等 — 完整 URL 见 Notion。
+
+### 国内
+
+- **可灵 Kling**：写实、长视频可达 10 秒
+- **即梦 AI**：字节系
+- **通义万相**：开源，大幅运动强
+- **海螺**：语义理解能力强
+
+### 国外
+
+- **Google Veo**：Google AI Studio / Gemini / https://labs.google/fx/zh/tools/flow
+- **Runway**：Motion Brush、电影级滤镜
+- **Luma Dream Machine**：运镜强，人物偶变形
+- **Sora**：镜头语言、叙事感、角色一致性；长剧情仍需人工
+
+### 音乐生成
+
+- **Suno v4**：一键成曲，人声清晰，生成极快
+
+---
+
+## 2. 常见提示词
+
+### 基础公式
+
+<PromptBlock title="视频 Prompt">
+景别 + 运镜 + 主体 + 动作/环境 + 风格
+</PromptBlock>
+
+示例：
+
+<PromptBlock>
+特写镜头 | 环绕运镜 | 发光水晶球悬浮 | 星尘特效 | 赛博朋克风格
+</PromptBlock>
+
+### 常见概念解释
+
+| 概念 | 说明 |
+|------|------|
+| 景别 | 特写 ECU / 近景 CU / 中景 MS / 远景 LS / 大全景 ELS |
+| 运镜 | 推 Dolly in / 拉 Dolly out / 摇 Pan / 移 Track / 环绕 Orbit / 固定 Static |
+| 主体 | 画面焦点是谁或什么 |
+| 动作/环境 | 发生什么变化（烟上升、水波、光影扫过） |
+| 风格 | 电影感、广告片、纪录片、动画感等 |
+
+### 进阶公式（提升质感）
+
+在基础公式上增加：
+
+- **光影**：golden hour, rim light, volumetric fog
+- **材质/质感**：wet surface, metallic reflection
+- **节奏**：slow motion, gradual acceleration
+- **镜头设备感**：anamorphic lens, shallow depth of field
+- **负面约束**：no morphing, no extra limbs, stable face
+
+---
+
+## 3. AI 视频生产示例及流程
+
+### 3.1 常见生视频方式
+
+#### 1. 文生视频
+
+从零用文字描述画面。适合概念验证、空镜、氛围镜头。抽卡率高，需多试。
+
+#### 2. 图生视频 — 重点
+
+##### 用法 1 · 单图转动态
+
+上传插画或产品图，让画面「动起来」：湖水微荡、光影变化、烟雾上升。产品图务必已用 PNG 叠好，勿让 AI 重绘产品。
+
+##### 用法 2 · 首尾帧控制
+
+给定开始图 + 结束图，AI 补全中间过渡。适合：开门、变色、简单位移。
+
+##### 用法 3 · 参考图生视频
+
+提供角色/物体参考，保持多镜头中主角一致（仍可能漂移，需抽卡）。
+
+#### 3. 参考主体 (Reference Subject)
+
+同一模特、同一产品出现在不同场景 — 各平台实现方式不同，见当时工具文档。
+
+### 3.2 常见工作流
+
+<PipelineDiagram />
+
+1. **剧本/人物设定** — GPT/Gemini 写故事、分镜描述、角色小传
+2. **场景/人物参考图** — Midjourney / Nano Banana
+3. **分镜或首尾帧** — 任意图像模型
+4. **图生视频** — Runway / 即梦 / 海螺 / Veo 等
+5. **声音设计** — Suno BGM + ElevenLabs 旁白（W3）
+6. **剪辑合成** — 剪映 / Premiere
+
+### 3.3 抄别人视频
+
+1. 下载或截图参考视频关键帧
+2. GPT 分析：景别、运镜、节奏、色调、转场
+3. 按分析生静帧分镜
+4. 图生视频 + 后期对齐音乐
+
+### 3.4 好玩的提示词分享
+
+课堂鼓励学员日常积累「抽卡成功」的 Prompt 片段，按工具分类存档 — 详见 Notion 学员共享区。
+
+---
+
+## 设计 Agent 安利：Lovart
+
+<ToolCard name="Lovart" asOf="2025-01" summary="模型聚合（设计黄牛）" pros="切换模型、Mockup、去背景、改图上文字" />
+
+- **能力 1 · 内容融合**：多素材合成
+- **能力 2 · Mock up**：周边贴图、产品场景
+- **能力 3 · 直接改别人图上的字**：Text Editing
+- **能力 4 · 单点修改**：指哪改哪
+- **能力 5 · Agent 执行能力**：多步任务编排
+
+---
+
+## 其他：提示词加餐
+
+<Callout type="技巧" title="对话进阶（与 W3 复习一致）">
+- **让 AI 选定角色**：「请扮演最适合回答此问题的专家」
+- **前先让 AI 追问**：「请先问我问题，直到你有 95% 信心理解需求」
+- **与 AI 辩论**：扮演反对者攻击你的方案
+- **提前预演问题和漏洞 (Pre-mortem)**：假设项目失败，最致命错误是什么
+- **反向提示**：把成品发给 AI，倒推 Prompt
+- **双层解释**：「用小学生能懂的话讲一遍，再用专业术语讲一遍」
+</Callout>
+
+<SupplementBlock date="2025-05">
+W2 飞书原文含进阶公式长列表、多组视频 Prompt 示例截图；见 Notion 全文版。
+</SupplementBlock>

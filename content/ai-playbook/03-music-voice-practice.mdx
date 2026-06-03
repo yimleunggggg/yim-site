@@ -1,0 +1,117 @@
+---
+title: "W3 · 音乐语音与实战"
+slug: "03-music-voice-practice"
+chapterId: "W03"
+order: 3
+section: core
+week: 3
+originalDate: "2025-01-21"
+readingMinutes: 45
+summary: "视频原理、音乐、语音、完整学员 FAQ"
+notionUrl: "https://www.notion.so/ai-playbook/03-w3"
+source: "feishu://ZVFVwelmPiFXmMkKSTpcwP1NnSd"
+---
+
+## 上次内容回顾
+
+- [W2 提示词与视频](/ai-playbook/02-prompt-and-video) — 音乐、视频、Lovart
+- [W1 语言与图像](/ai-playbook/01-w1-language-image) — 生图与语言构建
+
+从「静态图」到「动态视频」和「设计落地」，本节补充提示词技巧与**真实作业答疑**。
+
+---
+
+## 视频生成的本质（复习 + 深化）
+
+- **「脑补」而非「拍摄」**：不是摄影机记录，而是基于概率的「有记忆的预测」
+- **锚点 (Anchor)**：第一帧（参考图）是绝对标准；基于物理规律预测下一帧（水往下、烟往上）
+- **黄金时长**：目前 **4–5 秒** 最稳；过长预测误差累积，主体易变形
+
+---
+
+## AI 视频生产工作流
+
+### 三种主流生成方式
+
+1. **文生视频 (Text-to-Video)** — 从零创作，适合空镜、概念镜头
+2. **图生视频 (Image-to-Video)** — 重点
+   - **单图转动态**：插画/产品图微动（湖水、光影）
+   - **首尾帧控制**：给定起止帧，补全中间
+   - **参考图生视频**：固定角色/物体外观
+3. **参考图生视频 (Reference Subject)** — 同一模特多镜头
+
+### 常见生产流程 (SOP)
+
+1. 剧本/分镜：GPT/Gemini
+2. 静态图资产：Midjourney 等
+3. 动效生成：Runway / Luma / 可灵
+4. 后期合成：剪辑 + Suno 音乐/音效 + **旁白（ElevenLabs 等）**
+
+### 视频提示词公式
+
+视频 Prompt 比生图多了**时间**和**空间**维度。
+
+<PromptBlock title="基础公式">
+景别 + 运镜 + 主体 + 动作/环境 + 风格
+</PromptBlock>
+
+---
+
+## 实用工具推荐 · Lovart（复习）
+
+- **定位**：模型聚合平台，方便切换模型
+- **实用功能**：智能 Mockup、一键去背景、图上改字 (Text Editing)
+
+---
+
+## 补充提示词用法
+
+- 让 AI **选角色**
+- 让 AI **追问**至 95% 理解
+- 与 AI **辩论**
+- **事前验尸 (Pre-mortem)**
+- **反向提示 (Reverse Prompting)**
+
+---
+
+## 音乐与语音
+
+<ToolCard name="Suno v4" asOf="2025-01" summary="BGM / 成曲" pros="人声自然、速度快" freeTier="每日积分" />
+
+<ToolCard name="ElevenLabs" asOf="2025-01" summary="旁白 / 配音" pros="多语言、音色可控" />
+
+成片建议：**音乐铺底 + 旁白主信息 + 环境音效点缀**，在剪映里分轨调节。
+
+---
+
+## 上次作业交流及答疑 · 学员作业 FAQ
+
+### 清晰度降低、越改越糊
+
+**原因**：AI 出图为平衡速度会压缩；每次「改图」都是重采样 + 重绘，细节被压平。
+
+**解法**：
+
+- **分工做**：AI 只负责背景氛围（天空、城市、光影）；产品 / Logo / 标题用 **PNG 自己叠**
+- **分步做**：先生成干净底图（无字、无 Logo、无产品细节），再局部添加
+- **二次加工**：Topaz / Upscayl / Magnific AI 放大锐化
+
+### 画面里有多余文案
+
+明确限制只写什么：
+
+<PromptBlock>
+Text "SAFETY PARADE" only, no other text.
+</PromptBlock>
+
+<BeforeAfter
+  issue="海报出现多余文字"
+  before="做一个某品牌车手招募海报，英文，用于 ins，说明地点是犹他，招募条件是有 Jeep（未限制文字）"
+  after="做一个车手招募海报，英文，用于 ins，文字只写：地点犹他、招募条件有 Jeep，不添加任何其他文字"
+/>
+
+课堂投票：未限制文字时约 47% 出现乱码/多余字；限制后约 53% 可用 — **仍要抽卡，但概率明显改善**。
+
+<SupplementBlock date="2025-05">
+FAQ 含更多学员投稿对比图（模糊、乱字、主体漂移），见 Notion 全文版。
+</SupplementBlock>
