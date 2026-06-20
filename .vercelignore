@@ -3,7 +3,7 @@ node_modules/
 .next/
 .git/
 
-# 个人素材源文件夹（已处理到 public/demo/，勿上传源文件）
+# 个人素材源文件夹（已处理到 public/media、public/marquee，勿上传源文件）
 个人照片/
 生活体验/
 旅行和摄影/

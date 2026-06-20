@@ -61,10 +61,10 @@ export function DemoHome() {
         <div className="life-marquee-mask">
           <div className="life-marquee-track">
             {[...demoMarqueePhotos, ...demoMarqueePhotos].map((p, i) => (
-              <figure key={`${p.src}-${i}`} className="life-marquee-item shrink-0">
+              <figure key={`${p.src}-${i}`} className="life-marquee-item shrink-0" aria-hidden>
                 <Image
                   src={p.src}
-                  alt={pickText(p.label, zh)}
+                  alt=""
                   width={p.width}
                   height={p.height}
                   sizes="(max-width: 640px) 120px, 200px"

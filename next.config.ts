@@ -19,7 +19,10 @@ const nextConfig: NextConfig = {
       { source: "/demo/frames/:slug", destination: "/frames/:slug", permanent: true },
       { source: "/demo/writing/:slug", destination: "/writing/:slug", permanent: true },
       { source: "/demo/projects/:slug", destination: "/projects/:slug", permanent: true },
-      // 静态图仍在 public/demo/，勿用 /demo/:path* 通配（会把 /demo/marquee/*.jpg 错转到 /marquee/）
+      // 旧静态图路径（勿再使用 /demo/ 存 public 资源）
+      { source: "/demo/marquee/:path*", destination: "/marquee/:path*", permanent: true },
+      { source: "/demo/frames/:slug/:file", destination: "/media/frames/:slug/:file", permanent: true },
+      // 静态图已迁到 /marquee、/media/frames
       { source: "/guides", destination: "/ai-playbook", permanent: false },
       { source: "/guides/yakushima", destination: "/ai-playbook/cases/yakushima-bus", permanent: false },
       { source: "/guides/yakushima/:slug", destination: "/ai-playbook/cases/yakushima-bus/playbook/:slug", permanent: false },

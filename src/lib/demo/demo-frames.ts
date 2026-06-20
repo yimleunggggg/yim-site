@@ -2,7 +2,7 @@
  * FRAMES · 摄影 / 旅行照片合集
  * ------------------------------------------------------------
  * 元信息（标题 / 地点 emoji / 标签 / 引言）写在 FRAMES_META，
- * 图片由脚本规范化到 public/demo/frames/<slug>/：
+ * 图片由脚本规范化到 public/media/frames/<slug>/：
  *   cover.jpg  + 01.jpg 02.jpg ...
  * 以后加新主题：新增一段素材跑 scripts/import-frames.sh，
  * 再在 FRAMES_META 里补一条即可，不用动页面代码。
@@ -131,7 +131,7 @@ export const FRAMES_META: FrameMeta[] = [
   },
 ];
 
-const FRAMES_ROOT = path.join(process.cwd(), "public/demo/frames");
+const FRAMES_ROOT = path.join(process.cwd(), "public/media/frames");
 
 function readJpegSize(filePath: string): { width: number; height: number } | null {
   try {
@@ -181,15 +181,15 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
   const images = files
     .filter((f) => /^\d+\.jpg$/.test(f))
     .sort()
-    .map((f) => `/demo/frames/${slug}/${f}`);
+    .map((f) => `/media/frames/${slug}/${f}`);
   const imagesFull = files
     .filter((f) => /^\d+-full\.jpg$/.test(f))
     .sort()
-    .map((f) => `/demo/frames/${slug}/${f}`);
+    .map((f) => `/media/frames/${slug}/${f}`);
   const fullFallback = imagesFull.length > 0 ? imagesFull : images;
-  const cover = files.includes("cover.jpg") ? `/demo/frames/${slug}/cover.jpg` : images[0] ?? "";
+  const cover = files.includes("cover.jpg") ? `/media/frames/${slug}/cover.jpg` : images[0] ?? "";
   const coverThumb = files.includes("cover-thumb.jpg")
-    ? `/demo/frames/${slug}/cover-thumb.jpg`
+    ? `/media/frames/${slug}/cover-thumb.jpg`
     : cover;
   const sizePath = path.join(
     dir,

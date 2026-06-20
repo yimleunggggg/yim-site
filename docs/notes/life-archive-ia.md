@@ -21,7 +21,9 @@
 
 ## 图片不显示（2026-06-20）
 
-**原因**：`public/demo/`、`public/life/`（约 35MB，不含 `-full.jpg`）**未进 Git**。Vercel 从 GitHub 构建时没有这些文件 → 全站 404。
+**原因**：静态图曾放在 `/demo/marquee`、`/demo/frames`，与 `/demo` 路由冲突，线上易 404。
+
+**2026-06-20 修复**：迁到 `/marquee`、`/media/frames`，旧路径 301 重定向。
 
 **本地**：`cd ~/Projects/yim-site && npm run dev` → http://localhost:3000（本地 public/ 存在则图正常）
 

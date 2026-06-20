@@ -187,21 +187,21 @@ export const demoExplore: DemoExploreCard[] = [
 
 export type DemoMarqueePhoto = { src: string; label: LText; width: number; height: number };
 
-/** 首页走马灯：public/demo/marquee/，由 scripts/import-frames.sh 生成；width/height 用于横竖比例展示 */
+/** 首页走马灯：public/marquee/，由 scripts/import-frames.sh 生成；width/height 用于横竖比例展示 */
 export const demoMarqueePhotos: DemoMarqueePhoto[] = [
-  { src: "/demo/marquee/01.jpg", label: { zh: "越野跑", en: "Trail" }, width: 1333, height: 2000 },
-  { src: "/demo/marquee/02.jpg", label: { zh: "生活", en: "Life" }, width: 1333, height: 2000 },
-  { src: "/demo/marquee/03.jpg", label: { zh: "打包", en: "Packing" }, width: 1500, height: 2000 },
-  { src: "/demo/marquee/04.jpg", label: { zh: "徒步", en: "Hike" }, width: 1315, height: 2000 },
-  { src: "/demo/marquee/05.jpg", label: { zh: "越野", en: "Trail run" }, width: 1317, height: 2000 },
-  { src: "/demo/marquee/06.jpg", label: { zh: "跑步", en: "Run" }, width: 1333, height: 2000 },
-  { src: "/demo/marquee/07.jpg", label: { zh: "半马", en: "Half marathon" }, width: 1326, height: 2000 },
-  { src: "/demo/marquee/08.jpg", label: { zh: "摩托", en: "Ride" }, width: 1334, height: 2000 },
-  { src: "/demo/marquee/09.jpg", label: { zh: "斯巴达", en: "Spartan" }, width: 1334, height: 2000 },
-  { src: "/demo/marquee/10.jpg", label: { zh: "精酿", en: "Craft beer" }, width: 2000, height: 1333 },
-  { src: "/demo/marquee/11.jpg", label: { zh: "生活", en: "Life" }, width: 1500, height: 2000 },
-  { src: "/demo/marquee/12.jpg", label: { zh: "户外", en: "Outdoors" }, width: 1500, height: 2000 },
-  { src: "/demo/marquee/13.jpg", label: { zh: "探索", en: "Explore" }, width: 1499, height: 2000 },
+  { src: "/marquee/01.jpg", label: { zh: "越野跑", en: "Trail" }, width: 1333, height: 2000 },
+  { src: "/marquee/02.jpg", label: { zh: "生活", en: "Life" }, width: 1333, height: 2000 },
+  { src: "/marquee/03.jpg", label: { zh: "打包", en: "Packing" }, width: 1500, height: 2000 },
+  { src: "/marquee/04.jpg", label: { zh: "徒步", en: "Hike" }, width: 1315, height: 2000 },
+  { src: "/marquee/05.jpg", label: { zh: "越野", en: "Trail run" }, width: 1317, height: 2000 },
+  { src: "/marquee/06.jpg", label: { zh: "跑步", en: "Run" }, width: 1333, height: 2000 },
+  { src: "/marquee/07.jpg", label: { zh: "半马", en: "Half marathon" }, width: 1326, height: 2000 },
+  { src: "/marquee/08.jpg", label: { zh: "摩托", en: "Ride" }, width: 1334, height: 2000 },
+  { src: "/marquee/09.jpg", label: { zh: "斯巴达", en: "Spartan" }, width: 1334, height: 2000 },
+  { src: "/marquee/10.jpg", label: { zh: "精酿", en: "Craft beer" }, width: 2000, height: 1333 },
+  { src: "/marquee/11.jpg", label: { zh: "生活", en: "Life" }, width: 1500, height: 2000 },
+  { src: "/marquee/12.jpg", label: { zh: "户外", en: "Outdoors" }, width: 1500, height: 2000 },
+  { src: "/marquee/13.jpg", label: { zh: "探索", en: "Explore" }, width: 1499, height: 2000 },
 ];
 
 /** 首页 UI 文案（全部走 i18n，组件内不写死） */

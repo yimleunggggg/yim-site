@@ -1,5 +1,5 @@
 #!/bin/bash
-# 把「摄影及旅行」「首页走马灯」素材规范化到 public/demo 下：
+# 把「摄影及旅行」「首页走马灯」素材规范化到 public 下：
 # - 统一转 jpeg、限制最大边 2000px（控体积）
 # - HEIC 自动转码
 # - 每个主题：cover.jpg + 01.jpg 02.jpg ...（按文件名排序）
@@ -7,9 +7,9 @@ set -e
 
 ROOT="/Users/yimleung/Projects/yim-site"
 SRC="$ROOT/摄影及旅行"
-DEST="$ROOT/public/demo/frames"
+DEST="$ROOT/public/media/frames"
 MARQ_SRC="$ROOT/首页走马灯"
-MARQ_DEST="$ROOT/public/demo/marquee"
+MARQ_DEST="$ROOT/public/marquee"
 
 conv() { sips -s format jpeg -Z 2000 "$1" --out "$2" >/dev/null 2>&1; }
 conv_display() { sips -s format jpeg -Z 1200 "$1" --out "$2" >/dev/null 2>&1; }
