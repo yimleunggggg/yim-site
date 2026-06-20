@@ -18,7 +18,7 @@ conv_marquee() { sips -s format jpeg -Z 720 "$1" --out "$2" >/dev/null 2>&1; }
 
 is_img() {
   case "$1" in
-    *.jpg|*.JPG|*.jpeg|*.JPEG|*.png|*.PNG|*.heic|*.HEIC|*.HEIF|*.heif) return 0;;
+    *.jpg|*.JPG|*.jpeg|*.JPEG|*.png|*.PNG|*.heic|*.HEIC|*.HEIF|*.heif|*.webp|*.WEBP) return 0;;
     *) return 1;;
   esac
 }
@@ -65,6 +65,8 @@ for sd in "$SRC"/*/; do
     日常记录*)                    process_theme "$base" daily              "";;
     "永远喜欢日落（日常更新）")    node "$ROOT/scripts/import-sunset-theme.mjs" "$SRC/$base" "$DEST/sunsets";;
     "潮州")                       process_theme "$base" chaozhou           "封面.heic";;
+    "韩国 江陵")                   process_theme "$base" gangneung          "封面.jpg";;
+    "斯里兰卡")                   process_theme "$base" sri-lanka           "";;
     *) echo "skip   $base";;
   esac
 done
