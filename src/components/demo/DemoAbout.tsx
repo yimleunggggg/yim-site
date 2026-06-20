@@ -10,7 +10,6 @@ import {
   projectStatusLabel,
   projectCategoryLabel,
   pickText,
-  type DemoAboutProject,
   type DemoWork,
   type ProjectCategory,
 } from "@/lib/demo/demo-data";
@@ -53,11 +52,36 @@ export function DemoAbout() {
 
       <section id="projects" className="site-shell scroll-mt-20 py-10 sm:py-14">
         <DemoSectionHeading eyebrow="PROJECTS" title={zh ? "项目" : "Projects"} />
-        <ul className="demo-project-list mt-7">
-          {demoAboutProjects.map((p) => (
-            <ProjectRow key={pickText(p.title, zh)} project={p} zh={zh} />
-          ))}
-        </ul>
+        <div className="demo-project-table mt-7">
+          <div className="demo-project-table-head" aria-hidden>
+            <span>{zh ? "名称" : "Name"}</span>
+            <span>{zh ? "简介" : "About"}</span>
+            <span>{zh ? "分类" : "Tags"}</span>
+            <span>{zh ? "状态" : "Status"}</span>
+          </div>
+          <ul className="demo-project-table-body">
+            {demoAboutProjects.map((p) => (
+              <li key={p.slug}>
+                <Link href={`/projects/${p.slug}`} className="demo-project-table-row tap-target">
+                  <span className="demo-project-table-name">{pickText(p.title, zh)}</span>
+                  <span className="demo-project-table-desc">{pickText(p.tagline, zh)}</span>
+                  <span className="demo-project-table-cats">
+                    {p.categories.map((c: ProjectCategory) => (
+                      <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
+                        {pickText(projectCategoryLabel[c], zh)}
+                      </span>
+                    ))}
+                  </span>
+                  <span className="demo-project-table-status">
+                    <DemoStatusTag tone={p.status}>
+                      {pickText(projectStatusLabel[p.status], zh)}
+                    </DemoStatusTag>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </>
   );
@@ -87,15 +111,15 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
           ⌄
         </span>
       </button>
+      <div className="demo-work-tags">
+        {tags.map((tag) => (
+          <span key={tag} className="demo-work-tag">
+            {tag}
+          </span>
+        ))}
+      </div>
       {open ? (
         <div className="demo-work-body">
-          <div className="demo-work-tags">
-            {tags.map((tag) => (
-              <span key={tag} className="demo-work-tag">
-                {tag}
-              </span>
-            ))}
-          </div>
           <ul className="demo-work-bullets">
             {bullets.map((b, i) => (
               <li key={i}>{b}</li>
@@ -104,84 +128,5 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
         </div>
       ) : null}
     </li>
-  );
-}
-
-function ProjectRow({ project, zh }: { project: DemoAboutProject; zh: boolean }) {
-  const [open, setOpen] = useState(false);
-  const hasExpand = Boolean(project.desc);
-  const statusLabel = projectStatusLabel[project.status];
-
-  return (
-    <li className="demo-project-item">
-      <div className="demo-project-row">
-        {hasExpand ? (
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            className="demo-project-trigger tap-target"
-          >
-            <ProjectSummary project={project} zh={zh} statusLabel={statusLabel} />
-            <span className={`demo-work-chevron ${open ? "is-open" : ""}`} aria-hidden>
-              ⌄
-            </span>
-          </button>
-        ) : (
-          <div className="demo-project-trigger demo-project-trigger--static">
-            <ProjectSummary project={project} zh={zh} statusLabel={statusLabel} />
-          </div>
-        )}
-      </div>
-      {open && project.desc ? (
-        <div className="demo-project-body">
-          <p className="demo-project-desc">{pickText(project.desc, zh)}</p>
-          <div className="demo-project-actions">
-            {project.slug ? (
-              <Link href={`/projects/${project.slug}`} className="demo-text-link">
-                {zh ? "查看详情 →" : "View detail →"}
-              </Link>
-            ) : null}
-            {project.liveUrl ? (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="demo-text-link"
-              >
-                {zh ? "访问链接 →" : "Visit site →"}
-              </a>
-            ) : null}
-          </div>
-        </div>
-      ) : null}
-    </li>
-  );
-}
-
-function ProjectSummary({
-  project,
-  zh,
-  statusLabel,
-}: {
-  project: DemoAboutProject;
-  zh: boolean;
-  statusLabel: { zh: string; en?: string };
-}) {
-  return (
-    <span className="demo-project-summary">
-      <span className="demo-project-head">
-        <span className="demo-work-company">{pickText(project.title, zh)}</span>
-        <DemoStatusTag tone={project.status}>{pickText(statusLabel, zh)}</DemoStatusTag>
-      </span>
-      <span className="demo-project-cats">
-        {project.categories.map((c: ProjectCategory) => (
-          <span key={c} className="demo-project-cat">
-            {pickText(projectCategoryLabel[c], zh)}
-          </span>
-        ))}
-      </span>
-      <span className="demo-project-tagline">{pickText(project.tagline, zh)}</span>
-    </span>
   );
 }

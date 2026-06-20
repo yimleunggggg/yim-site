@@ -2,120 +2,149 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { MdxContent } from "@/lib/mdx";
-import { DemoCover, DemoStatusTag } from "@/components/demo/DemoPrimitives";
-import { demoProjects, pickText } from "@/lib/demo/demo-data";
+import { DemoStatusTag } from "@/components/demo/DemoPrimitives";
+import {
+  getAllDemoProjectSlugs,
+  getDemoAboutProject,
+  getDemoProjectDetail,
+  pickText,
+  projectCategoryLabel,
+  projectStatusLabel,
+  type ProjectCategory,
+} from "@/lib/demo/demo-data";
 import { getDemoProjectBody, getAllDemoWriting } from "@/lib/demo/demo-content";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return demoProjects.map((p) => ({ slug: p.slug }));
+  return getAllDemoProjectSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const p = demoProjects.find((x) => x.slug === slug);
-  if (!p) return {};
-  return { title: pickText(p.title, true), description: pickText(p.tagline, true) };
+  const about = getDemoAboutProject(slug);
+  const detail = getDemoProjectDetail(slug);
+  const title = about ? pickText(about.title, true) : detail ? pickText(detail.title, true) : "";
+  const description = about
+    ? pickText(about.tagline, true)
+    : detail
+      ? pickText(detail.tagline, true)
+      : "";
+  if (!title) return {};
+  return { title, description };
 }
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = demoProjects.find((p) => p.slug === slug);
-  if (!project) notFound();
+  const about = getDemoAboutProject(slug);
+  const detail = getDemoProjectDetail(slug);
+  if (!about && !detail) notFound();
 
+  const title = about ? pickText(about.title, true) : pickText(detail!.title, true);
+  const tagline = about ? pickText(about.tagline, true) : pickText(detail!.tagline, true);
   const body = getDemoProjectBody(slug);
+  const fallbackBody = about?.desc ? pickText(about.desc, true) : null;
+  const liveUrl = about?.liveUrl ?? detail?.liveUrl;
+  const githubUrl = detail?.githubUrl;
+  const period = detail?.period;
   const derived =
     slug === "ai-training" ? getAllDemoWriting().filter((w) => w.tags.includes("AI教程")) : [];
 
   return (
-    <article className="pb-10 sm:pb-14">
-      <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--color-callout)] sm:aspect-[21/9]">
-        <DemoCover
-          src={project.cover}
-          gradient={project.gradient}
-          alt={pickText(project.title, true)}
-          label={!project.cover ? pickText(project.title, true) : undefined}
-          sizes="100vw"
-          priority
-        />
-      </div>
+    <article className="site-shell py-10 sm:py-14">
+      <div className="mx-auto max-w-[680px]">
+        <Link href="/about#projects" className="text-sm text-[var(--color-forest)] hover:underline">
+          ← Projects
+        </Link>
 
-      <div className="site-shell">
-        <div className="mx-auto max-w-[680px]">
-          <div className="pt-6">
-            <Link href="/about#projects" className="text-sm text-[var(--color-forest)] hover:underline">
-              ← Projects
-            </Link>
-          </div>
-
-          <h1 className="mt-4 font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
-            {pickText(project.title, true)}
+        <header className="mt-6 border-b border-[var(--color-border)] pb-6">
+          <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
+            {title}
           </h1>
-          <p className="mt-3 text-lg text-[var(--color-ink-muted)]">{pickText(project.tagline, true)}</p>
-
+          <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
+            {tagline}
+          </p>
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 text-xs text-[var(--color-ink-muted)]">
-              {pickText(project.type, true)}
-            </span>
-            <DemoStatusTag tone={project.statusTone}>{pickText(project.status, true)}</DemoStatusTag>
-            <span className="font-mono text-xs text-[var(--color-ink-muted)]">{project.period}</span>
+            {about?.categories.map((c: ProjectCategory) => (
+              <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
+                {pickText(projectCategoryLabel[c], true)}
+              </span>
+            ))}
+            {about ? (
+              <DemoStatusTag tone={about.status}>
+                {pickText(projectStatusLabel[about.status], true)}
+              </DemoStatusTag>
+            ) : detail ? (
+              <DemoStatusTag tone={detail.statusTone}>{pickText(detail.status, true)}</DemoStatusTag>
+            ) : null}
+            {detail?.type ? (
+              <span className="font-mono text-xs text-[var(--color-ink-muted)]">
+                {pickText(detail.type, true)}
+              </span>
+            ) : null}
+            {period ? (
+              <span className="font-mono text-xs text-[var(--color-ink-muted)]">{period}</span>
+            ) : null}
           </div>
+        </header>
 
-          {(project.liveUrl && project.liveUrl !== "#") || project.githubUrl ? (
-            <div className="mt-5 flex flex-wrap gap-3">
-              {project.liveUrl && project.liveUrl !== "#" && (
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="tap-target inline-flex items-center rounded-full bg-[var(--color-forest)] px-5 text-sm font-medium text-white"
-                >
-                  访问网站 →
-                </a>
-              )}
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="tap-target inline-flex items-center rounded-full border border-[var(--color-border)] px-5 text-sm text-[var(--color-ink)] hover:border-[var(--color-forest)]"
-                >
-                  GitHub
-                </a>
-              )}
-            </div>
-          ) : null}
+        {(liveUrl && liveUrl !== "#") || githubUrl ? (
+          <div className="mt-5 flex flex-wrap gap-3">
+            {liveUrl && liveUrl !== "#" && (
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tap-target inline-flex items-center rounded-full bg-[var(--color-forest)] px-5 text-sm font-medium text-white"
+              >
+                访问网站 →
+              </a>
+            )}
+            {githubUrl && (
+              <a
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tap-target inline-flex items-center rounded-full border border-[var(--color-border)] px-5 text-sm text-[var(--color-ink)] hover:border-[var(--color-forest)]"
+              >
+                GitHub
+              </a>
+            )}
+          </div>
+        ) : null}
 
-          {body && (
-            <div className="prose-playbook demo-article mt-10 max-w-none">
-              <MdxContent source={body} />
-            </div>
-          )}
+        {body ? (
+          <div className="prose-playbook demo-article mt-10 max-w-none">
+            <MdxContent source={body} />
+          </div>
+        ) : fallbackBody ? (
+          <div className="prose-playbook demo-article mt-10 max-w-none">
+            <p>{fallbackBody}</p>
+          </div>
+        ) : null}
 
-          {derived.length > 0 && (
-            <div className="mt-12 border-t border-[var(--color-border)] pt-8">
-              <p className="font-mono-index text-[var(--color-ink-muted)]">相关内容</p>
-              <ul className="mt-4 space-y-3">
-                {derived.map((d) => (
-                  <li key={d.slug}>
-                    <Link
-                      href={`/writing/${d.slug}`}
-                      className="group flex items-baseline justify-between gap-3"
-                    >
-                      <span className="font-serif text-base font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-forest)]">
-                        {d.title}
-                      </span>
-                      <span className="shrink-0 font-mono text-xs text-[var(--color-ink-muted)]">
-                        {d.readingMinutes} min
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+        {derived.length > 0 && (
+          <div className="mt-12 border-t border-[var(--color-border)] pt-8">
+            <p className="font-mono-index text-[var(--color-ink-muted)]">相关内容</p>
+            <ul className="mt-4 space-y-3">
+              {derived.map((d) => (
+                <li key={d.slug}>
+                  <Link
+                    href={`/writing/${d.slug}`}
+                    className="group flex items-baseline justify-between gap-3"
+                  >
+                    <span className="font-serif text-base font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-forest)]">
+                      {d.title}
+                    </span>
+                    <span className="shrink-0 font-mono text-xs text-[var(--color-ink-muted)]">
+                      {d.readingMinutes} min
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </article>
   );

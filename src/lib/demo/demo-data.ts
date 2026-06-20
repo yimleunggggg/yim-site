@@ -466,7 +466,7 @@ export const projectCategoryLabel: Record<ProjectCategory, LText> = {
 };
 
 export type DemoAboutProject = {
-  slug?: string;
+  slug: string;
   title: LText;
   tagline: LText;
   desc?: LText;
@@ -506,6 +506,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
     liveUrl: "https://yakushimabus.com",
   },
   {
+    slug: "offtrack",
     title: { zh: "OFFTRACK · 野路子", en: "OFFTRACK" },
     tagline: {
       zh: "户外运动爱好者的社交平台，接入 Strava、Garmin 等运动数据",
@@ -519,6 +520,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
     categories: ["product", "sport"],
   },
   {
+    slug: "self-discovery",
     title: { zh: "自我探索系列", en: "Self-discovery series" },
     tagline: { zh: "用工具了解自己", en: "Tools for self-knowledge" },
     desc: {
@@ -529,18 +531,21 @@ export const demoAboutProjects: DemoAboutProject[] = [
     categories: ["product", "experience"],
   },
   {
+    slug: "camino-de-santiago",
     title: { zh: "西班牙朝圣之路 · Camino de Santiago", en: "Camino de Santiago" },
     tagline: { zh: "步行穿越西班牙", en: "Walking across Spain" },
     status: "planned",
     categories: ["travel", "sport"],
   },
   {
+    slug: "triathlon",
     title: { zh: "铁人三项", en: "Triathlon" },
     tagline: { zh: "学游泳中", en: "Currently learning to swim" },
     status: "planned",
     categories: ["sport", "experience"],
   },
   {
+    slug: "kazakhstan-horse-trek",
     title: { zh: "哈萨克斯坦 Horse Trek", en: "Kazakhstan Horse Trek" },
     tagline: { zh: "骑马穿越草原", en: "Horseback across the steppe" },
     status: "planned",
@@ -631,6 +636,22 @@ export const demoProjects: DemoProject[] = [
     gradient: "linear-gradient(135deg,#5c5a54,#8a877f)",
   },
 ];
+
+/** About 页项目 + 详情页 slug 并集 */
+export function getAllDemoProjectSlugs(): string[] {
+  const slugs = new Set<string>();
+  for (const p of demoAboutProjects) slugs.add(p.slug);
+  for (const p of demoProjects) slugs.add(p.slug);
+  return [...slugs];
+}
+
+export function getDemoAboutProject(slug: string): DemoAboutProject | undefined {
+  return demoAboutProjects.find((p) => p.slug === slug);
+}
+
+export function getDemoProjectDetail(slug: string): DemoProject | undefined {
+  return demoProjects.find((p) => p.slug === slug);
+}
 
 /** 在做 & 计划中 → 表格 */
 export type DemoPlanned = {

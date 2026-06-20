@@ -20,9 +20,6 @@ function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
         alt={alt ?? ""}
         className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-card)]"
         loading="lazy"
-        onError={(e) => {
-          e.currentTarget.style.display = "none";
-        }}
       />
       {alt ? (
         <figcaption className="mt-2 text-center text-sm text-[var(--color-ink-muted)]">
