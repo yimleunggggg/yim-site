@@ -17,6 +17,8 @@ export { SiteFooter } from "./SiteFooter";
 export { GuideReaderShell } from "./GuideReaderShell";
 export { PlaybookSidebar } from "./PlaybookSidebar";
 export { LifeMomentsFeed } from "./LifeMomentsFeed";
+export { ImageLightbox } from "./ImageLightbox";
+export { MomentGallery } from "./MomentGallery";
 export { ExplorationTimeline } from "./ExplorationTimeline";
 export { mdxComponents } from "./mdx-components";
 export { LocaleProvider, useLocale } from "./LocaleProvider";

@@ -14,48 +14,67 @@ export function SiteFooter({ note }: SiteFooterProps) {
   const zh = locale === "zh";
 
   return (
-    <footer className="mt-20 border-t border-[var(--color-border)] bg-[var(--color-callout)]">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-3">
-        <div>
+    <footer
+      id="contact"
+      className="mt-20 scroll-mt-24 border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-callout)_88%,var(--color-paper))]"
+    >
+      <div className="site-shell grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="lg:col-span-1">
           <p className="font-mono-index text-[var(--color-forest)]">{t.siteTitle}</p>
-          <p className="mt-2 text-sm text-[var(--color-ink-muted)]">
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-muted)]">
             {note ?? t.footer}
           </p>
         </div>
+
         <div>
           <p className="font-mono-index text-[var(--color-ink-muted)]">
-            {zh ? "导航" : "NAVIGATE"}
+            {zh ? "导航" : "Navigate"}
           </p>
           <div className="mt-3 flex flex-col gap-2 text-sm">
             <Link href="/" className="hover:text-[var(--color-forest)]">
               {t.nav.home}
             </Link>
-            <Link href="/about" className="hover:text-[var(--color-forest)]">
-              {t.nav.about}
+            <Link href="/work" className="hover:text-[var(--color-forest)]">
+              {t.nav.work}
             </Link>
             <Link href="/life" className="hover:text-[var(--color-forest)]">
               {t.nav.life}
             </Link>
-            <Link href="/resume" className="hover:text-[var(--color-forest)]">
-              {t.nav.resume}
+            <Link href="/blog" className="hover:text-[var(--color-forest)]">
+              {t.nav.blog}
             </Link>
-            <Link href="/ai-playbook" className="hover:text-[var(--color-forest)]">
-              {t.nav.aiPlaybook}
+            <Link href="/#work-history" className="hover:text-[var(--color-forest)]">
+              {zh ? "工作经历" : "Experience"}
             </Link>
           </div>
         </div>
+
         <div>
           <p className="font-mono-index text-[var(--color-ink-muted)]">
-            {zh ? "更多" : "MORE"}
+            {zh ? "联系" : "Contact"}
+          </p>
+          <div className="mt-3 flex flex-col gap-2 text-sm">
+            <a
+              href={`mailto:${profileConfig.contact.email}`}
+              className="text-[var(--color-forest)] hover:underline"
+            >
+              {profileConfig.contact.email}
+            </a>
+            <Link href="/resume" className="text-[var(--color-ink-muted)] hover:text-[var(--color-forest)]">
+              {zh ? "PDF 简历" : "PDF resume"}
+            </Link>
+            <p className="pt-1 text-xs leading-relaxed text-[var(--color-ink-muted)]">
+              {zh ? "合作、招聘或随便聊聊，邮件即可。" : "For collaboration, hiring, or a hello — email works."}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <p className="font-mono-index text-[var(--color-ink-muted)]">
+            {zh ? "更多" : "More"}
           </p>
           <div className="mt-3 flex flex-col gap-2 text-sm">
             <GitHubSourceLink className="text-xs" label={zh ? "GitHub 源码" : "GitHub source"} />
-            <a
-              href={`mailto:${profileConfig.contact.email}`}
-              className="hover:text-[var(--color-forest)]"
-            >
-              {zh ? "邮件联系" : "Email"}
-            </a>
           </div>
         </div>
       </div>

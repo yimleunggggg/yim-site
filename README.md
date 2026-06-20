@@ -1,15 +1,19 @@
 # Yim Leung · 个人站
 
-探索者 · 运营人 · AI 实践者。首页、关于、AI Playbook、生活动态。
+探索者 · 运营人 · AI 实践者。首页、关于、生活、摄影与 AI 内训笔记。
+
+**生产**：https://yim-site.vercel.app  
+**说明**：个人站已迁到根路径 `/`（原 `/demo` 会自动跳转）
 
 ## 链接结构
 
 | 页面 | 路径 |
 |------|------|
 | 首页 | `/` |
+| Demo 个人站 | `/`（旧 `/demo` 已 301 跳转） |
 | 关于 | `/about` |
-| AI Playbook | `/ai-playbook` |
 | 生活 | `/life` |
+| AI 内训 | `/ai-playbook` |
 | 简历 PDF | `/resume` |
 
 ## 开发
@@ -19,16 +23,16 @@ npm install
 npm run dev
 ```
 
-本地预览：[http://localhost:3000](http://localhost:3000)
+本地预览：http://localhost:3000
 
 ## 内容维护
 
-- Playbook 章节：`content/ai-playbook/*.mdx`
-- 生活动态：`content/life/moments/*.md`（见 `docs/life-moments.md`）
-- 站点配置：`src/lib/site-config.ts`、`src/lib/site-data.ts`
+- AI 章节：`content/ai-playbook/*.mdx`
+- 生活动态：`content/life/moments/*.md`
+- Demo 数据：`src/lib/demo/`
+- 站点 URL / 文案：`src/lib/site-config.ts`
 
-## 仓库
+## 部署
 
-GitHub：`yimleunggggg/yim-site`（待创建）
-
-旧 Vercel 项目 `ai-playbook-site` 为早期 Playbook 单页部署，新版需重新部署。
+Vercel 项目名：**`yim-site`**（已从 `ai-playbook-site` 更名）。  
+环境变量 `NEXT_PUBLIC_SITE_URL` 设为生产域名。

@@ -1,21 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { SiteHeader, SiteFooter, useLocale } from "@/components";
 import { homeHub } from "@/lib/profile-config";
 import type { LifeMoment } from "@/lib/life-content";
 import { lifeModules } from "@/lib/site-data";
+import { journeyHighlights, sports } from "@/lib/about-data";
+import { WorkHistoryList } from "@/components/WorkHistoryList";
+import { LifePhotoMarquee } from "@/components/LifePhotoMarquee";
 
 const stats = {
   zh: [
     { num: "70+", label: "城市" },
-    { num: "8", label: "年运营经验" },
+    { num: "9", label: "年经验" },
     { num: "6", label: "项运动" },
     { num: "∞", label: "好奇心" },
   ],
   en: [
     { num: "70+", label: "Cities" },
-    { num: "8", label: "Yrs in Ops" },
+    { num: "9", label: "Yrs" },
     { num: "6", label: "Sports" },
     { num: "∞", label: "Curiosity" },
   ],
@@ -40,88 +44,109 @@ export default function HomePage({ recentMoments }: Props) {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-6xl px-4">
-        <section className="grid min-h-[70vh] items-end gap-8 pb-16 pt-12 lg:grid-cols-[1.4fr_0.6fr]">
-          <div>
-            <p className="font-mono-index animate-fade-in text-[var(--color-terracotta)]">
+      <main className="pb-20">
+        <div className="site-shell">
+        {/* ── Hero：左介绍 + 右近期动态 ── */}
+        <section className="grid gap-10 pb-16 pt-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-end lg:gap-12 lg:pt-14">
+          <div id="about">
+            <p className="text-sm text-[var(--color-terracotta)]">
               {zh ? "个人实验站" : "Personal Lab"} · {new Date().getFullYear()}
             </p>
-            <h1 className="mt-4 font-serif text-5xl font-bold leading-[1.15] tracking-tight md:text-7xl">
+            <h1 className="mt-3 font-serif text-4xl font-bold leading-[1.12] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               {t.home.greeting}
             </h1>
-            <p className="mt-2 font-serif text-2xl text-[var(--color-ink-muted)] md:text-3xl">
+            <p className="mt-2 font-serif text-xl text-[var(--color-ink-muted)] sm:text-2xl md:text-3xl">
               {t.home.tagline}
             </p>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-ink-muted)]">
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
               {t.home.intro}
             </p>
-            <div className="mt-8 flex gap-8">
+            <p className="mt-4 max-w-xl font-serif text-base italic text-[var(--color-ink-muted)] sm:text-lg">
+              {t.about.motto}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
               {s.map((item) => (
                 <div key={item.label}>
-                  <span className="font-serif text-3xl font-bold text-[var(--color-forest)]">
+                  <span className="font-serif text-2xl font-bold text-[var(--color-forest)] sm:text-3xl">
                     {item.num}
                   </span>
-                  <span className="ml-1 text-sm text-[var(--color-ink-muted)]">{item.label}</span>
+                  <span className="ml-1.5 text-sm text-[var(--color-ink-muted)]">{item.label}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <aside className="self-end rounded-md border border-[var(--color-border)] bg-[var(--color-card)] p-6 shadow-sm">
-            <p className="font-mono-index text-[var(--color-forest)]">
-              {zh ? "近期动态" : "Recent"}
-            </p>
+          <aside className="card-surface rounded-md p-5 sm:p-6 lg:self-end">
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="text-sm font-medium text-[var(--color-forest)]">
+                {zh ? "近期动态" : "Recent"}
+              </p>
+              <Link href="/life#moments" className="text-xs text-[var(--color-forest)] hover:underline">
+                {zh ? "全部 →" : "All →"}
+              </Link>
+            </div>
             {recentMoments.length > 0 ? (
               <ul className="mt-4 space-y-4">
                 {recentMoments.map((m) => {
                   const mod = lifeModules.find((x) => x.id === m.module);
                   const text = zh ? m.text : m.textEn ?? m.text;
-                  const preview = text.split("\n")[0].slice(0, 72);
+                  const thumb = m.images[0];
                   return (
-                    <li key={m.id} className="text-sm">
-                      <div className="flex items-center gap-2 text-xs text-[var(--color-ink-muted)]">
-                        <span>{mod?.emoji}</span>
-                        <time className="font-mono">{formatShortDate(m.date, zh)}</time>
-                      </div>
-                      <p className="mt-1 leading-relaxed text-[var(--color-ink-muted)]">
-                        {preview}
-                        {text.length > 72 ? "…" : ""}
-                      </p>
+                    <li key={m.id}>
+                      <Link href="/life#moments" className="flex gap-3 active:opacity-80">
+                        {thumb ? (
+                          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm bg-[var(--color-callout)] sm:h-14 sm:w-14">
+                            <Image src={thumb} alt="" fill className="object-cover" sizes="56px" />
+                          </div>
+                        ) : (
+                          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-[var(--color-callout)] text-lg sm:h-14 sm:w-14">
+                            {mod?.emoji ?? "·"}
+                          </span>
+                        )}
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 text-xs text-[var(--color-ink-muted)]">
+                            {mod ? <span>{mod.emoji}</span> : null}
+                            <time>{formatShortDate(m.date, zh)}</time>
+                          </div>
+                          <p className="mt-0.5 line-clamp-2 text-sm leading-relaxed text-[var(--color-ink-muted)]">
+                            {text.split("\n")[0]}
+                          </p>
+                        </div>
+                      </Link>
                     </li>
                   );
                 })}
               </ul>
             ) : (
-              <ul className="mt-4 space-y-3 text-sm text-[var(--color-ink-muted)]">
+              <ul className="mt-4 space-y-2 text-sm text-[var(--color-ink-muted)]">
                 {t.home.nowItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-terracotta)]" />
+                    <span className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-terracotta)]" />
                     {item}
                   </li>
                 ))}
               </ul>
             )}
-            <Link
-              href="/life#moments"
-              className="mt-4 inline-block text-xs text-[var(--color-forest)] hover:underline"
-            >
-              {zh ? "全部动态 →" : "All moments →"}
-            </Link>
           </aside>
         </section>
+        </div>
 
+        <LifePhotoMarquee zh={zh} />
+
+        <div className="site-shell">
+        {/* ── 入口卡片 ── */}
         <div className="flex items-center gap-4 py-2">
           <div className="h-px flex-1 bg-[var(--color-border)]" />
-          <span className="font-mono-index text-[var(--color-ink-muted)]">{t.tracks.title}</span>
+          <span className="text-xs text-[var(--color-ink-muted)]">{t.tracks.title}</span>
           <div className="h-px flex-1 bg-[var(--color-border)]" />
         </div>
 
-        <section className="mt-8 grid gap-4 md:grid-cols-3">
+        <section className="mt-6 grid gap-4 md:grid-cols-3">
           {hubCards.map((track, i) => (
             <Link
               key={track.title}
               href={track.href}
-              className={`group relative overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-card)] p-6 transition-all hover:shadow-md ${
+              className={`card-surface group relative overflow-hidden rounded-md p-5 transition-shadow hover:shadow-lg sm:p-6 ${
                 i === 0 ? "md:col-span-2 md:row-span-2 md:flex md:flex-col md:justify-end md:p-8" : ""
               }`}
             >
@@ -132,48 +157,78 @@ export default function HomePage({ recentMoments }: Props) {
                     i === 0 ? "var(--color-forest)" : i === 1 ? "var(--color-terracotta)" : "#4a7c6f",
                 }}
               />
-              <span className="font-mono-index text-[var(--color-terracotta)]">{track.tag}</span>
+              <span className="text-xs text-[var(--color-terracotta)]">{track.tag}</span>
               <h2
                 className={`mt-2 font-serif font-semibold group-hover:text-[var(--color-forest)] ${
-                  i === 0 ? "text-3xl" : "text-xl"
+                  i === 0 ? "text-2xl sm:text-3xl" : "text-lg sm:text-xl"
                 }`}
               >
                 {track.title}
               </h2>
-              <p className={`mt-2 text-[var(--color-ink-muted)] ${i === 0 ? "text-base" : "text-sm"}`}>
+              <p className={`mt-2 text-[var(--color-ink-muted)] ${i === 0 ? "text-sm sm:text-base" : "text-sm"}`}>
                 {track.desc}
               </p>
             </Link>
           ))}
         </section>
 
-        <section className="mt-16 grid grid-cols-3 gap-2 md:grid-cols-6">
-          {[
-            { emoji: "🏄", label: zh ? "冲浪" : "Surfing" },
-            { emoji: "🏔", label: zh ? "徒步" : "Hiking" },
-            { emoji: "🍺", label: zh ? "精酿" : "Craft Beer" },
-            { emoji: "🧘", label: zh ? "冥想" : "Meditation" },
-            { emoji: "🏃", label: zh ? "跑步" : "Running" },
-            { emoji: "✈️", label: zh ? "旅行" : "Travel" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="flex aspect-[4/5] flex-col items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-callout)]"
+        {/* ── 旅途 + 运动 ── */}
+        <section className="mt-16 grid gap-10 border-t border-[var(--color-border)] pt-12 lg:grid-cols-2">
+          <div id="journey" className="scroll-mt-24">
+            <h2 className="font-serif text-xl font-semibold sm:text-2xl">
+              {zh ? "旅途与成长" : "Journey"}
+            </h2>
+            <ul className="mt-4 space-y-3">
+              {journeyHighlights.map((j) => (
+                <li key={j.year + j.zh} className="text-sm sm:text-base">
+                  <span className="text-[var(--color-terracotta)]">{j.year}</span>
+                  <span className="ml-2 text-[var(--color-ink-muted)]">{zh ? j.zh : j.en}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div id="sports" className="scroll-mt-24">
+            <h2 className="font-serif text-xl font-semibold sm:text-2xl">{zh ? "运动" : "Sports"}</h2>
+            <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-muted)] sm:text-base">
+              {sports.map((item) => (zh ? item.zh : item.en)).join(" · ")}
+            </p>
+            <Link
+              href="/life#moments"
+              className="mt-4 inline-block text-sm text-[var(--color-forest)] hover:underline"
             >
-              <span className="text-3xl">{item.emoji}</span>
-              <span className="mt-2 text-xs text-[var(--color-ink-muted)]">{item.label}</span>
-            </div>
-          ))}
+              {zh ? "生活动态里的训练与赛事 →" : "Training & races in moments →"}
+            </Link>
+          </div>
         </section>
 
-        <section className="my-20 text-center">
-          <Link
-            href="/about"
-            className="inline-block rounded-md border border-[var(--color-forest)] px-6 py-2.5 text-sm text-[var(--color-forest)] hover:bg-[var(--color-forest)] hover:text-white"
-          >
-            {zh ? "了解更多关于我" : "More about me"}
-          </Link>
-        </section>
+        {/* ── 工作经历（折叠 · 卡片时间线） ── */}
+        <details
+          id="work-history"
+          className="group mt-16 scroll-mt-24 border-t border-[var(--color-border)] pt-8"
+        >
+          <summary className="tap-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <div className="flex items-end justify-between gap-4 pb-2">
+              <div>
+                <h2 className="font-serif text-2xl font-semibold">
+                  {zh ? "工作经历" : "Work Experience"}
+                </h2>
+                <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
+                  {zh ? "点击展开 · 招聘或合作时可查阅" : "Tap to expand for hiring / collaboration"}
+                </p>
+              </div>
+              <span
+                className="shrink-0 rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-ink-muted)] transition-transform group-open:rotate-180"
+                aria-hidden
+              >
+                ↓
+              </span>
+            </div>
+          </summary>
+          <div className="mt-4 pb-2">
+            <WorkHistoryList locale={locale} zh={zh} />
+          </div>
+        </details>
+        </div>
       </main>
       <SiteFooter />
     </>

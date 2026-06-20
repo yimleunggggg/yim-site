@@ -9,6 +9,7 @@ const dict = {
     nav: {
       home: "首页",
       about: "关于",
+      work: "AI 实践",
       guides: "教程",
       aiPlaybook: "AI",
       life: "生活",
@@ -33,7 +34,7 @@ const dict = {
       ],
     },
     tracks: {
-      title: "探索轨道",
+      title: "入口",
       items: [
         {
           tag: "AI × 应用",
@@ -45,19 +46,19 @@ const dict = {
           tag: "独立旅行",
           title: "在路上做决策实验",
           desc: "70+ 城市 · 斯里兰卡义工 · 清迈旅居 · 独旅方法论",
-          href: "/about#journey",
+          href: "/#journey",
         },
         {
           tag: "运动与身体",
           title: "身体是长期项目",
           desc: "清迈半马 · 斯巴达超级赛 · 越野跑 · 冲浪 · 潜水 · 拳击",
-          href: "/about#sports",
+          href: "/#sports",
         },
         {
           tag: "精酿与社群",
           title: "用兴趣连接人",
           desc: "精酿自媒体 · 线下活动策划 · 播客 · 电商闭环",
-          href: "/about#craft",
+          href: "/#craft",
         },
       ],
     },
@@ -75,11 +76,12 @@ const dict = {
     nav: {
       home: "Home",
       about: "About",
+      work: "AI Lab",
       guides: "Guides",
       aiPlaybook: "AI",
       life: "Life",
       resume: "Resume",
-      projects: "Projects",
+      projects: "Work",
       blog: "Blog",
     },
     home: {
@@ -99,7 +101,7 @@ const dict = {
       ],
     },
     tracks: {
-      title: "Exploration Tracks",
+      title: "Enter",
       items: [
         {
           tag: "AI × Real Life",
@@ -111,19 +113,19 @@ const dict = {
           tag: "Solo Travel",
           title: "Decision experiments on the road",
           desc: "70+ cities · Sri Lanka volunteering · Chiang Mai · Travel methodology",
-          href: "/about#journey",
+          href: "/#journey",
         },
         {
           tag: "Sports & Body",
           title: "The body is a long-term project",
           desc: "Half marathon · Spartan · Trail running · Surfing · Diving · Boxing",
-          href: "/about#sports",
+          href: "/#sports",
         },
         {
           tag: "Craft Beer & Community",
           title: "Connecting people through interests",
           desc: "Craft beer media · Offline events · Podcast · Commerce loop",
-          href: "/about#craft",
+          href: "/#craft",
         },
       ],
     },

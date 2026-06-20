@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/site-config";
 
 export async function GET() {
   const chapters = getAllChapters();
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ai-playbook.vercel.app";
+  const base = siteConfig.url;
 
   const items = chapters
     .map(

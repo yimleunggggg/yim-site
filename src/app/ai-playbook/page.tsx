@@ -58,7 +58,7 @@ export default function AiPlaybookHome() {
                 {projectCases.map((c) => (
                   <li key={c.id}>
                     <Link
-                      href={`/ai-playbook/cases/${c.id}`}
+                      href={c.href}
                       className="group block rounded-sm border border-[var(--color-border)] bg-[var(--color-card)] p-5 hover:border-l-4 hover:border-l-[var(--color-terracotta)]"
                     >
                       <div className="flex flex-wrap items-center gap-2">
@@ -75,7 +75,7 @@ export default function AiPlaybookHome() {
               </ul>
             </section>
 
-            <section id="chapters" className="mt-12 border-t border-[var(--color-border)] pt-10">
+            <section id="training" className="mt-12 border-t border-[var(--color-border)] pt-10">
               <h2 className="font-serif text-2xl font-semibold">部门 AIGC 内训</h2>
               <p className="mt-2 text-sm text-[var(--color-ink-muted)]">
                 2024–2025 内部培训整理。{" "}

@@ -2,11 +2,12 @@
 date: "2025-12-08"
 module: craft
 tags: [音乐节, 精酿, 碧山村]
-images: []
+images:
+  - /life/moments/bishan-fest/01.jpg
 pinToHome: true
 ---
 
-去年 12 月碧山村音乐节，冷到跺脚但酒是温的。几杯下肚，跟陌生人碰杯，觉得冬天也没那么长。
+碧山村音乐节，啤酒事务局组团清桶。冷，但酒是温的，人也是。
 
 ---
-Bishan Village music fest last December — freezing feet, warm beer, clinking glasses with strangers. Winter felt shorter.
+Bishan Village fest — cold air, warm beer, good company.

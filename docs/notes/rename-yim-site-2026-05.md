@@ -8,7 +8,8 @@
 | 站点 title | AI Playbook | Yim Leung · 个人站 |
 | GitHub（假定） | `yimleunggggg/ai-playbook-site` | `yimleunggggg/yim-site`（**尚未创建**） |
 | 本地文件夹 | `Projects/ai-playbook-site` | 建议改为 `Projects/yim-site` |
-| Vercel 项目名 | `ai-playbook-site` | 可 Dashboard 改或新建项目 |
+| Vercel 项目名 | `ai-playbook-site` | **`yim-site`** |
+| 生产域名 | `ai-playbook-site-beige.vercel.app` | **`yim-site.vercel.app`** |
 
 ## 路由说明
 
@@ -18,7 +19,9 @@
 
 - 本地：http://localhost:3000
 - Vercel Preview（最新代码）：见部署输出或 `npx vercel ls`
-- 旧 Production（未含生活/改版）：https://ai-playbook-site-beige.vercel.app
+- 生产：https://yim-site.vercel.app
+- Demo：https://yim-site.vercel.app/demo
+- 旧域名 `ai-playbook-site-beige.vercel.app` 已弃用
 
 ## 下一步
 

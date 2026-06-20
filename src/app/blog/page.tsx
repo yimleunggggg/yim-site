@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+import { getAllBlogPosts } from "@/lib/blog-content";
+import BlogPageClient from "./BlogPageClient";
 
-export default function BlogRedirect() {
-  redirect("/life");
+export default function BlogPage() {
+  const posts = getAllBlogPosts();
+  return <BlogPageClient posts={posts} />;
 }

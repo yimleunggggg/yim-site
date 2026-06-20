@@ -67,7 +67,7 @@ export default function YakushimaCasePage() {
             Vibe Coding 与 SEO 是同一个 bus 项目的复盘，不是独立「教程站」。
           </p>
           <ul className="mt-4 space-y-3">
-            {c.derivedDocs.map((doc) => (
+            {(c.derivedDocs ?? []).map((doc) => (
               <li key={doc.href}>
                 <Link
                   href={doc.href}
@@ -82,8 +82,8 @@ export default function YakushimaCasePage() {
         </section>
 
         <p className="mt-8">
-          <Link href="/ai-playbook" className="text-sm text-[var(--color-forest)] hover:underline">
-            ← 返回 AI Playbook
+          <Link href="/work" className="text-sm text-[var(--color-forest)] hover:underline">
+            ← 返回项目
           </Link>
         </p>
       </main>

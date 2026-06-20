@@ -24,40 +24,39 @@ export default function LifePageClient({ moments }: Props) {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-6xl px-4 py-12">
-        <p className="font-mono-index text-[var(--color-terracotta)]">
-          {zh ? "生活" : "LIFE"}
-        </p>
-        <h1 className="mt-3 font-serif text-4xl font-bold md:text-5xl">
-          {zh ? "生活记录" : "Life"}
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+        <h1 className="font-serif text-3xl font-bold sm:text-4xl">
+          {zh ? "生活" : "Life"}
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-[var(--color-ink-muted)]">
+        <p className="mt-3 max-w-xl text-base text-[var(--color-ink-muted)]">
           {zh
-            ? "动态像朋友圈，随手发图+几句话；故事是长文；相册是主题合集。不用一次看完。"
-            : "Moments for quick updates, stories for long reads, albums for collections."}
+            ? "随手发图和几句话。长文在博客。"
+            : "Photos and short notes. Long reads on the blog."}
         </p>
 
-        <nav className="mt-8 flex flex-wrap gap-2 border-b border-[var(--color-border)] pb-4">
-          {NAV.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className="rounded-sm border border-[var(--color-border)] bg-[var(--color-card)] px-3 py-1.5 font-mono text-xs transition-colors hover:border-[var(--color-forest)]"
-            >
-              {zh ? item.zh : item.en}
-            </a>
-          ))}
-          {lifeModules.map((m) => (
-            <span
-              key={m.id}
-              className="rounded-sm bg-[var(--color-callout)] px-2 py-1.5 font-mono text-[10px] text-[var(--color-ink-muted)]"
-            >
-              {m.emoji} {zh ? m.label.zh : m.label.en}
-            </span>
-          ))}
+        <nav className="sticky top-[calc(3rem+env(safe-area-inset-top))] z-20 -mx-4 mt-6 border-b border-[var(--color-border)] bg-[var(--color-paper)]/95 px-4 backdrop-blur-sm sm:-mx-6 sm:px-6">
+          <div className="scroll-tabs flex gap-1 overflow-x-auto py-2">
+            {NAV.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="tap-target shrink-0 rounded-full px-4 py-2 text-sm text-[var(--color-ink-muted)] active:bg-[var(--color-callout)]"
+              >
+                {zh ? item.zh : item.en}
+              </a>
+            ))}
+          </div>
         </nav>
 
-        <section id="moments" className="mt-10 scroll-mt-24">
+        <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[var(--color-ink-muted)]">
+          {lifeModules.map((m) => (
+            <span key={m.id}>
+              {zh ? m.label.zh : m.label.en}
+            </span>
+          ))}
+        </div>
+
+        <section id="moments" className="mt-8 scroll-mt-28 sm:mt-10">
           <div className="flex items-baseline justify-between gap-4">
             <h2 className="font-serif text-2xl font-semibold">
               {zh ? "动态" : "Moments"}
@@ -81,12 +80,16 @@ export default function LifePageClient({ moments }: Props) {
           </div>
         </section>
 
-        <section id="stories" className="mt-16 scroll-mt-24 border-t border-[var(--color-border)] pt-10">
+        <section id="stories" className="mt-14 scroll-mt-28 border-t border-[var(--color-border)] pt-10 sm:mt-16">
           <h2 className="font-serif text-2xl font-semibold">
             {zh ? "故事" : "Stories"}
           </h2>
           <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
-            {zh ? "值得单独成篇的长内容，筹备中。" : "Long-form pieces — in progress."}
+            {zh ? "值得单独成篇的，会放到" : "Long pieces move to the "}
+            <Link href="/blog" className="text-[var(--color-forest)] underline">
+              {zh ? "博客" : "blog"}
+            </Link>
+            {zh ? "；这里先列选题。" : "; drafts listed here."}
           </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {lifeStories.map((story) => {
@@ -132,7 +135,7 @@ export default function LifePageClient({ moments }: Props) {
           </div>
         </section>
 
-        <section id="albums" className="mt-16 scroll-mt-24 border-t border-[var(--color-border)] pt-10 pb-8">
+        <section id="albums" className="mt-14 scroll-mt-28 border-t border-[var(--color-border)] pt-10 pb-8 sm:mt-16">
           <h2 className="font-serif text-2xl font-semibold">
             {zh ? "相册" : "Albums"}
           </h2>

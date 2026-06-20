@@ -2,3 +2,18 @@
 node_modules/
 .next/
 .git/
+
+# 个人素材源文件夹（已处理到 public/demo/，勿上传源文件）
+个人照片/
+生活体验/
+旅行和摄影/
+宠物出行/
+首页走马灯/
+摄影及旅行/
+杂项 不用管/
+demo-personal-site/
+.DS_Store
+
+# 灯箱大图不打包进 Vercel（详情/列表用 display 档即可）
+**/*-full.jpg
+**/cover-full.jpg

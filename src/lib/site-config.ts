@@ -1,4 +1,9 @@
+/** 生产域名：Vercel 项目 yim-site；本地可用 .env 覆盖 */
+export const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://yim-site.vercel.app";
+
 export const siteConfig = {
+  url: siteUrl,
   title: "Yim Leung",
   subtitle: "个人站 · Life × AI Lab",
   description:

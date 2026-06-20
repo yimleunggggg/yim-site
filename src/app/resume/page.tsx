@@ -37,7 +37,7 @@ export default function ResumePage() {
               {zh ? "下载简历 PDF" : "Download PDF"}
             </a>
             <Link
-              href="/about"
+              href="/#work-history"
               className="rounded-md border border-[var(--color-border)] px-4 py-2 text-sm hover:border-[var(--color-forest)]"
             >
               {zh ? "查看在线经历版" : "View online profile"}

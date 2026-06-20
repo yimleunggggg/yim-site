@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export-feishu": "node scripts/export-feishu.mjs"
+    "export-feishu": "node scripts/export-feishu.mjs",
+    "check:assets": "node scripts/check-public-assets.mjs",
+    "deploy:prod": "node scripts/check-public-assets.mjs && npx vercel deploy --prod"
   },
   "dependencies": {
     "@mdx-js/react": "^3.1.1",

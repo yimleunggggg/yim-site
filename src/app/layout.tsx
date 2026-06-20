@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Sans_SC, Noto_Serif_SC, IBM_Plex_Mono } from "next/font/google";
 import { LocaleProvider } from "@/components";
+import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
 const sans = Noto_Sans_SC({
@@ -21,10 +22,24 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
-  title: "Yim Leung · Life × AI Lab",
-  description:
-    "探索者 · 运营人 · AI 实践者。独立旅行、运动、精酿、AI 应用——持续探索的个人实验站。",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: "Yim Leung · Life × AI Lab",
+    template: "%s · Yim Leung",
+  },
+  description: siteConfig.description,
+  openGraph: {
+    siteName: siteConfig.title,
+    locale: "zh_CN",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -35,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body
-        className={`${sans.variable} ${serif.variable} ${mono.variable} grid-bg min-h-screen`}
+        className={`${sans.variable} ${serif.variable} ${mono.variable} min-h-screen overflow-x-hidden`}
       >
         <LocaleProvider>{children}</LocaleProvider>
       </body>
