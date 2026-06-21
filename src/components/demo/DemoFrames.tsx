@@ -54,6 +54,7 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
                     loading={i < 3 ? "eager" : "lazy"}
                     unoptimized
                     draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
                   />
                 ) : null}
                 <span className="demo-frames-count">

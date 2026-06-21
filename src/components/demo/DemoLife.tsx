@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useLocale, ImageLightbox } from "@/components";
+import { useLocale } from "@/components";
 import {
   demoDispatches,
   demoLifeHeader,
@@ -21,7 +21,6 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
   const zh = locale === "zh";
 
   const [dispatchIdx, setDispatchIdx] = useState<number | null>(null);
-  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
   const featuredWritings = demoWritingFeaturedSlugs
     .map((slug) => writings.find((w) => w.slug === slug))
@@ -41,45 +40,52 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
       {/* 3.1 Dispatches */}
       <section className="site-shell py-10 sm:py-14" id="dispatches">
         <DemoSectionHeading eyebrow="DISPATCHES" title={zh ? "生活体验" : "Dispatches"} />
-        <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+        <ul className="life-dispatch-feed mt-7">
           {demoDispatches.map((d, i) => (
-            <button
-              key={d.id}
-              type="button"
-              onClick={() => setDispatchIdx(i)}
-              className="card-surface group flex flex-col overflow-hidden rounded-xl text-left transition-transform hover:-translate-y-1"
-            >
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-callout)]">
-                <DemoCover
-                  src={d.cover}
-                  gradient={d.gradient}
-                  alt={pickText(d.title, zh)}
-                  className="transition-transform duration-500 group-hover:scale-[1.03]"
-                  sizes="(max-width: 1024px) 50vw, 33vw"
-                />
-                {d.format === "diary" ? (
-                  <span className="absolute left-2 top-2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] text-white">
-                    {zh ? "日记体" : "Diary"}
-                  </span>
-                ) : null}
-              </div>
-              <div className="flex flex-1 flex-col p-3 sm:p-4">
-                <p className="font-mono text-[11px] text-[var(--color-forest)]">{d.date}</p>
-                <h3 className="mt-1 font-serif text-sm font-semibold text-[var(--color-ink)] sm:text-base">
-                  {pickText(d.title, zh)}
-                </h3>
-                {d.location ? (
-                  <p className="mt-0.5 font-mono text-[11px] text-[var(--color-ink-muted)]">
-                    {pickText(d.location, zh)}
+            <li key={d.id}>
+              <button
+                type="button"
+                onClick={() => setDispatchIdx(i)}
+                className="life-dispatch-row tap-target"
+              >
+                {d.cover ? (
+                  <div className="life-dispatch-thumb">
+                    <DemoCover
+                      src={d.cover}
+                      gradient={d.gradient}
+                      alt=""
+                      sizes="80px"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="life-dispatch-thumb life-dispatch-thumb--placeholder"
+                    style={{ background: d.gradient ?? "var(--color-callout)" }}
+                  />
+                )}
+                <div className="life-dispatch-copy">
+                  <p className="life-dispatch-meta">
+                    <span>{d.date}</span>
+                    {d.location ? (
+                      <>
+                        <span aria-hidden> · </span>
+                        <span>{pickText(d.location, zh)}</span>
+                      </>
+                    ) : null}
+                    {d.format === "diary" ? (
+                      <span className="life-dispatch-badge">{zh ? "日记" : "Diary"}</span>
+                    ) : null}
                   </p>
-                ) : null}
-                <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-[var(--color-ink-muted)] sm:text-sm">
-                  {pickText(d.oneLine, zh)}
-                </p>
-              </div>
-            </button>
+                  <h3 className="life-dispatch-title">{pickText(d.title, zh)}</h3>
+                  <p className="life-dispatch-oneline">{pickText(d.oneLine, zh)}</p>
+                </div>
+                <span className="life-dispatch-arrow" aria-hidden>
+                  →
+                </span>
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* 3.2 Writing */}
@@ -90,7 +96,7 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
             title={zh ? "关于自己的写作" : "Writing"}
             subtitle={pickText(demoWritingIntro, zh)}
           />
-          <DemoWritingList writings={featuredWritings} zh={zh} />
+          <DemoWritingList writings={featuredWritings} zh={zh} showTagFilter={false} />
           <div className="mt-8">
             <Link
               href="/writing"
@@ -110,7 +116,7 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
           subtitle={pickText(demoMovement.intro, zh)}
         />
 
-        <div className="demo-timeline mt-10 border-l border-[var(--color-border)] pl-6 sm:border-l-0 sm:pl-0">
+        <div className="demo-timeline mt-10">
           {demoMovement.timeline.map((t, i) => (
             <div key={i} className="demo-timeline-item pb-6 last:pb-0">
               <span className="demo-timeline-dot" aria-hidden />
@@ -126,32 +132,27 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
           <h3 className="font-mono-index text-[var(--color-ink-muted)]">
             {zh ? "比赛" : "Races"}
           </h3>
-          <div className="mt-6 space-y-8">
+          <div className="mt-6 space-y-6">
             {demoMovement.races.map((race) => (
-              <article key={race.id} className="card-surface overflow-hidden rounded-xl">
-                <div className="grid gap-0 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
-                  <div className="grid grid-cols-2 gap-0.5 sm:grid-cols-1">
+              <article key={race.id} className="life-race-card">
+                <div className="life-race-copy">
+                  <p className="font-mono text-xs text-[var(--color-forest)]">{race.date}</p>
+                  <h4 className="mt-1 font-serif text-lg font-semibold text-[var(--color-ink)]">
+                    {pickText(race.title, zh)}
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-muted)]">
+                    {pickText(race.text, zh)}
+                  </p>
+                </div>
+                {race.photos.length > 0 ? (
+                  <div className="life-race-thumbs">
                     {race.photos.map((src, i) => (
-                      <button
-                        key={`${race.id}-${src}-${i}`}
-                        type="button"
-                        onClick={() => setLightbox({ images: race.photos, index: i })}
-                        className="relative aspect-[4/3] overflow-hidden bg-[var(--color-callout)] sm:aspect-square"
-                      >
-                        <DemoCover src={src} alt={pickText(race.title, zh)} sizes="(max-width:640px) 50vw, 240px" />
-                      </button>
+                      <div key={`${race.id}-${src}-${i}`} className="life-race-thumb">
+                        <DemoCover src={src} alt="" sizes="72px" />
+                      </div>
                     ))}
                   </div>
-                  <div className="p-4 sm:p-5">
-                    <p className="font-mono text-xs text-[var(--color-forest)]">{race.date}</p>
-                    <h4 className="mt-1 font-serif text-lg font-semibold text-[var(--color-ink)]">
-                      {pickText(race.title, zh)}
-                    </h4>
-                    <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-muted)]">
-                      {pickText(race.text, zh)}
-                    </p>
-                  </div>
-                </div>
+                ) : null}
               </article>
             ))}
           </div>
@@ -163,21 +164,13 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
           </h3>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {demoMovement.camps.map((camp) => (
-              <article key={camp.id} className="card-surface overflow-hidden rounded-xl">
-                <div className="relative aspect-[16/9] overflow-hidden bg-[var(--color-callout)]">
-                  <button
-                    type="button"
-                    onClick={() => setLightbox({ images: camp.photos, index: 0 })}
-                    className="relative block h-full w-full"
-                  >
-                    <DemoCover
-                      src={camp.photos[0]}
-                      alt={pickText(camp.title, zh)}
-                      sizes="(max-width:640px) 100vw, 50vw"
-                    />
-                  </button>
-                </div>
-                <div className="p-4">
+              <article key={camp.id} className="life-camp-card">
+                {camp.photos[0] ? (
+                  <div className="life-camp-thumb">
+                    <DemoCover src={camp.photos[0]} alt="" sizes="(max-width:640px) 100vw, 320px" />
+                  </div>
+                ) : null}
+                <div className="life-camp-copy">
                   <p className="font-mono text-xs text-[var(--color-forest)]">{camp.date}</p>
                   <h4 className="mt-1 font-serif text-base font-semibold text-[var(--color-ink)]">
                     {pickText(camp.title, zh)}
@@ -209,22 +202,6 @@ export function DemoLife({ writings }: { writings: DemoWritingMeta[] }) {
           dispatch={demoDispatches[dispatchIdx]}
           zh={zh}
           onClose={() => setDispatchIdx(null)}
-          onOpenImage={(idx) => {
-            const images = demoDispatches[dispatchIdx].images?.length
-              ? demoDispatches[dispatchIdx].images!
-              : demoDispatches[dispatchIdx].cover
-                ? [demoDispatches[dispatchIdx].cover!]
-                : [];
-            if (images.length) setLightbox({ images, index: idx });
-          }}
-        />
-      )}
-      {lightbox && (
-        <ImageLightbox
-          images={lightbox.images}
-          index={lightbox.index}
-          onClose={() => setLightbox(null)}
-          onNavigate={(index) => setLightbox((s) => (s ? { ...s, index } : s))}
         />
       )}
     </>
@@ -235,12 +212,10 @@ function DispatchModal({
   dispatch,
   zh,
   onClose,
-  onOpenImage,
 }: {
   dispatch: DemoDispatch;
   zh: boolean;
   onClose: () => void;
-  onOpenImage: (idx: number) => void;
 }) {
   const hasImage = Boolean(dispatch.cover || dispatch.images?.length);
 
@@ -256,18 +231,14 @@ function DispatchModal({
         onClick={(e) => e.stopPropagation()}
       >
         {hasImage ? (
-          <button
-            type="button"
-            onClick={() => onOpenImage(0)}
-            className="relative block aspect-[4/3] w-full overflow-hidden rounded-t-xl bg-[var(--color-callout)]"
-          >
+          <div className="life-dispatch-modal-media">
             <DemoCover
               src={dispatch.cover ?? dispatch.images?.[0]}
               gradient={dispatch.gradient}
-              alt={pickText(dispatch.title, zh)}
-              sizes="100vw"
+              alt=""
+              sizes="480px"
             />
-          </button>
+          </div>
         ) : (
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-xl">
             <DemoCover gradient={dispatch.gradient} alt="" sizes="100vw" />

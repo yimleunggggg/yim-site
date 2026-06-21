@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f7f5f0;
-  --color-paper-dark: #1c1b19;
-  --color-ink: #1a1a18;
-  --color-ink-muted: #5c5a54;
-  --color-forest: #2d4a3e;
-  --color-terracotta: #b85c38;
-  --color-border: #e8e4dc;
-  --color-callout: #f3f0ea;
-  --color-card: #fffcf7;
-  --color-accent-warm: #c4956a;
+  --color-paper: #f4f5f7;
+  --color-paper-dark: #141419;
+  --color-ink: #121316;
+  --color-ink-muted: #5c5f66;
+  --color-forest: #2454a9;
+  --color-terracotta: #c44b28;
+  --color-border: #dfe2e8;
+  --color-callout: #eef1f6;
+  --color-card: #ffffff;
+  --color-accent-warm: #5b6b8c;
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
   --font-sans: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", sans-serif;
   --font-mono: "IBM Plex Mono", "Menlo", monospace;
@@ -38,10 +38,7 @@
     font-family: var(--font-sans);
     -webkit-tap-highlight-color: transparent;
     background-color: var(--color-paper);
-    background-image:
-      radial-gradient(ellipse 90% 55% at 8% -8%, rgba(45, 74, 62, 0.07), transparent 58%),
-      radial-gradient(ellipse 70% 45% at 92% 2%, rgba(184, 92, 56, 0.06), transparent 52%),
-      linear-gradient(180deg, #faf9f5 0%, var(--color-paper) 42%, #f0ebe3 100%);
+    background-image: linear-gradient(180deg, #fafbfc 0%, var(--color-paper) 48%, #eceef2 100%);
     background-attachment: fixed;
   }
 
@@ -80,7 +77,7 @@
   }
 
   ::selection {
-    background: rgba(45, 74, 62, 0.15);
+    background: rgba(36, 84, 169, 0.14);
   }
 }
 
@@ -95,8 +92,8 @@
   .site-shell {
     width: 100%;
     max-width: none;
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
   }
 
   @media (min-width: 640px) {
@@ -135,7 +132,7 @@
     background: linear-gradient(
       180deg,
       transparent 0%,
-      color-mix(in srgb, var(--color-forest) 4%, transparent) 50%,
+      color-mix(in srgb, var(--color-forest) 3%, transparent) 50%,
       transparent 100%
     );
   }
@@ -273,9 +270,19 @@
   width: 100%;
   max-width: 100vw;
   margin-bottom: 1.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
   overflow: hidden;
+}
+
+.life-marquee-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: max(1.25rem, env(safe-area-inset-left));
+  padding-inline: max(1.25rem, env(safe-area-inset-left))
+    max(1.25rem, env(safe-area-inset-right));
 }
 
 .life-marquee-section--flat {
@@ -289,30 +296,40 @@
   line-height: 0;
 }
 
-/* 统一高度，宽度随横竖比例自适应，不裁切 */
 .life-marquee-img {
   display: block;
-  height: 6.5rem;
+  height: 9.5rem;
   width: auto;
   max-width: none;
+  border-radius: 2px;
 }
 
 @media (min-width: 640px) {
   .life-marquee-img {
-    height: 8rem;
+    height: 10.5rem;
   }
 }
 
 @media (min-width: 768px) {
   .life-marquee-img {
-    height: 9.5rem;
+    height: 11.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .life-marquee-img {
-    height: 11rem;
+    height: 12.5rem;
   }
+}
+
+.life-marquee-track--manual {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  width: max-content;
+  gap: 0.625rem;
+  animation: none;
+  padding-inline: 0;
 }
 
 .life-marquee-mask {
@@ -1147,7 +1164,12 @@
   border: none;
   padding: 0;
   background: var(--color-callout);
-  cursor: zoom-in;
+  cursor: default;
+}
+
+.demo-frames-gallery-item--static {
+  cursor: default;
+  user-select: none;
 }
 
 .demo-frames-gallery-figure {
@@ -1511,4 +1533,167 @@
     grid-column: 1 / -1;
     grid-row: 3;
   }
+}
+
+/* Life Archive — 叙事列表（非大图网格） */
+.life-dispatch-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.life-dispatch-row {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  background: none;
+  border-inline: none;
+  border-top: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.life-dispatch-row:hover {
+  background: color-mix(in srgb, var(--color-callout) 55%, transparent);
+}
+
+.life-dispatch-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--color-callout);
+}
+
+.life-dispatch-thumb--placeholder {
+  border: 1px solid var(--color-border);
+}
+
+.life-dispatch-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.life-dispatch-meta {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-muted);
+}
+
+.life-dispatch-badge {
+  margin-left: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  padding: 0.05rem 0.4rem;
+  font-size: 0.5625rem;
+}
+
+.life-dispatch-title {
+  margin-top: 0.25rem;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+.life-dispatch-oneline {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.life-dispatch-arrow {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--color-forest);
+  opacity: 0.55;
+}
+
+.life-dispatch-modal-media {
+  max-height: 12rem;
+  overflow: hidden;
+  border-radius: 0.75rem 0.75rem 0 0;
+  background: var(--color-callout);
+}
+
+.life-dispatch-modal-media img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+}
+
+.life-race-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 640px) {
+  .life-race-card {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.life-race-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.life-race-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.life-race-thumb {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-callout);
+}
+
+.life-camp-card {
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--color-card);
+}
+
+.life-camp-thumb {
+  position: relative;
+  max-height: 9rem;
+  overflow: hidden;
+  background: var(--color-callout);
+}
+
+.life-camp-thumb img {
+  width: 100%;
+  height: 9rem;
+  object-fit: cover;
+}
+
+.life-camp-copy {
+  padding: 1rem;
 }

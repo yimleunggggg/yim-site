@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesUi } from "@/lib/demo/demo-frames-ui";
@@ -23,8 +22,6 @@ type FrameDetail = {
 export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
   const { locale } = useLocale();
   const zh = locale === "zh";
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const activeSrc = activeIndex !== null ? frame.imagesFull[activeIndex] : null;
 
   const hasIntro = (zh ? frame.intro.zh : frame.intro.en ?? frame.intro.zh).trim().length > 0;
 
@@ -56,11 +53,7 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
             const cap = frame.imageCaptions[i];
             return (
               <figure key={src} className="demo-frames-gallery-figure">
-                <button
-                  type="button"
-                  onClick={() => setActiveIndex(i)}
-                  className="demo-frames-gallery-item"
-                >
+                <div className="demo-frames-gallery-item demo-frames-gallery-item--static">
                   <Image
                     src={src}
                     alt={
@@ -68,15 +61,16 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
                         ? `${cap.date} · ${pickText(cap.place, zh)}`
                         : `${pickText(frame.title, zh)} ${i + 1}`
                     }
-                    width={1600}
-                    height={1200}
+                    width={1200}
+                    height={900}
                     sizes="(max-width: 640px) 100vw, 680px"
-                    className="h-auto w-full"
+                    className="h-auto w-full select-none"
                     loading={i < 2 ? "eager" : "lazy"}
                     unoptimized
                     draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
                   />
-                </button>
+                </div>
                 {cap?.date && cap.place ? (
                   <figcaption className="demo-frames-gallery-caption">
                     {cap.date} · {pickText(cap.place, zh)}
@@ -87,35 +81,6 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
           })}
         </div>
       </div>
-
-      {activeSrc ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/88 p-4"
-          onClick={() => setActiveIndex(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <Image
-            src={activeSrc}
-            alt=""
-            width={2000}
-            height={2000}
-            sizes="94vw"
-            className="max-h-[92vh] w-auto max-w-[94vw] object-contain"
-            draggable={false}
-            priority
-            unoptimized
-          />
-          <button
-            type="button"
-            onClick={() => setActiveIndex(null)}
-            className="absolute right-5 top-5 tap-target rounded-full bg-white/15 px-3 text-white backdrop-blur-sm"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-        </div>
-      ) : null}
     </article>
   );
 }

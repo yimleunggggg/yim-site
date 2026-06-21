@@ -1,19 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
+import Link from "next/link";
 import { useLocale } from "@/components";
 import {
   demoHero,
   demoNow,
   demoNowPreviewCount,
   demoExplore,
-  demoMarqueePhotos,
   demoHomeUi,
   pickText,
   type DemoExploreCard,
 } from "@/lib/demo/demo-data";
+import { DemoMarquee } from "./DemoMarquee";
 
 export function DemoHome() {
   const { locale } = useLocale();
@@ -57,27 +56,7 @@ export function DemoHome() {
         </div>
       </section>
 
-      <section aria-label="Life photos" className="life-marquee-section life-marquee-section--flat">
-        <div className="life-marquee-mask">
-          <div className="life-marquee-track">
-            {[...demoMarqueePhotos, ...demoMarqueePhotos].map((p, i) => (
-              <figure key={`${p.src}-${i}`} className="life-marquee-item shrink-0" aria-hidden>
-                <Image
-                  src={p.src}
-                  alt=""
-                  width={p.width}
-                  height={p.height}
-                  sizes="(max-width: 640px) 120px, 200px"
-                  className="life-marquee-img"
-                  priority={i < 4}
-                  unoptimized
-                  draggable={false}
-                />
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
+      <DemoMarquee />
 
       <section className="site-shell demo-explore-section pb-20 pt-10 sm:pt-14 sm:pb-24">
         <p className="demo-eyebrow">{pickText(demoHomeUi.exploreEyebrow, zh)}</p>

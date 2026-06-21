@@ -7,7 +7,8 @@
  * 以后加新主题：新增一段素材跑 scripts/import-frames.sh，
  * 再在 FRAMES_META 里补一条即可，不用动页面代码。
  *
- * 文案统一 { zh, en? }，en 缺省回退中文（见 demo-data pickText）。
+ * 地点 location 统一格式：国家 · 城市/区域（中国可加省：中国 · 广东 · 潮州）
+ * 持续更新类：多地 · 持续更新 / 多国 · 路途
  */
 import fs from "fs";
 import path from "path";
@@ -50,7 +51,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 1,
     title: { zh: "海上游牧民族 巴瑶族", en: "The Bajau · Sea Nomads" },
     emoji: "🌊",
-    location: { zh: "马来西亚，仙本那", en: "Semporna, Malaysia" },
+    location: { zh: "马来西亚 · 仙本那", en: "Malaysia · Semporna" },
     tags: [
       { zh: "海洋游牧", en: "Sea nomads" },
       { zh: "人文纪实", en: "Documentary" },
@@ -62,7 +63,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 2,
     title: { zh: "川西藏民生活画卷", en: "Life in Tibetan Sichuan" },
     emoji: "🧑‍🤝‍🧑",
-    location: { zh: "中国，四川，川西", en: "West Sichuan, China" },
+    location: { zh: "中国 · 川西", en: "China · West Sichuan" },
     tags: [
       { zh: "人文", en: "People" },
       { zh: "纪实", en: "Documentary" },
@@ -75,7 +76,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 3,
     title: { zh: "藏地青绿与冷岩", en: "Green Valleys & Cold Rock" },
     emoji: "⛰️",
-    location: { zh: "中国，四川，川西", en: "West Sichuan, China" },
+    location: { zh: "中国 · 川西", en: "China · West Sichuan" },
     tags: [
       { zh: "风光", en: "Landscape" },
       { zh: "高原", en: "Plateau" },
@@ -88,7 +89,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 4,
     title: { zh: "前挡风玻璃外的电影帧（持续更新）", en: "Frames Through the Windshield · Ongoing" },
     emoji: "🚗",
-    location: { zh: "在路上", en: "On the road" },
+    location: { zh: "多国 · 路途", en: "Multi · On the road" },
     tags: [
       { zh: "车窗", en: "Car window" },
       { zh: "路途", en: "Journey" },
@@ -101,7 +102,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 5,
     title: { zh: "古城灯火 市井百态", en: "Old Town Lights & Street Life" },
     emoji: "🏯",
-    location: { zh: "中国，广东，潮州", en: "Chaozhou, Guangdong" },
+    location: { zh: "中国 · 广东 · 潮州", en: "China · Chaozhou, Guangdong" },
     tags: [
       { zh: "古城", en: "Old town" },
       { zh: "人文", en: "People" },
@@ -114,7 +115,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 6,
     title: { zh: "生活片段（持续更新）", en: "Life Fragments · Ongoing" },
     emoji: "📷",
-    location: { zh: "各地，持续更新", en: "Everywhere · Ongoing" },
+    location: { zh: "多地 · 日常", en: "Multi · Daily life" },
     tags: [
       { zh: "日常", en: "Daily" },
       { zh: "街拍", en: "Street" },
@@ -127,7 +128,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 7,
     title: { zh: "永远喜欢日落", en: "Always the Sunset" },
     emoji: "🌅",
-    location: { zh: "各地，持续更新", en: "Everywhere · Ongoing" },
+    location: { zh: "多地 · 日落", en: "Multi · Sunsets" },
     tags: [
       { zh: "日落", en: "Sunset" },
       { zh: "天空", en: "Sky" },
@@ -139,7 +140,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 8,
     title: { zh: "东海之滨", en: "By the East Sea" },
     emoji: "🌊",
-    location: { zh: "韩国，江陵", en: "Gangneung, Korea" },
+    location: { zh: "韩国 · 江陵", en: "Korea · Gangneung" },
     tags: [
       { zh: "海岸", en: "Coast" },
       { zh: "小城", en: "Small town" },
@@ -152,7 +153,7 @@ export const FRAMES_META: FrameMeta[] = [
     order: 9,
     title: { zh: "在印度洋畔做志愿者", en: "Volunteering by the Indian Ocean" },
     emoji: "🤝",
-    location: { zh: "斯里兰卡", en: "Sri Lanka" },
+    location: { zh: "斯里兰卡 · 南部", en: "Sri Lanka · South" },
     tags: [
       { zh: "义工", en: "Volunteer" },
       { zh: "人文", en: "People" },
