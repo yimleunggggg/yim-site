@@ -9,7 +9,7 @@ import {
 } from "@/lib/demo/demo-life-sport";
 import { useLocale } from "@/components";
 import { DemoCover, DemoSectionHeading } from "./DemoPrimitives";
-import { LifeSportList } from "./LifeSportList";
+import { LifeSportGallery } from "./LifeSportGallery";
 
 export function DemoLife() {
   const { locale } = useLocale();
@@ -86,13 +86,15 @@ export function DemoLife() {
       </section>
 
       <section className="section-band" id="sport">
-        <div className="site-shell life-sport-shell py-12 sm:py-16">
-          <DemoSectionHeading
-            eyebrow="MOVEMENT"
-            title={zh ? "运动探索" : "Movement"}
-            subtitle={pickText(demoLifeSportIntro, zh)}
-          />
-          <LifeSportList entries={demoLifeSport} zh={zh} />
+        <div className="site-shell py-12 sm:py-16">
+          <div className="life-section">
+            <DemoSectionHeading
+              eyebrow="MOVEMENT"
+              title={zh ? "运动探索" : "Movement"}
+              subtitle={pickText(demoLifeSportIntro, zh)}
+            />
+          </div>
+          <LifeSportGallery entries={demoLifeSport} zh={zh} />
         </div>
       </section>
     </div>

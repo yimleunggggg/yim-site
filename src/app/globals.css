@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f7f4ef;
+  --color-paper: #f4f0e8;
   --color-paper-dark: #141312;
-  --color-ink: #1a1814;
-  --color-ink-muted: #6a6560;
-  --color-forest: #3a3835;
-  --color-terracotta: #a84832;
-  --color-border: #e4dfd6;
-  --color-callout: #f0ebe3;
-  --color-card: #fffcf8;
-  --color-accent-warm: #8a7f72;
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
-  --font-sans: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", sans-serif;
-  --font-mono: "IBM Plex Mono", "Menlo", monospace;
+  --color-ink: #181714;
+  --color-ink-muted: #6f6a61;
+  --color-forest: #385348;
+  --color-terracotta: #9b543f;
+  --color-border: #ded6c8;
+  --color-callout: #ebe4d8;
+  --color-card: #fbf8f1;
+  --color-accent-warm: #7b7468;
+  --font-serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", Georgia, serif;
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", "SF Mono", "Cascadia Code", "Menlo", monospace;
   --animate-fade-in: fade-in 0.6s ease-out both;
   --animate-slide-up: slide-up 0.5s ease-out both;
 }
@@ -37,9 +37,14 @@
   body {
     @apply text-[var(--color-ink)] antialiased;
     font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
     -webkit-tap-highlight-color: transparent;
     background-color: var(--color-paper);
-    background-image: linear-gradient(180deg, #faf8f5 0%, var(--color-paper) 52%, #ede8e0 100%);
+    background-image:
+      linear-gradient(90deg, rgba(24, 23, 20, 0.025) 1px, transparent 1px),
+      linear-gradient(180deg, #fbf8f1 0%, var(--color-paper) 48%, #ebe5d8 100%);
+    background-size: 32px 32px, auto;
     background-attachment: fixed;
     overflow-x: clip;
   }
@@ -76,6 +81,8 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
   }
 
   ::selection {
@@ -151,8 +158,9 @@
 
   .prose-playbook {
     max-width: 42rem;
-    line-height: 1.85;
-    color: var(--color-ink-muted);
+    font-size: 1rem;
+    line-height: 1.95;
+    color: color-mix(in srgb, var(--color-ink) 78%, var(--color-ink-muted));
   }
 
   .prose-playbook > *:first-child {
@@ -160,7 +168,7 @@
   }
 
   .prose-playbook h2 {
-    @apply mt-14 mb-4 border-b border-[var(--color-border)] pb-2 text-2xl text-[var(--color-ink)];
+    @apply mt-16 mb-5 border-b border-[var(--color-border)] pb-2 text-2xl text-[var(--color-ink)];
     font-weight: 500;
   }
 
@@ -175,7 +183,7 @@
   }
 
   .prose-playbook p {
-    @apply mb-4;
+    @apply mb-5;
   }
 
   .prose-playbook ul {
@@ -200,7 +208,7 @@
   }
 
   .prose-playbook strong {
-    font-weight: 400;
+    font-weight: 500;
     color: var(--color-ink);
   }
 
@@ -217,7 +225,31 @@
   }
 
   .prose-playbook blockquote {
-    @apply my-6 border-l-4 border-[var(--color-forest)] bg-[var(--color-callout)] py-2 pl-4 pr-3 italic;
+    @apply my-8 border-l border-[var(--color-forest)] bg-transparent py-1 pl-5 pr-3 italic;
+    color: var(--color-ink);
+  }
+
+  .mdx-figure {
+    margin: 2.25rem auto;
+  }
+
+  .mdx-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+    border-radius: 3px;
+    background: var(--color-callout);
+  }
+
+  .mdx-caption {
+    margin-top: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.55;
+    letter-spacing: 0.03em;
+    text-align: center;
+    color: var(--color-ink-muted);
   }
 
   .prose-playbook hr {
@@ -1741,7 +1773,8 @@
   max-width: none;
 }
 
-#sport .site-shell {
+.movement-wall-wrap {
+  margin-top: 2rem;
   max-width: min(56rem, 100%);
 }
 
@@ -1770,10 +1803,6 @@
 }
 
 /* Movement — race wall gallery (not article cards) */
-.movement-wall-wrap {
-  margin-top: 2rem;
-}
-
 .movement-wall-legend {
   margin-bottom: 0.75rem;
   color: var(--color-ink-muted);
@@ -2072,10 +2101,6 @@
   width: 100%;
   height: 14rem;
   object-fit: cover;
-}
-
-.life-sport-shell {
-  max-width: min(56rem, 100%);
 }
 
 /* Life journal / sport article pages */
