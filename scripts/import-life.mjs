@@ -13,7 +13,7 @@ const JOURNAL_OUT = path.join(ROOT, "public/life/journal");
 const SPORT_OUT = path.join(ROOT, "public/life/sport");
 const MAX_W = 1400;
 const THUMB_W = 480;
-const MAX_IMAGES = 8;
+const MANIFEST_OUT = path.join(ROOT, "src/lib/demo/life-journal-images.json");
 
 const JOURNAL_FOLDERS = {
   "2025.1 pa pae meditation retreat": "pa-pae",
@@ -56,7 +56,7 @@ function listImages(dir) {
     });
 }
 
-function importJournalFolder(folderName, slug) {
+function importJournalFolder(folderName, slug, manifest) {
   const srcDir = path.join(SRC, folderName);
   const files = listImages(srcDir);
   if (!files.length) {
@@ -67,13 +67,20 @@ function importJournalFolder(folderName, slug) {
   if (fs.existsSync(outDir)) fs.rmSync(outDir, { recursive: true });
   ensureDir(outDir);
 
-  const picked = files.slice(0, MAX_IMAGES);
-  toJpeg(picked[0], path.join(outDir, "cover.jpg"), THUMB_W);
-  toJpeg(picked[0], path.join(outDir, "01.jpg"), MAX_W);
-  picked.slice(1).forEach((f, i) => {
-    toJpeg(f, path.join(outDir, `${String(i + 2).padStart(2, "0")}.jpg`), MAX_W);
+  files.forEach((f, i) => {
+    const name = i === 0 ? "01.jpg" : `${String(i + 1).padStart(2, "0")}.jpg`;
+    toJpeg(f, path.join(outDir, name), MAX_W);
   });
-  console.log(`  journal/${slug}: ${picked.length} images`);
+  toJpeg(files[0], path.join(outDir, "cover.jpg"), THUMB_W);
+
+  const images = files.map((_, i) =>
+    `/life/journal/${slug}/${String(i + 1).padStart(2, "0")}.jpg`,
+  );
+  manifest[slug] = {
+    cover: `/life/journal/${slug}/cover.jpg`,
+    images,
+  };
+  console.log(`  journal/${slug}: ${files.length} images`);
 }
 
 function importSportFile(filePath) {
@@ -96,19 +103,28 @@ function importSportFile(filePath) {
 
 console.log("Importing life journal images…");
 ensureDir(JOURNAL_OUT);
+const manifest = {};
 for (const [folder, slug] of Object.entries(JOURNAL_FOLDERS)) {
-  importJournalFolder(folder, slug);
+  importJournalFolder(folder, slug, manifest);
 }
 
 // turning-31 长图
 const t31src = path.join(ROOT, "public/writing/turning-31/01.png");
 if (fs.existsSync(t31src)) {
-  const outDir = path.join(JOURNAL_OUT, "turning-31");
+  const slug = "turning-31";
+  const outDir = path.join(JOURNAL_OUT, slug);
   ensureDir(outDir);
   toJpeg(t31src, path.join(outDir, "cover.jpg"), THUMB_W);
   toJpeg(t31src, path.join(outDir, "01.jpg"), MAX_W);
+  manifest[slug] = {
+    cover: `/life/journal/${slug}/cover.jpg`,
+    images: [`/life/journal/${slug}/01.jpg`],
+  };
   console.log("  journal/turning-31: from writing image");
 }
+
+fs.writeFileSync(MANIFEST_OUT, JSON.stringify(manifest, null, 2) + "\n", "utf8");
+console.log(`Wrote ${MANIFEST_OUT}`);
 
 console.log("Importing sport covers…");
 ensureDir(SPORT_OUT);

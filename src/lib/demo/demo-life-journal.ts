@@ -1,5 +1,6 @@
 import type { LText } from "./demo-data";
 import journalBodies from "./life-journal-bodies.json";
+import journalImages from "./life-journal-images.json";
 
 export type LifeJournalEntry = {
   id: string;
@@ -16,10 +17,10 @@ export type LifeJournalEntry = {
   imageFirst?: boolean;
 };
 
-function imgs(slug: string, n: number): string[] {
-  return Array.from({ length: n }, (_, i) =>
-    `/life/journal/${slug}/${String(i + 1).padStart(2, "0")}.jpg`,
-  );
+function journalAssets(slug: string): { cover: string; images: string[] } {
+  const a = journalImages[slug as keyof typeof journalImages];
+  if (!a) return { cover: "", images: [] };
+  return a;
 }
 
 function bodyFromFile(id: string): LText[] {
@@ -31,7 +32,13 @@ function bodyFromFile(id: string): LText[] {
 function withImportedBodies(entries: LifeJournalEntry[]): LifeJournalEntry[] {
   return entries.map((entry) => {
     const imported = bodyFromFile(entry.id);
-    return imported.length ? { ...entry, body: imported } : entry;
+    const assets = journalAssets(entry.id);
+    return {
+      ...entry,
+      cover: assets.cover || entry.cover,
+      images: assets.images.length ? assets.images : entry.images,
+      body: imported.length ? imported : entry.body,
+    };
   });
 }
 
@@ -43,8 +50,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "鹿儿岛 · 屋久岛" },
     tags: ["旅行", "徒步", "露营"],
     oneLine: { zh: "杉林、苔原、雨中的岛——把步道当成另一种阅读方式。" },
-    cover: "/life/journal/yakushima/cover.jpg",
-    images: imgs("yakushima", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -54,8 +61,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "泰国" },
     tags: ["音乐节", "旅行"],
     oneLine: { zh: "音乐、艺术、可持续——在热带把几天过成一种节奏。" },
-    cover: "/life/journal/wonderfruit/cover.jpg",
-    images: imgs("wonderfruit", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -64,8 +71,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     title: { zh: "写在 31 岁这一天" },
     tags: ["随笔"],
     oneLine: { zh: "2025.9.22，写在 31 岁这一天。" },
-    cover: "/life/journal/turning-31/cover.jpg",
-    images: ["/life/journal/turning-31/01.jpg"],
+    cover: "",
+    images: [],
     body: [],
     imageFirst: true,
   },
@@ -76,8 +83,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "甘肃" },
     tags: ["精酿", "旅行"],
     oneLine: { zh: "从田间到杯里——看一粒酒花怎么被认真对待。" },
-    cover: "/life/journal/gansu-hops/cover.jpg",
-    images: imgs("gansu-hops", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -87,8 +94,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "泰国" },
     tags: ["禅修", "旅行"],
     oneLine: { zh: "一周不说话、只走路和吃饭——把日子缩到最小单位。" },
-    cover: "/life/journal/pa-pae/cover.jpg",
-    images: imgs("pa-pae", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -99,8 +106,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     oneLine: {
       zh: "好像来到了一个很大的「人生节点」，其实什么大事儿都没完成。",
     },
-    cover: "/life/journal/keep-growing/cover.jpg",
-    images: imgs("keep-growing", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -110,8 +117,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "广东惠州" },
     tags: ["冲浪", "义工", "随笔"],
     oneLine: { zh: "久违的暑假在海边度过了整个7月，生活满是海水味。" },
-    cover: "/life/journal/surf-volunteer/cover.jpg",
-    images: imgs("surf-volunteer", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -121,8 +128,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "沙巴 · 亚庇" },
     tags: ["潜水", "旅行"],
     oneLine: { zh: "第一次在水下呼吸，世界忽然安静下来。" },
-    cover: "/life/journal/sabah-ow/cover.jpg",
-    images: imgs("sabah-ow", 8),
+    cover: "",
+    images: [],
     body: [],
   },
   {
@@ -154,4 +161,3 @@ export function getLifeJournalSlugs(): string[] {
 export function getLifeJournalBySlug(slug: string): LifeJournalEntry | undefined {
   return demoLifeJournal.find((e) => e.id === slug);
 }
-

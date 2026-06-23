@@ -549,24 +549,8 @@
   margin-inline: auto;
 }
 
-.demo-hero-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  align-items: stretch;
-}
-
-@media (min-width: 768px) {
-  .demo-hero-layout {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 2.5rem 3.25rem;
-  }
-}
-
 .demo-hero-copy {
-  flex: 0 1 auto;
-  max-width: 26rem;
+  max-width: 42rem;
   min-width: 0;
 }
 
@@ -828,6 +812,18 @@
 
 .demo-explore-section {
   border-top: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+}
+
+.demo-explore-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .demo-explore-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .demo-explore-card {
