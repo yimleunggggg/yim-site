@@ -84,3 +84,4 @@ for f in "$MARQ_SRC"/*; do
   i=$((i+1))
 done
 echo "marquee: $((i-1)) photos"
+node "$ROOT/scripts/generate-frame-thumbs.mjs"

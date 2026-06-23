@@ -1,4 +1,5 @@
 import type { LayoutBlock } from "@/lib/demo/life-article-layout";
+import { LazyImage } from "./LazyImage";
 
 export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
   if (!blocks.length) return null;
@@ -27,12 +28,11 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
                   : "life-figure life-figure--wide"
               }
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <LazyImage
                 src={block.src}
                 alt=""
-                loading="lazy"
-                decoding="async"
+                priority={idx < 2}
+                className="h-auto w-full"
               />
             </figure>
           );
@@ -40,8 +40,7 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
         return (
           <figure key={idx} className="life-figure-grid" aria-label="">
             {block.sources.map((src) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={src} src={src} alt="" loading="lazy" decoding="async" />
+              <LazyImage key={src} src={src} alt="" className="h-auto w-full" />
             ))}
           </figure>
         );

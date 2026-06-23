@@ -14,14 +14,14 @@ export function LifeSportList({
 }) {
   return (
     <ul className="life-dispatch-feed mt-7">
-      {entries.map((entry) => {
+      {entries.map((entry, i) => {
         const title = pickText(entry.title, zh);
         const hasNotes = Boolean(entry.body);
         const row = (
           <>
             {entry.cover ? (
               <div className="life-dispatch-thumb">
-                <DemoCover src={entry.cover} alt="" />
+                <DemoCover src={entry.cover} alt="" priority={i < 2} />
               </div>
             ) : (
               <div className="life-dispatch-thumb life-dispatch-thumb--placeholder" />

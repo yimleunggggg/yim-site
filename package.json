@@ -10,6 +10,7 @@
     "export-feishu": "node scripts/export-feishu.mjs",
     "check:assets": "node scripts/check-public-assets.mjs",
     "import:life": "node scripts/import-life.mjs",
+    "import:frame-thumbs": "node scripts/generate-frame-thumbs.mjs",
     "deploy:prod": "node scripts/check-public-assets.mjs && npx vercel deploy --prod"
   },
   "dependencies": {

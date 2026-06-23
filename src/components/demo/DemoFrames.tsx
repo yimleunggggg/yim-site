@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesIntro, framesUi } from "@/lib/demo/demo-frames-ui";
+import { LazyImage } from "./LazyImage";
 
 type FrameCard = {
   slug: string;
@@ -43,15 +44,12 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
             >
               <div className="demo-frames-cover">
                 {f.cover ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <LazyImage
                     src={f.cover}
                     alt={pickText(f.title, zh)}
                     width={f.coverWidth}
                     height={f.coverHeight}
-                    loading={i < 4 ? "eager" : "lazy"}
-                    decoding="async"
-                    fetchPriority={i < 2 ? "high" : "auto"}
+                    priority={i < 3}
                     className="demo-frames-cover-img"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

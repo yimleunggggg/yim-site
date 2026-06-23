@@ -5,6 +5,7 @@ import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesUi } from "@/lib/demo/demo-frames-ui";
 import type { FrameImageCaption } from "@/lib/demo/demo-frames-ui";
+import { LazyImage } from "./LazyImage";
 
 type FrameDetail = {
   slug: string;
@@ -53,16 +54,14 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
             return (
               <figure key={src} className="demo-frames-gallery-figure">
                 <div className="demo-frames-gallery-item demo-frames-gallery-item--static">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <LazyImage
                     src={src}
                     alt={
                       cap
                         ? `${cap.date} · ${pickText(cap.place, zh)}`
                         : `${pickText(frame.title, zh)} ${i + 1}`
                     }
-                    loading={i < 2 ? "eager" : "lazy"}
-                    decoding="async"
+                    priority={i < 1}
                     className="h-auto w-full select-none"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

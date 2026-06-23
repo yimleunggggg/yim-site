@@ -45,7 +45,7 @@ export function DemoLife() {
               >
                 {entry.cover ? (
                   <div className="life-dispatch-thumb">
-                    <DemoCover src={entry.cover} alt="" />
+                    <DemoCover src={entry.cover} alt="" priority={entry.id === demoLifeJournal[0]?.id} />
                   </div>
                 ) : (
                   <div className="life-dispatch-thumb life-dispatch-thumb--placeholder" />

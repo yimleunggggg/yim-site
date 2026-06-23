@@ -54,8 +54,9 @@ export function DemoCover({
       <img
         src={src}
         alt={alt}
-        loading={priority ? "eager" : "eager"}
+        loading={priority ? "eager" : "lazy"}
         decoding="async"
+        fetchPriority={priority ? "high" : "low"}
         draggable={false}
         className={`h-full w-full object-cover ${className}`}
       />

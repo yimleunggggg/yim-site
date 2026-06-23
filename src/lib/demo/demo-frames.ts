@@ -213,7 +213,11 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
   const images = files
     .filter((f) => /^\d+\.jpg$/.test(f))
     .sort()
-    .map((f) => `/media/frames/${slug}/${f}`);
+    .map((f) => {
+      const thumb = f.replace(/\.jpg$/, "-thumb.jpg");
+      const use = files.includes(thumb) ? thumb : f;
+      return `/media/frames/${slug}/${use}`;
+    });
   const imagesFull = files
     .filter((f) => /^\d+-full\.jpg$/.test(f))
     .sort()

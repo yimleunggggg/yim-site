@@ -15,7 +15,7 @@ export default function FramesPage() {
     location: f.location,
     tags: f.tags,
     intro: f.intro,
-    cover: f.cover,
+    cover: f.coverThumb || f.cover,
     coverWidth: f.coverWidth,
     coverHeight: f.coverHeight,
     coverOrientation: f.coverOrientation,
