@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesUi } from "@/lib/demo/demo-frames-ui";
@@ -54,19 +53,17 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
             return (
               <figure key={src} className="demo-frames-gallery-figure">
                 <div className="demo-frames-gallery-item demo-frames-gallery-item--static">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={src}
                     alt={
                       cap
                         ? `${cap.date} · ${pickText(cap.place, zh)}`
                         : `${pickText(frame.title, zh)} ${i + 1}`
                     }
-                    width={1200}
-                    height={900}
-                    sizes="(max-width: 640px) 100vw, 680px"
-                    className="h-auto w-full select-none"
                     loading={i < 2 ? "eager" : "lazy"}
-                    unoptimized
+                    decoding="async"
+                    className="h-auto w-full select-none"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
                   />

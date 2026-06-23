@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesIntro, framesUi } from "@/lib/demo/demo-frames-ui";
@@ -44,15 +43,16 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
             >
               <div className="demo-frames-cover">
                 {f.cover ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={f.cover}
                     alt={pickText(f.title, zh)}
                     width={f.coverWidth}
                     height={f.coverHeight}
-                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 360px"
+                    loading={i < 4 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={i < 2 ? "high" : "auto"}
                     className="demo-frames-cover-img"
-                    loading={i < 3 ? "eager" : "lazy"}
-                    unoptimized
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
                   />
