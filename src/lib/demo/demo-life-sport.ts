@@ -195,3 +195,12 @@ export const demoLifeSport: LifeSportEntry[] = [
     cover: "/life/sport/2023-7-开始学习冲浪-广东惠州/cover.jpg",
   },
 ];
+
+export function getLifeSportIds(): string[] {
+  return demoLifeSport.map((e) => e.id);
+}
+
+export function getLifeSportById(id: string): LifeSportEntry | undefined {
+  return demoLifeSport.find((e) => e.id === id);
+}
+

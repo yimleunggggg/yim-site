@@ -150,3 +150,12 @@ export const demoLifeJournal: LifeJournalEntry[] = [
     ],
   },
 ];
+
+export function getLifeJournalSlugs(): string[] {
+  return demoLifeJournal.map((e) => e.id);
+}
+
+export function getLifeJournalBySlug(slug: string): LifeJournalEntry | undefined {
+  return demoLifeJournal.find((e) => e.id === slug);
+}
+
