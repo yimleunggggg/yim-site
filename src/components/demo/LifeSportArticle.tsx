@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { pickText } from "@/lib/demo/demo-data";
 import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
-import { DemoCover } from "./DemoPrimitives";
+import {
+  buildEditorialLayout,
+  splitArticleBody,
+} from "@/lib/demo/life-article-layout";
+import { LifeArticleBody } from "./LifeArticleBody";
 
 export function LifeSportArticle({
   entry,
@@ -12,7 +16,10 @@ export function LifeSportArticle({
 }) {
   const title = pickText(entry.title, zh);
   const location = entry.location ? pickText(entry.location, zh) : null;
-  const displaySrc = entry.cover?.replace("cover.jpg", "display.jpg");
+  const bodyRaw = entry.body ? pickText(entry.body, zh) : "";
+  const paragraphs = splitArticleBody(bodyRaw);
+  const images = entry.images ?? [];
+  const blocks = buildEditorialLayout(paragraphs, images);
 
   return (
     <article className="site-shell py-10 sm:py-14">
@@ -45,21 +52,7 @@ export function LifeSportArticle({
           </div>
         </header>
 
-        {displaySrc ? (
-          <div className="life-article-hero mt-8 overflow-hidden rounded-lg bg-[var(--color-callout)]">
-            <DemoCover src={displaySrc} alt="" priority />
-          </div>
-        ) : null}
-
-        {entry.body ? (
-          <div className="prose-playbook demo-article mt-8 max-w-none">
-            {pickText(entry.body, zh)
-              .split("\n\n")
-              .map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-          </div>
-        ) : null}
+        <LifeArticleBody blocks={blocks} />
       </div>
     </article>
   );

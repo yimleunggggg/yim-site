@@ -9,7 +9,7 @@ import {
 } from "@/lib/demo/demo-life-sport";
 import { useLocale } from "@/components";
 import { DemoCover, DemoSectionHeading } from "./DemoPrimitives";
-import { LifeSportGallery } from "./LifeSportGallery";
+import { LifeSportList } from "./LifeSportList";
 
 export function DemoLife() {
   const { locale } = useLocale();
@@ -92,7 +92,7 @@ export function DemoLife() {
             title={zh ? "运动探索" : "Movement"}
             subtitle={pickText(demoLifeSportIntro, zh)}
           />
-          <LifeSportGallery entries={demoLifeSport} zh={zh} />
+          <LifeSportList entries={demoLifeSport} zh={zh} />
         </div>
       </section>
     </div>
