@@ -19,6 +19,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function LifeSportPage({ params }: Props) {
   const { id } = await params;
   const entry = getLifeSportById(id);
-  if (!entry) notFound();
+  if (!entry?.body) notFound();
   return <LifeSportArticle entry={entry} />;
 }

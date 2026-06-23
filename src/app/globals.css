@@ -1730,6 +1730,10 @@
   max-width: none;
 }
 
+#sport .site-shell {
+  max-width: min(56rem, 100%);
+}
+
 .life-tag-row {
   display: flex;
   flex-wrap: wrap;
@@ -1754,86 +1758,209 @@
   padding: 0.08rem 0.35rem;
 }
 
-.life-sport-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+/* Movement — race wall gallery (not article cards) */
+.movement-wall-wrap {
+  margin-top: 2rem;
 }
 
-@media (min-width: 640px) {
-  .life-sport-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+.movement-wall-legend {
+  margin-bottom: 0.75rem;
+  color: var(--color-ink-muted);
+}
+
+.movement-wall-hint {
+  margin-top: 0.85rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-muted);
+  opacity: 0.85;
+}
+
+.movement-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+@media (min-width: 480px) {
+  .movement-wall {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .movement-wall {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.55rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .life-sport-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .movement-wall {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 
-.life-sport-card {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+.movement-tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
-  background: var(--color-card);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  color: inherit;
-  text-decoration: none;
+  border-radius: 3px;
+  background: var(--color-callout);
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  margin: 0;
 }
 
-.life-sport-link:focus {
+.movement-tile--static {
+  cursor: default;
+}
+
+.movement-tile--note {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.movement-tile--note:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-terracotta) 35%, var(--color-border));
+  box-shadow: 0 8px 24px rgba(26, 24, 20, 0.12);
+}
+
+.movement-tile--note:focus {
   outline: none;
 }
 
-.life-sport-link:focus-visible {
+.movement-tile--note:focus-visible {
   outline: 2px solid var(--color-terracotta);
   outline-offset: 2px;
 }
 
-.life-sport-card--static {
-  cursor: default;
-  opacity: 0.85;
-}
-
-.life-sport-card:hover {
-  border-color: color-mix(in srgb, var(--color-ink-muted) 40%, var(--color-border));
-  box-shadow: 0 2px 12px rgba(26, 24, 20, 0.06);
-}
-
-.life-sport-card[aria-disabled="true"] {
-  cursor: default;
-}
-
-.life-sport-cover {
-  aspect-ratio: 4 / 3;
+.movement-tile-media {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  background: var(--color-callout);
 }
 
-.life-sport-cover--empty {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(145deg, var(--color-callout), var(--color-border));
+.movement-tile-img {
+  transition: transform 0.45s ease;
 }
 
-.life-sport-meta {
-  padding: 0.65rem 0.75rem 0.75rem;
+.movement-tile--note:hover .movement-tile-img {
+  transform: scale(1.06);
 }
 
-.life-sport-date {
+.movement-kw {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.35rem;
+  z-index: 2;
+  max-width: calc(100% - 1.5rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.35rem;
+  border-radius: 2px;
+  color: rgba(255, 252, 248, 0.92);
+  background: rgba(26, 24, 20, 0.52);
+  backdrop-filter: blur(4px);
+}
+
+.movement-note-mark {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  z-index: 2;
+  font-size: 0.5rem;
+  line-height: 1;
+  color: var(--color-terracotta);
+  text-shadow: 0 0 8px rgba(255, 252, 248, 0.8);
+}
+
+.movement-tile-scrim {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 2rem 0.45rem 0.45rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(26, 24, 20, 0.35) 42%,
+    rgba(26, 24, 20, 0.78) 100%
+  );
+}
+
+.movement-tile-date {
+  display: block;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 252, 248, 0.75);
+}
+
+.movement-tile-title {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fffcf8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.movement-tile-loc {
+  margin: 0.12rem 0 0;
+  font-size: 0.5625rem;
+  color: rgba(255, 252, 248, 0.65);
+}
+
+/* Text-only note tile (no cover photo) */
+.movement-tile--text {
+  grid-column: span 2;
+  aspect-ratio: auto;
+  min-height: 5.5rem;
+  padding: 0.65rem 0.75rem;
+  background:
+    linear-gradient(135deg, var(--color-card) 0%, var(--color-callout) 100%);
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--color-terracotta) 28%, var(--color-border));
+}
+
+@media (min-width: 768px) {
+  .movement-tile--text {
+    grid-column: span 1;
+    aspect-ratio: 3 / 4;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}
+
+.movement-text-date {
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.5625rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--color-ink-muted);
 }
 
-.life-sport-title {
-  margin-top: 0.2rem;
+.movement-text-title {
+  margin: 0.25rem 0 0;
   font-family: var(--font-serif, Georgia, serif);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1841,17 +1968,20 @@
   color: var(--color-ink);
 }
 
-.life-sport-loc {
-  margin-top: 0.15rem;
-  font-size: 0.6875rem;
+.movement-text-loc {
+  margin: 0.15rem 0 0;
+  font-size: 0.625rem;
   color: var(--color-ink-muted);
 }
 
-.life-sport-more {
+.movement-kw--text {
+  position: static;
   display: inline-block;
-  margin-top: 0.35rem;
-  font-size: 0.6875rem;
-  color: var(--color-terracotta);
+  margin-top: 0.45rem;
+  color: var(--color-ink-muted);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  backdrop-filter: none;
 }
 
 .life-modal-backdrop {
@@ -1931,10 +2061,6 @@
   width: 100%;
   height: 14rem;
   object-fit: cover;
-}
-
-#sport .site-shell {
-  max-width: min(56rem, 100%);
 }
 
 .life-sport-shell {

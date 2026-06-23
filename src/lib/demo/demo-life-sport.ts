@@ -197,7 +197,7 @@ export const demoLifeSport: LifeSportEntry[] = [
 ];
 
 export function getLifeSportIds(): string[] {
-  return demoLifeSport.map((e) => e.id);
+  return demoLifeSport.filter((e) => e.body).map((e) => e.id);
 }
 
 export function getLifeSportById(id: string): LifeSportEntry | undefined {

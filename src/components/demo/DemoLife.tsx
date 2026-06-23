@@ -9,6 +9,7 @@ import {
 } from "@/lib/demo/demo-life-sport";
 import { useLocale } from "@/components";
 import { DemoCover, DemoSectionHeading } from "./DemoPrimitives";
+import { LifeSportGallery } from "./LifeSportGallery";
 
 export function DemoLife() {
   const { locale } = useLocale();
@@ -91,54 +92,7 @@ export function DemoLife() {
             title={zh ? "运动探索" : "Movement"}
             subtitle={pickText(demoLifeSportIntro, zh)}
           />
-          <div className="life-sport-grid mt-8">
-            {demoLifeSport.map((entry) => {
-              const href = `/life/sport/${entry.id}`;
-              const canOpen = Boolean(entry.body || entry.cover);
-              const inner = (
-                <>
-                  <div className="life-sport-cover">
-                    {entry.cover ? (
-                      <DemoCover src={entry.cover} alt="" />
-                    ) : (
-                      <div className="life-sport-cover--empty" />
-                    )}
-                  </div>
-                  <div className="life-sport-meta">
-                    <time className="life-sport-date">{entry.date}</time>
-                    <h3 className="life-sport-title">{pickText(entry.title, zh)}</h3>
-                    {entry.location ? (
-                      <p className="life-sport-loc">{pickText(entry.location, zh)}</p>
-                    ) : null}
-                    <div className="life-tag-row">
-                      {entry.keywords.map((kw) => (
-                        <span key={kw} className="life-tag life-tag--sm">
-                          {kw}
-                        </span>
-                      ))}
-                    </div>
-                    {entry.body ? (
-                      <span className="life-sport-more">{zh ? "阅读" : "Read"}</span>
-                    ) : null}
-                  </div>
-                </>
-              );
-
-              if (!canOpen) {
-                return (
-                  <div key={entry.id} className="life-sport-card life-sport-card--static">
-                    {inner}
-                  </div>
-                );
-              }
-
-              return (
-                <Link key={entry.id} href={href} className="life-sport-card life-sport-link">
-                  {inner}
-                </Link>
-              );
-            })}
-          </div>
+          <LifeSportGallery entries={demoLifeSport} zh={zh} />
         </div>
       </section>
     </div>
