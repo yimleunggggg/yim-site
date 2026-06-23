@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f4f5f7;
-  --color-paper-dark: #141419;
-  --color-ink: #121316;
-  --color-ink-muted: #5c5f66;
-  --color-forest: #2454a9;
-  --color-terracotta: #c44b28;
-  --color-border: #dfe2e8;
-  --color-callout: #eef1f6;
-  --color-card: #ffffff;
-  --color-accent-warm: #5b6b8c;
+  --color-paper: #f7f4ef;
+  --color-paper-dark: #141312;
+  --color-ink: #1a1814;
+  --color-ink-muted: #6a6560;
+  --color-forest: #3a3835;
+  --color-terracotta: #a84832;
+  --color-border: #e4dfd6;
+  --color-callout: #f0ebe3;
+  --color-card: #fffcf8;
+  --color-accent-warm: #8a7f72;
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
   --font-sans: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", sans-serif;
   --font-mono: "IBM Plex Mono", "Menlo", monospace;
@@ -31,6 +31,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
@@ -38,8 +39,9 @@
     font-family: var(--font-sans);
     -webkit-tap-highlight-color: transparent;
     background-color: var(--color-paper);
-    background-image: linear-gradient(180deg, #fafbfc 0%, var(--color-paper) 48%, #eceef2 100%);
+    background-image: linear-gradient(180deg, #faf8f5 0%, var(--color-paper) 52%, #ede8e0 100%);
     background-attachment: fixed;
+    overflow-x: clip;
   }
 
   body.dark {
@@ -77,7 +79,7 @@
   }
 
   ::selection {
-    background: rgba(36, 84, 169, 0.14);
+    background: rgba(168, 72, 50, 0.16);
   }
 }
 
@@ -91,7 +93,8 @@
 
   .site-shell {
     width: 100%;
-    max-width: none;
+    max-width: min(68rem, 100%);
+    margin-inline: auto;
     padding-left: max(1.25rem, env(safe-area-inset-left));
     padding-right: max(1.25rem, env(safe-area-inset-right));
   }
@@ -510,7 +513,7 @@
 }
 
 .demo-page .site-shell {
-  max-width: 72rem;
+  max-width: min(68rem, 100%);
   margin-inline: auto;
 }
 
@@ -1696,4 +1699,216 @@
 
 .life-camp-copy {
   padding: 1rem;
+}
+
+/* Life page — journal + sport gallery */
+.life-page {
+  overflow-x: clip;
+}
+
+.life-page-header {
+  max-width: 42rem;
+}
+
+.life-section {
+  max-width: 42rem;
+}
+
+.life-section .life-sport-grid {
+  max-width: none;
+}
+
+.life-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.life-tag {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.5625rem;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-muted);
+  background: color-mix(in srgb, var(--color-card) 80%, var(--color-callout));
+}
+
+.life-tag--sm {
+  font-size: 0.5rem;
+  padding: 0.08rem 0.35rem;
+}
+
+.life-sport-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .life-sport-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .life-sport-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.life-sport-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-card);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.life-sport-card:hover {
+  border-color: color-mix(in srgb, var(--color-ink-muted) 40%, var(--color-border));
+  box-shadow: 0 2px 12px rgba(26, 24, 20, 0.06);
+}
+
+.life-sport-card[aria-disabled="true"] {
+  cursor: default;
+}
+
+.life-sport-cover {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-callout);
+}
+
+.life-sport-cover--empty {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, var(--color-callout), var(--color-border));
+}
+
+.life-sport-meta {
+  padding: 0.65rem 0.75rem 0.75rem;
+}
+
+.life-sport-date {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.5625rem;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+}
+
+.life-sport-title {
+  margin-top: 0.2rem;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+.life-sport-loc {
+  margin-top: 0.15rem;
+  font-size: 0.6875rem;
+  color: var(--color-ink-muted);
+}
+
+.life-sport-more {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.6875rem;
+  color: var(--color-terracotta);
+}
+
+.life-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(1rem, env(safe-area-inset-top)) 1rem 1rem;
+  background: rgba(26, 24, 20, 0.72);
+}
+
+.life-modal-panel {
+  width: 100%;
+  max-width: 32rem;
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 12px;
+}
+
+.life-modal-panel--wide {
+  max-width: 36rem;
+}
+
+.life-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.25rem 1.25rem 0;
+}
+
+.life-modal-body {
+  padding: 1rem 1.25rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--color-ink-muted);
+}
+
+.life-modal-body p + p {
+  margin-top: 0.85rem;
+}
+
+.life-modal-images {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem 0;
+}
+
+.life-modal-images img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--color-callout);
+}
+
+.life-modal-images--tall {
+  padding: 0.75rem 1.25rem 0;
+}
+
+.life-modal-longimg {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.life-sport-modal-cover {
+  max-height: 14rem;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+  background: var(--color-callout);
+}
+
+.life-sport-modal-cover img {
+  width: 100%;
+  height: 14rem;
+  object-fit: cover;
+}
+
+#sport .site-shell {
+  max-width: min(56rem, 100%);
+}
+
+.life-sport-shell {
+  max-width: min(56rem, 100%);
 }

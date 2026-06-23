@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import type { ReactNode } from "react";
 
 /** 分区标题：mono eyebrow + serif 大标题 + 可选副标题 */
@@ -32,14 +31,13 @@ export function DemoSectionHeading({
   );
 }
 
-/** 封面：有图用图，无图用渐变占位（带可选首字母 / 标签） */
+/** 封面：public 静态图用原生 img，避免 fill + lazy 导致「假裂图」 */
 export function DemoCover({
   src,
   gradient,
   alt = "",
   label,
   className = "",
-  sizes = "(max-width: 640px) 100vw, 33vw",
   priority,
 }: {
   src?: string;
@@ -52,21 +50,21 @@ export function DemoCover({
 }) {
   if (src) {
     return (
-      <Image
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
         src={src}
         alt={alt}
-        fill
-        sizes={sizes}
-        priority={priority}
-        className={`object-cover ${className}`}
+        loading={priority ? "eager" : "eager"}
+        decoding="async"
         draggable={false}
+        className={`h-full w-full object-cover ${className}`}
       />
     );
   }
   return (
     <div
       className={`flex h-full w-full items-center justify-center ${className}`}
-      style={{ background: gradient ?? "linear-gradient(135deg,#2d4a3e,#4a7c6f)" }}
+      style={{ background: gradient ?? "linear-gradient(145deg,#e8e2d8,#cfc7ba)" }}
     >
       {label ? (
         <span className="px-4 text-center font-serif text-lg font-semibold text-white/90">
