@@ -36,7 +36,7 @@ export default async function WritingPage({ params }: Props) {
         </Link>
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-6">
-          <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
+          <h1 className="font-serif text-3xl font-medium leading-tight text-[var(--color-ink)] sm:text-4xl">
             {article.title}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-[var(--color-ink-muted)]">
@@ -76,7 +76,7 @@ export default async function WritingPage({ params }: Props) {
                     href={`/writing/${r.slug}`}
                     className="group flex items-baseline justify-between gap-3"
                   >
-                    <span className="font-serif text-base font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-forest)]">
+                    <span className="font-serif text-base font-medium text-[var(--color-ink)] group-hover:text-[var(--color-forest)]">
                       {r.title}
                     </span>
                     <span className="shrink-0 font-mono text-xs text-[var(--color-ink-muted)]">

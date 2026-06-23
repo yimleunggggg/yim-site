@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 828, 1080, 1200],
     imageSizes: [160, 240, 320, 480],
-    unoptimized: true,
   },
   async redirects() {
     return [

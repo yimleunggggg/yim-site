@@ -64,7 +64,6 @@ export function DemoMarquee() {
                 sizes="(max-width: 640px) 160px, 220px"
                 className="life-marquee-img"
                 priority={i < 4}
-                unoptimized
                 draggable={false}
               />
             </figure>

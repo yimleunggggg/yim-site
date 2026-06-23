@@ -1,5 +1,37 @@
 # 写文章 · 只加文件，不改前端
 
+> 当前新版个人站的主入口是 `/writing`，对应 `content/demo/writing/`。
+> 旧的 `/blog` 仍保留给 AI、工具、运营类文章，后续建议统一迁移到 `content/personal/writing/` 后再改路由。
+
+## 个人站长文 / 随笔
+
+放这里：
+
+```
+content/demo/writing/你的文件名.mdx
+```
+
+发布后自动出现在 `/writing` 列表，地址为 `/writing/你的文件名`（不含 `.mdx`）。
+
+```yaml
+---
+title: "文章标题"
+date: "2026-06-01"
+summary: "列表页显示的一两句摘要"
+tags: [生活, 旅行, AI]
+readingMinutes: 5
+isAI: false
+---
+
+正文用 Markdown / MDX。普通段落、## 标题、列表、链接、引用、代码块、图片都支持。
+
+![配图说明](/writing/某文件夹/图.jpg)
+```
+
+个人长文配图放到 `public/writing/某文件夹/`，正文用 `/writing/某文件夹/xxx.jpg` 引用。
+
+## 旧博客 / 工具文章
+
 所有长文、教程（AI、翻墙、运营、随笔）统一放：
 
 ```

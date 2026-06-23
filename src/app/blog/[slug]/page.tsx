@@ -7,7 +7,6 @@ import { BLOG_TOPIC_LABELS } from "@/lib/blog-topics";
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ preview?: string }>;
 };
 
 export async function generateStaticParams() {
@@ -24,12 +23,10 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function ArticlePage({ params, searchParams }: Props) {
+export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-  const { preview } = await searchParams;
   const article = getArticleBySlug(slug);
-  const allowDraft =
-    preview === "1" || process.env.NODE_ENV === "development";
+  const allowDraft = process.env.NODE_ENV === "development";
 
   if (
     !article ||

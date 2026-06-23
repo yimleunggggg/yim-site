@@ -60,7 +60,7 @@ export function DemoWritingList({
               className="group flex items-start justify-between gap-4 py-5 transition-colors hover:bg-[color-mix(in_srgb,var(--color-callout)_50%,transparent)]"
             >
               <span className="min-w-0 flex-1">
-                <h3 className="font-serif text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-forest)] sm:text-xl">
+                <h3 className="font-serif text-lg font-medium text-[var(--color-ink)] group-hover:text-[var(--color-forest)] sm:text-xl">
                   {w.title}
                 </h3>
                 <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] text-[var(--color-ink-muted)]">

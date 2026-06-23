@@ -12,17 +12,18 @@ import {
 function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   const { alt, src, ...rest } = props;
   return (
-    <figure className="my-8">
+    <figure className="mdx-figure">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         {...rest}
         src={src}
         alt={alt ?? ""}
-        className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-card)]"
+        className="mdx-image"
         loading="lazy"
+        decoding="async"
       />
       {alt ? (
-        <figcaption className="mt-2 text-center text-sm text-[var(--color-ink-muted)]">
+        <figcaption className="mdx-caption">
           {alt}
         </figcaption>
       ) : null}
