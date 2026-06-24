@@ -145,8 +145,8 @@ export const demoExplore: DemoExploreCard[] = [
     eyebrow: "MOVEMENT",
     title: { zh: "Trails & Movement" },
     desc: {
-      zh: "越野跑、徒步、冲浪、潜水、拳击。身体知道的，心智还在慢慢想明白。",
-      en: "Trail running, hiking, surfing, diving, boxing. The body knows things the mind is still figuring out.",
+      zh: "越野、徒步、冲浪、潜水、拳击——有完赛，也有退赛和练到一半放弃。",
+      en: "Trail, hike, surf, dive, boxing — finishes, DNFs, and abandoned training days.",
     },
     status: "ONGOING",
     latest: { zh: "屋久岛 21KM · 2025.05", en: "Yakushima 21KM · 2025.05" },
@@ -472,63 +472,81 @@ export type DemoAboutProject = {
   desc?: LText;
   status: ProjectStatus;
   categories: ProjectCategory[];
+  /** 已上线站点 */
   liveUrl?: string;
+  /** Demo / 内测地址 */
+  demoUrl?: string;
+  githubUrl?: string;
+  /** YouTube / Bilibili 或 public 内 mp4 路径 */
+  videoUrl?: string;
+  /** false = About 表不可点、无详情页 */
+  hasDetailPage?: boolean;
 };
 
 export const demoAboutProjects: DemoAboutProject[] = [
   {
-    slug: "packlog",
-    title: { zh: "Packlog", en: "Packlog" },
-    tagline: {
-      zh: "面向户外与频繁出行者的场景化装备管理工具",
-      en: "Gear and packing management tool for outdoor and frequent travelers",
-    },
-    desc: {
-      zh: "基于徒步、旅行和多场景打包需求独立开发。支持场景化行程创建、克级重量统计、装备库管理及社区清单克隆，集成 Supabase 认证与云端同步。",
-      en: "Built from personal hiking and travel packing needs. Supports trip-based packing, gram-level weight tracking, gear library management and community list cloning. Integrated Supabase auth and cloud sync.",
-    },
-    status: "demo",
-    categories: ["product"],
-  },
-  {
     slug: "yakushima-bus-now",
     title: { zh: "Yakushima Bus", en: "Yakushima Bus" },
     tagline: {
-      zh: "屋久岛交通查询工具，三语静态站",
-      en: "Trilingual transit info tool for Yakushima island travelers",
-    },
-    desc: {
-      zh: "日本旅行期间发现离岛交通讯息分散且查询不便，开发并上线当地交通查询工具。含视频介绍、功能说明与访问链接。",
-      en: "Built during a Japan trip when island transit info was scattered and hard to query — a dedicated local transit tool with video intro, feature overview and live link.",
+      zh: "屋久岛交通查询工具",
+      en: "Yakushima transit lookup tool",
     },
     status: "live",
     categories: ["product", "travel"],
-    liveUrl: "https://yakushimabus.com",
+    liveUrl: "https://yakushimabus.com/",
+    githubUrl: "https://github.com/yimleunggggg/Yakushima-bus",
+    hasDetailPage: true,
+  },
+  {
+    slug: "packlog",
+    title: { zh: "Packlog · 行前志", en: "Packlog · Pre-trip Log" },
+    tagline: {
+      zh: "面向户外与频繁出行者的场景化装备管理工具",
+      en: "Scenario-based gear management for outdoor & frequent travelers",
+    },
+    status: "demo",
+    categories: ["product"],
+    demoUrl: "https://packlog.yimleung-ly.workers.dev/",
+    githubUrl: "https://github.com/yimleunggggg/packlog-the-travel-gear-companion",
+    hasDetailPage: true,
   },
   {
     slug: "offtrack",
     title: { zh: "OFFTRACK · 野路子", en: "OFFTRACK" },
     tagline: {
-      zh: "户外运动爱好者的社交平台，接入 Strava、Garmin 等运动数据",
-      en: "Social platform for outdoor athletes, powered by Strava, Garmin and activity data",
-    },
-    desc: {
-      zh: "AI 驱动的户外运动社交平台，通过接入 Strava、Garmin 等运动数据 API，利用 AI 分析用户运动行为模式，自动生成运动画像标签，并基于行为数据的语义匹配实现精准社交推荐。区别于传统社交 APP 的自报告式匹配，用行为代替说话。",
-      en: "AI-powered social platform for outdoor athletes. Integrates Strava, Garmin and activity APIs to analyze behavior patterns, auto-generate sport profile tags, and match people through semantic behavior data — actions over self-descriptions.",
+      zh: "基于真实运动行为数据的户外爱好者社交平台",
+      en: "Outdoor social platform built on real activity data",
     },
     status: "demo",
     categories: ["product", "sport"],
+    demoUrl: "https://offtrack-eta.vercel.app/",
+    hasDetailPage: true,
+  },
+  {
+    slug: "beer-matters",
+    title: { zh: "啤酒事务局", en: "Beer Matters" },
+    tagline: {
+      zh: "精酿内容 × 社群 × 活动 × 电商，含啤酒旅行社等线下活动",
+      en: "Craft content, community, events & e-commerce — including Beer Travel Club trips",
+    },
+    status: "live",
+    categories: ["experience", "travel"],
+    hasDetailPage: true,
   },
   {
     slug: "self-discovery",
     title: { zh: "自我探索系列", en: "Self-discovery series" },
-    tagline: { zh: "用工具了解自己", en: "Tools for self-knowledge" },
+    tagline: {
+      zh: "从听歌、观影与日常记录里，看见真正属于你的偏好与模式",
+      en: "See your real tastes and patterns in music, film, and daily life",
+    },
     desc: {
-      zh: "Music DNA 是起点。延伸方向包括：用电影了解自己（CineMate）、结合日记、日程和人生 milestone 的记录工具——把碎片变成可以回望的轨迹。核心逻辑是：不是你说自己是什么样的人，而是你的行为告诉你。",
-      en: "Music DNA is the starting point. Extensions include using film as a mirror (CineMate), and a journaling tool that connects diary entries, schedules and life milestones into something you can look back on. Your behavior knows you better than your self-description.",
+      zh: "Music DNA 已跑通；CineMate 与日记 timeline 在构思中。",
+      en: "Music DNA is live; CineMate and a diary timeline are in ideation.",
     },
     status: "fuzzy",
     categories: ["product", "experience"],
+    hasDetailPage: true,
   },
   {
     slug: "camino-de-santiago",
@@ -536,6 +554,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
     tagline: { zh: "步行穿越西班牙", en: "Walking across Spain" },
     status: "planned",
     categories: ["travel", "sport"],
+    hasDetailPage: false,
   },
   {
     slug: "triathlon",
@@ -543,6 +562,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
     tagline: { zh: "学游泳中", en: "Currently learning to swim" },
     status: "planned",
     categories: ["sport", "experience"],
+    hasDetailPage: false,
   },
   {
     slug: "kazakhstan-horse-trek",
@@ -550,8 +570,24 @@ export const demoAboutProjects: DemoAboutProject[] = [
     tagline: { zh: "骑马穿越草原", en: "Horseback across the steppe" },
     status: "planned",
     categories: ["travel", "experience"],
+    hasDetailPage: false,
   },
 ];
+
+const PROJECT_STATUS_RANK: Record<ProjectStatus, number> = {
+  live: 0,
+  building: 1,
+  demo: 2,
+  fuzzy: 3,
+  planned: 4,
+};
+
+/** About 项目表：已上线优先，其次在做 / Demo / 想法 / 计划 */
+export function getSortedAboutProjects(): DemoAboutProject[] {
+  return [...demoAboutProjects].sort(
+    (a, b) => PROJECT_STATUS_RANK[a.status] - PROJECT_STATUS_RANK[b.status],
+  );
+}
 
 /* ------------------------------ 项目（详情页） ------------------------------- */
 
@@ -573,13 +609,13 @@ export type DemoProject = {
 export const demoProjects: DemoProject[] = [
   {
     slug: "packlog",
-    title: { zh: "PACKLOG · 背包侠" },
-    tagline: { zh: "户外装备管理工具：称重、清单、出行决策。" },
+    title: { zh: "Packlog · 行前志" },
+    tagline: { zh: "面向户外与频繁出行者的场景化装备管理工具" },
     type: { zh: "产品 · Vibe Coding" },
-    status: { zh: "Live" },
+    status: { zh: "Demo" },
     statusTone: "live",
     period: "2026",
-    liveUrl: "#",
+    githubUrl: "https://github.com/yimleunggggg/packlog-the-travel-gear-companion",
     gradient: "linear-gradient(135deg,#2d4a3e,#4a7c6f)",
   },
   {
@@ -595,8 +631,8 @@ export const demoProjects: DemoProject[] = [
   },
   {
     slug: "yakushima-bus-now",
-    title: { zh: "Yakushima Bus Now" },
-    tagline: { zh: "屋久岛巴士查询，三语静态站，旅行刚需。" },
+    title: { zh: "Yakushima Bus" },
+    tagline: { zh: "屋久岛交通查询工具" },
     type: { zh: "产品 · 静态站" },
     status: { zh: "Live" },
     statusTone: "live",
@@ -637,10 +673,12 @@ export const demoProjects: DemoProject[] = [
   },
 ];
 
-/** About 页项目 + 详情页 slug 并集 */
+/** About 页项目 + 详情页 slug 并集（无详情页的 planned 不进静态路由） */
 export function getAllDemoProjectSlugs(): string[] {
   const slugs = new Set<string>();
-  for (const p of demoAboutProjects) slugs.add(p.slug);
+  for (const p of demoAboutProjects) {
+    if (p.hasDetailPage !== false) slugs.add(p.slug);
+  }
   for (const p of demoProjects) slugs.add(p.slug);
   return [...slugs];
 }
@@ -663,7 +701,7 @@ export type DemoPlanned = {
 
 export const demoPlanned: DemoPlanned[] = [
   { name: "OFFTRACK", desc: { zh: "找到和你一样能动的人" }, status: { zh: "在做" }, tone: "active" },
-  { name: "CineMate", desc: { zh: "用电影了解自己" }, status: { zh: "在做" }, tone: "active" },
+  { name: "CineMate", desc: { zh: "用片单做一个小测试，看像不像你", en: "A small test from your watchlist" }, status: { zh: "在做" }, tone: "active" },
   { name: "自我探索系列", desc: { zh: "模糊的概念" }, status: { zh: "模糊的概念" }, tone: "idea" },
   { name: "3D 打印玩具跨境", desc: { zh: "只是在想" }, status: { zh: "只是在想" }, tone: "idea" },
   { name: "朝圣之路 Camino de Santiago", desc: { zh: "心里一直放着" }, status: { zh: "心里放着" }, tone: "someday" },
@@ -850,8 +888,8 @@ export const demoDispatches: DemoDispatch[] = [
 
 /** 3.2 写作 WRITING */
 export const demoWritingIntro = {
-  zh: "持续不断的记录，意义自然浮现。",
-  en: "Keep writing — meaning emerges on its own.",
+  zh: "长文、短记、教程——写给自己看，也顺便放在这儿。",
+  en: "Essays, notes, tutorials — mostly for me, posted here anyway.",
 } as LText;
 
 /** Life 页精选；完整列表见 /writing */

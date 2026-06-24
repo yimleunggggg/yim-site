@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { MdxContent } from "@/lib/mdx";
 import { DemoStatusTag } from "@/components/demo/DemoPrimitives";
+import { DemoProjectVideo } from "@/components/demo/DemoProjectVideo";
 import {
   getAllDemoProjectSlugs,
   getDemoAboutProject,
@@ -12,7 +13,7 @@ import {
   projectStatusLabel,
   type ProjectCategory,
 } from "@/lib/demo/demo-data";
-import { getDemoProjectBody, getAllDemoWriting } from "@/lib/demo/demo-content";
+import { getAllDemoWriting, getDemoProjectBody, getDemoProjectFrontmatter } from "@/lib/demo/demo-content";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -37,22 +38,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const about = getDemoAboutProject(slug);
+  if (about?.hasDetailPage === false) notFound();
+
   const detail = getDemoProjectDetail(slug);
   if (!about && !detail) notFound();
 
   const title = about ? pickText(about.title, true) : pickText(detail!.title, true);
   const tagline = about ? pickText(about.tagline, true) : pickText(detail!.tagline, true);
   const body = getDemoProjectBody(slug);
-  const fallbackBody = about?.desc ? pickText(about.desc, true) : null;
+  const fm = getDemoProjectFrontmatter(slug);
   const liveUrl = about?.liveUrl ?? detail?.liveUrl;
-  const githubUrl = detail?.githubUrl;
+  const demoUrl = about?.demoUrl ?? (typeof fm.demoUrl === "string" ? fm.demoUrl : undefined);
+  const githubUrl = about?.githubUrl ?? detail?.githubUrl ?? (typeof fm.githubUrl === "string" ? fm.githubUrl : undefined);
+  const videoUrl =
+    about?.videoUrl ??
+    (typeof fm.videoUrl === "string" ? fm.videoUrl : undefined);
   const period = detail?.period;
   const derived =
     slug === "ai-training" ? getAllDemoWriting().filter((w) => w.tags.includes("AI教程")) : [];
 
   return (
     <article className="site-shell py-10 sm:py-14">
-      <div className="mx-auto max-w-[680px]">
         <Link href="/about#projects" className="text-sm text-[var(--color-forest)] hover:underline">
           ← Projects
         </Link>
@@ -88,9 +94,9 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         </header>
 
-        {(liveUrl && liveUrl !== "#") || githubUrl ? (
+        {(liveUrl || demoUrl || githubUrl) && (
           <div className="mt-5 flex flex-wrap gap-3">
-            {liveUrl && liveUrl !== "#" && (
+            {liveUrl ? (
               <a
                 href={liveUrl}
                 target="_blank"
@@ -99,8 +105,18 @@ export default async function ProjectPage({ params }: Props) {
               >
                 访问网站 →
               </a>
-            )}
-            {githubUrl && (
+            ) : null}
+            {demoUrl && demoUrl !== liveUrl ? (
+              <a
+                href={demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tap-target inline-flex items-center rounded-full border border-[var(--color-forest)] px-5 text-sm font-medium text-[var(--color-forest)]"
+              >
+                打开 Demo →
+              </a>
+            ) : null}
+            {githubUrl ? (
               <a
                 href={githubUrl}
                 target="_blank"
@@ -109,17 +125,15 @@ export default async function ProjectPage({ params }: Props) {
               >
                 GitHub
               </a>
-            )}
+            ) : null}
           </div>
-        ) : null}
+        )}
+
+        {videoUrl ? <DemoProjectVideo url={videoUrl} title={title} /> : null}
 
         {body ? (
           <div className="prose-playbook demo-article mt-10 max-w-none">
             <MdxContent source={body} />
-          </div>
-        ) : fallbackBody ? (
-          <div className="prose-playbook demo-article mt-10 max-w-none">
-            <p>{fallbackBody}</p>
           </div>
         ) : null}
 
@@ -145,7 +159,6 @@ export default async function ProjectPage({ params }: Props) {
             </ul>
           </div>
         )}
-      </div>
     </article>
   );
 }

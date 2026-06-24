@@ -40,7 +40,10 @@ export function DemoMarquee() {
   }, [paused]);
 
   return (
-    <section aria-label="Life photos" className="life-marquee-section life-marquee-section--flat">
+    <section
+      aria-label="Life photos"
+      className="site-shell life-marquee-section life-marquee-section--contained"
+    >
       <div
         ref={scrollerRef}
         className="life-marquee-scroll scroll-tabs"

@@ -37,6 +37,14 @@ const DOCS = [
     tags: ["随笔"],
     useToc: true,
   },
+  {
+    slug: "west-sichuan-2025",
+    url: "https://my.feishu.cn/wiki/OpJmwMUSXil9pSkBPXFcTeZrnJc",
+    title: "川西 Road Trip",
+    date: "2025-06",
+    tags: ["旅行", "川西"],
+    useToc: true,
+  },
 ];
 
 async function proxyNew(url) {
@@ -266,7 +274,13 @@ readingMinutes: ${Math.max(3, Math.ceil(plain.replace(/\s/g, "").length / 400))}
 }
 
 async function main() {
-  for (const doc of DOCS) {
+  const only = process.argv[2];
+  const list = only ? DOCS.filter((d) => d.slug === only) : DOCS;
+  if (only && !list.length) {
+    console.error(`Unknown slug: ${only}`);
+    process.exit(1);
+  }
+  for (const doc of list) {
     await importDoc(doc);
   }
 }

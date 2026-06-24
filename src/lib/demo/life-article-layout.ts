@@ -2,7 +2,7 @@
 export type LayoutBlock =
   | { type: "paragraph"; text: string }
   | { type: "figure"; src: string; variant: "full" | "wide" }
-  | { type: "grid"; sources: string[] };
+  | { type: "masonry"; sources: string[] };
 
 export function buildEditorialLayout(
   paragraphs: string[],
@@ -11,62 +11,35 @@ export function buildEditorialLayout(
 ): LayoutBlock[] {
   const blocks: LayoutBlock[] = [];
 
+  /** 长图条目：正文段落后完整展示，不裁切 */
   if (opts?.singleLongImage && images.length === 1) {
     for (const text of paragraphs) blocks.push({ type: "paragraph", text });
     blocks.push({ type: "figure", src: images[0], variant: "full" });
     return blocks;
   }
 
+  /** 纯长图、无段落 */
+  if (paragraphs.length === 0 && images.length === 1) {
+    blocks.push({ type: "figure", src: images[0], variant: "full" });
+    return blocks;
+  }
+
   if (paragraphs.length === 0) {
-    if (images.length === 0) return blocks;
-    blocks.push({ type: "figure", src: images[0], variant: "wide" });
-    let i = 1;
-    while (i < images.length) {
-      const pair = images.slice(i, i + 2);
-      if (pair.length === 2) blocks.push({ type: "grid", sources: pair });
-      else blocks.push({ type: "figure", src: pair[0], variant: "wide" });
-      i += 2;
+    if (images.length === 1) {
+      blocks.push({ type: "figure", src: images[0], variant: "wide" });
+    } else if (images.length > 1) {
+      blocks.push({ type: "masonry", sources: images });
     }
     return blocks;
   }
 
-  if (opts?.imageFirst && images.length > 0) {
+  /** 默认：先全文，再图片组（双列 masonry 保持各自横竖幅） */
+  for (const text of paragraphs) blocks.push({ type: "paragraph", text });
+
+  if (images.length === 1) {
     blocks.push({ type: "figure", src: images[0], variant: "wide" });
-    for (let g = 1; g < images.length; g += 2) {
-      const pair = images.slice(g, g + 2);
-      if (pair.length === 2) blocks.push({ type: "grid", sources: pair });
-      else blocks.push({ type: "figure", src: pair[0], variant: "wide" });
-    }
-    for (const text of paragraphs) blocks.push({ type: "paragraph", text });
-    return blocks;
-  }
-
-  let p = 0;
-  let i = 0;
-
-  blocks.push({ type: "paragraph", text: paragraphs[p++] });
-
-  if (i < images.length) {
-    blocks.push({ type: "figure", src: images[i++], variant: "wide" });
-  }
-
-  while (p < paragraphs.length || i < images.length) {
-    if (p < paragraphs.length) {
-      blocks.push({ type: "paragraph", text: paragraphs[p++] });
-    }
-    if (p < paragraphs.length && i < images.length) {
-      blocks.push({ type: "paragraph", text: paragraphs[p++] });
-    }
-    if (i < images.length) {
-      const pair = images.slice(i, i + 2);
-      if (pair.length === 2) {
-        blocks.push({ type: "grid", sources: pair });
-        i += 2;
-      } else {
-        blocks.push({ type: "figure", src: pair[0], variant: "wide" });
-        i += 1;
-      }
-    }
+  } else if (images.length > 1) {
+    blocks.push({ type: "masonry", sources: images });
   }
 
   return blocks;

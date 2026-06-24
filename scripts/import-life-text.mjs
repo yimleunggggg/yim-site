@@ -17,7 +17,9 @@ const FOLDER_TO_ID = {
   "2024.9.22 写在30岁这一天": "keep-growing",
   "2025.1 pa pae meditation retreat": "pa-pae",
   "2025.12 wonderfruit十周年": "wonderfruit",
-  "2026.5 日本屋久岛徒步及露营行程": "yakushima",
+  "2025.8 甘肃酒花田之旅，中国酒花共创计划": "gansu-hops",
+  "2023.8 马来西亚亚庇考了OW潜水证 ": "sabah-ow",
+  "2023.8 马来西亚亚庇考了OW潜水证": "sabah-ow",
 };
 
 function rtfToPlain(rtfPath) {

@@ -6,14 +6,15 @@ import { useLocale } from "@/components";
 import {
   demoAbout,
   demoWork,
-  demoAboutProjects,
+  getSortedAboutProjects,
   projectStatusLabel,
   projectCategoryLabel,
   pickText,
   type DemoWork,
   type ProjectCategory,
+  type DemoAboutProject,
 } from "@/lib/demo/demo-data";
-import { DemoSectionHeading, DemoStatusTag } from "./DemoPrimitives";
+import { DemoPageHeader, DemoSectionHeading, DemoStatusTag } from "./DemoPrimitives";
 
 export function DemoAbout() {
   const { locale } = useLocale();
@@ -23,16 +24,17 @@ export function DemoAbout() {
   return (
     <>
       <section className="site-shell pt-12 pb-10 sm:pt-16">
-        <p className="demo-eyebrow">ABOUT</p>
-        <h1 className="demo-about-title mt-5">
-          {zh ? "梁言 · 一个持续在动的人" : "Yim · always in motion"}
-        </h1>
-        <div className="demo-about-intro mt-5 max-w-2xl">
-          {demoAbout.intro.map((p, i) => (
-            <p key={i}>{pickText(p, zh)}</p>
-          ))}
-        </div>
-        <div className="demo-about-tags mt-6">
+        <DemoPageHeader
+          eyebrow="ABOUT"
+          title={zh ? "梁言 · 一个持续在动的人" : "Yim · always in motion"}
+        >
+          <div className="demo-page-lead mt-5 max-w-2xl space-y-3">
+            {demoAbout.intro.map((p, i) => (
+              <p key={i}>{pickText(p, zh)}</p>
+            ))}
+          </div>
+        </DemoPageHeader>
+        <div className="demo-about-tags mt-6 max-w-2xl">
           {aboutTags.map((t) => (
             <span key={t} className="demo-about-tag">
               {t}
@@ -60,30 +62,49 @@ export function DemoAbout() {
             <span>{zh ? "状态" : "Status"}</span>
           </div>
           <ul className="demo-project-table-body">
-            {demoAboutProjects.map((p) => (
-              <li key={p.slug}>
-                <Link href={`/projects/${p.slug}`} className="demo-project-table-row tap-target">
-                  <span className="demo-project-table-name">{pickText(p.title, zh)}</span>
-                  <span className="demo-project-table-desc">{pickText(p.tagline, zh)}</span>
-                  <span className="demo-project-table-cats">
-                    {p.categories.map((c: ProjectCategory) => (
-                      <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
-                        {pickText(projectCategoryLabel[c], zh)}
-                      </span>
-                    ))}
-                  </span>
-                  <span className="demo-project-table-status">
-                    <DemoStatusTag tone={p.status}>
-                      {pickText(projectStatusLabel[p.status], zh)}
-                    </DemoStatusTag>
-                  </span>
-                </Link>
-              </li>
+            {getSortedAboutProjects().map((p) => (
+              <ProjectTableRow key={p.slug} project={p} zh={zh} />
             ))}
           </ul>
         </div>
       </section>
     </>
+  );
+}
+
+function ProjectTableRow({ project: p, zh }: { project: DemoAboutProject; zh: boolean }) {
+  const clickable = p.hasDetailPage !== false;
+  const inner = (
+    <>
+      <span className="demo-project-table-name">{pickText(p.title, zh)}</span>
+      <span className="demo-project-table-desc">{pickText(p.tagline, zh)}</span>
+      <span className="demo-project-table-cats">
+        {p.categories.map((c: ProjectCategory) => (
+          <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
+            {pickText(projectCategoryLabel[c], zh)}
+          </span>
+        ))}
+      </span>
+      <span className="demo-project-table-status">
+        <DemoStatusTag tone={p.status}>{pickText(projectStatusLabel[p.status], zh)}</DemoStatusTag>
+      </span>
+    </>
+  );
+
+  if (!clickable) {
+    return (
+      <li>
+        <div className="demo-project-table-row demo-project-table-row--static">{inner}</div>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <Link href={`/projects/${p.slug}`} className="demo-project-table-row tap-target">
+        {inner}
+      </Link>
+    </li>
   );
 }
 

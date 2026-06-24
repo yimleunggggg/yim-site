@@ -30,7 +30,6 @@ export default async function WritingPage({ params }: Props) {
 
   return (
     <article className="site-shell py-10 sm:py-14">
-      <div className="mx-auto max-w-[680px]">
         <Link href="/writing" className="text-sm text-[var(--color-forest)] hover:underline">
           ← Writing
         </Link>
@@ -88,7 +87,6 @@ export default async function WritingPage({ params }: Props) {
             </ul>
           </div>
         )}
-      </div>
     </article>
   );
 }

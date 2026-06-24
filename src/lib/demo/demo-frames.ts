@@ -23,12 +23,14 @@ export type FrameMeta = {
   /** 顶部排序，越小越靠前 */
   order: number;
   title: LText;
-  /** 地点表情 */
-  emoji: string;
+  /** @deprecated 不再展示，地点仅用纯文字 */
+  emoji?: string;
   location: LText;
   tags: LText[];
   /** 3 句话内引言，可留空待补 */
   intro: LText;
+  /** 持续更新的相册：列表页显示 Live pill，标题不加括号说明 */
+  ongoing?: boolean;
 };
 
 export type Frame = FrameMeta & {
@@ -87,13 +89,12 @@ export const FRAMES_META: FrameMeta[] = [
   {
     slug: "window-views",
     order: 4,
-    title: { zh: "前挡风玻璃外的电影帧（持续更新）", en: "Frames Through the Windshield · Ongoing" },
-    emoji: "🚗",
+    title: { zh: "前挡风玻璃外的电影帧", en: "Frames Through the Windshield" },
     location: { zh: "多国 · 路途", en: "Multi · On the road" },
+    ongoing: true,
     tags: [
       { zh: "车窗", en: "Car window" },
       { zh: "路途", en: "Journey" },
-      { zh: "持续更新", en: "Ongoing" },
     ],
     intro: { zh: "", en: "" },
   },
@@ -113,9 +114,9 @@ export const FRAMES_META: FrameMeta[] = [
   {
     slug: "daily",
     order: 6,
-    title: { zh: "生活片段（持续更新）", en: "Life Fragments · Ongoing" },
-    emoji: "📷",
+    title: { zh: "生活片段", en: "Life Fragments" },
     location: { zh: "多地 · 日常", en: "Multi · Daily life" },
+    ongoing: true,
     tags: [
       { zh: "日常", en: "Daily" },
       { zh: "街拍", en: "Street" },
@@ -129,6 +130,7 @@ export const FRAMES_META: FrameMeta[] = [
     title: { zh: "永远喜欢日落", en: "Always the Sunset" },
     emoji: "🌅",
     location: { zh: "多地 · 日落", en: "Multi · Sunsets" },
+    ongoing: true,
     tags: [
       { zh: "日落", en: "Sunset" },
       { zh: "天空", en: "Sky" },
@@ -210,7 +212,7 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
   };
   if (!fs.existsSync(dir)) return empty;
   const files = fs.readdirSync(dir);
-  const images = files
+  const numberedImages = files
     .filter((f) => /^\d+\.jpg$/.test(f))
     .sort()
     .map((f) => {
@@ -218,15 +220,34 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
       const use = files.includes(thumb) ? thumb : f;
       return `/media/frames/${slug}/${use}`;
     });
-  const imagesFull = files
+  const numberedFull = files
     .filter((f) => /^\d+-full\.jpg$/.test(f))
     .sort()
     .map((f) => `/media/frames/${slug}/${f}`);
-  const fullFallback = imagesFull.length > 0 ? imagesFull : images;
-  const cover = files.includes("cover.jpg") ? `/media/frames/${slug}/cover.jpg` : images[0] ?? "";
+
+  const cover = files.includes("cover.jpg") ? `/media/frames/${slug}/cover.jpg` : numberedImages[0] ?? "";
   const coverThumb = files.includes("cover-thumb.jpg")
     ? `/media/frames/${slug}/cover-thumb.jpg`
     : cover;
+
+  /** 详情页瀑布流：封面排第一，再接 01、02… */
+  const images =
+    cover && files.includes("cover.jpg")
+      ? [cover, ...numberedImages.filter((src) => !src.endsWith("/cover.jpg"))]
+      : numberedImages;
+
+  const numberedFullOrDisplay =
+    numberedFull.length > 0 ? numberedFull : numberedImages;
+  const coverFull = files.includes("cover-full.jpg")
+    ? `/media/frames/${slug}/cover-full.jpg`
+    : cover;
+  const imagesFull =
+    cover && files.includes("cover.jpg")
+      ? [coverFull, ...numberedFullOrDisplay.filter((src) => !src.includes("/cover"))]
+      : numberedFullOrDisplay.length > 0
+        ? numberedFullOrDisplay
+        : numberedImages;
+
   const sizePath = path.join(
     dir,
     files.includes("cover.jpg") ? "cover.jpg" : files.includes("cover-thumb.jpg") ? "cover-thumb.jpg" : "",
@@ -236,6 +257,13 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
   const coverHeight = size?.height ?? 3;
   const coverOrientation: "portrait" | "landscape" =
     coverHeight > coverWidth ? "portrait" : "landscape";
+
+  const numberedCaptions = readCaptions(slug).slice(0, numberedImages.length);
+  const imageCaptions: FrameImageCaption[] =
+    cover && files.includes("cover.jpg")
+      ? [{ date: "", place: { zh: "", en: "" } }, ...numberedCaptions]
+      : numberedCaptions;
+
   return {
     cover,
     coverThumb,
@@ -243,8 +271,8 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
     coverHeight,
     coverOrientation,
     images,
-    imagesFull: fullFallback,
-    imageCaptions: readCaptions(slug).slice(0, images.length),
+    imagesFull,
+    imageCaptions: imageCaptions.slice(0, images.length),
   };
 }
 
@@ -262,4 +290,19 @@ export function getFrameBySlug(slug: string): Frame | null {
   const meta = FRAMES_META.find((m) => m.slug === slug);
   if (!meta) return null;
   return { ...meta, ...readImages(slug) };
+}
+
+export function getAdjacentFrames(slug: string): {
+  prev: Pick<Frame, "slug" | "title"> | null;
+  next: Pick<Frame, "slug" | "title"> | null;
+} {
+  const ordered = getAllFrames();
+  const idx = ordered.findIndex((f) => f.slug === slug);
+  if (idx < 0) return { prev: null, next: null };
+  const prev = idx > 0 ? ordered[idx - 1] : null;
+  const next = idx < ordered.length - 1 ? ordered[idx + 1] : null;
+  return {
+    prev: prev ? { slug: prev.slug, title: prev.title } : null,
+    next: next ? { slug: next.slug, title: next.title } : null,
+  };
 }

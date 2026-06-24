@@ -11,15 +11,12 @@ export default function FramesPage() {
   const frames = getAllFrames().map((f) => ({
     slug: f.slug,
     title: f.title,
-    emoji: f.emoji,
     location: f.location,
     tags: f.tags,
     intro: f.intro,
-    cover: f.coverThumb || f.cover,
-    coverWidth: f.coverWidth,
-    coverHeight: f.coverHeight,
-    coverOrientation: f.coverOrientation,
+    cover: f.cover,
     count: f.images.length,
+    ongoing: f.ongoing,
   }));
 
   return <DemoFrames frames={frames} />;

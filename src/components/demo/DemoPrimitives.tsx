@@ -2,7 +2,31 @@
 
 import type { ReactNode } from "react";
 
-/** 分区标题：mono eyebrow + serif 大标题 + 可选副标题 */
+/** 页面顶栏：带横线的 mono eyebrow + serif 大标题 + 可选导语 */
+export function DemoPageHeader({
+  eyebrow,
+  title,
+  lead,
+  children,
+  className = "",
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  lead?: ReactNode;
+  children?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <header className={`demo-page-header max-w-2xl ${className}`}>
+      <p className="demo-eyebrow">{eyebrow}</p>
+      <h1 className="demo-page-title mt-5">{title}</h1>
+      {lead ? <p className="demo-page-lead mt-5">{lead}</p> : null}
+      {children}
+    </header>
+  );
+}
+
+/** 分区标题：mono eyebrow（无横线）+ 可选 serif 标题 + 副标题 */
 export function DemoSectionHeading({
   eyebrow,
   title,
@@ -10,20 +34,21 @@ export function DemoSectionHeading({
   className = "",
 }: {
   eyebrow?: string;
-  title: ReactNode;
+  title?: ReactNode;
   subtitle?: ReactNode;
   className?: string;
 }) {
+  const hasTitle = title != null && title !== "";
   return (
     <div className={className}>
-      {eyebrow ? (
-        <p className="font-mono-index text-[var(--color-forest)]">{eyebrow}</p>
+      {eyebrow ? <p className="demo-section-eyebrow">{eyebrow}</p> : null}
+      {hasTitle ? (
+        <h2 className={`demo-section-title ${eyebrow ? "mt-2" : ""}`}>{title}</h2>
       ) : null}
-      <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight text-[var(--color-ink)] sm:text-3xl">
-        {title}
-      </h2>
       {subtitle ? (
-        <p className="mt-2 max-w-2xl text-sm text-[var(--color-ink-muted)] sm:text-base">
+        <p
+          className={`demo-section-subtitle ${hasTitle ? "mt-2" : eyebrow ? "mt-2" : ""}`}
+        >
           {subtitle}
         </p>
       ) : null}
@@ -77,11 +102,11 @@ export function DemoCover({
 }
 
 const TONE_CLASS: Record<string, string> = {
-  live: "border-[var(--color-forest)] text-[var(--color-forest)] bg-[color-mix(in_srgb,var(--color-forest)_8%,transparent)]",
-  building: "border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[color-mix(in_srgb,var(--color-terracotta)_8%,transparent)]",
-  demo: "border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[color-mix(in_srgb,var(--color-terracotta)_6%,transparent)]",
-  fuzzy: "border-[var(--color-border)] text-[var(--color-ink-muted)] bg-[color-mix(in_srgb,var(--color-callout)_60%,transparent)]",
-  planned: "border-[var(--color-accent-warm)] text-[var(--color-accent-warm)] bg-[color-mix(in_srgb,var(--color-accent-warm)_8%,transparent)]",
+  live: "border-[var(--color-forest)] bg-[var(--color-forest)] text-[#fbf8f1] font-medium",
+  building: "border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[color-mix(in_srgb,var(--color-terracotta)_12%,transparent)] font-medium",
+  demo: "border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[color-mix(in_srgb,var(--color-terracotta)_14%,var(--color-paper))] font-semibold ring-1 ring-[color-mix(in_srgb,var(--color-terracotta)_25%,transparent)]",
+  fuzzy: "border-dashed border-[var(--color-border)] text-[var(--color-ink-muted)] bg-transparent",
+  planned: "border-[var(--color-accent-warm)] text-[var(--color-accent-warm)] bg-[color-mix(in_srgb,var(--color-accent-warm)_10%,transparent)]",
   done: "border-[var(--color-border)] text-[var(--color-ink-muted)]",
   wip: "border-[var(--color-terracotta)] text-[var(--color-terracotta)]",
   active: "border-[var(--color-forest)] text-[var(--color-forest)]",

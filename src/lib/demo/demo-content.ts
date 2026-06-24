@@ -83,5 +83,14 @@ export function getDemoProjectBody(slug: string): string | null {
   if (!fs.existsSync(file)) return null;
   const raw = fs.readFileSync(file, "utf-8");
   const { content } = matter(raw);
-  return content.trim();
+  return content.trim() || null;
+}
+
+/** 项目 MDX frontmatter 扩展字段（videoUrl 等） */
+export function getDemoProjectFrontmatter(slug: string): Record<string, unknown> {
+  const file = path.join(PROJECTS_DIR, `${slug}.mdx`);
+  if (!fs.existsSync(file)) return {};
+  const raw = fs.readFileSync(file, "utf-8");
+  const { data } = matter(raw);
+  return data as Record<string, unknown>;
 }

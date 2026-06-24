@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { pickText } from "@/lib/demo/demo-data";
 import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
 import {
   buildEditorialLayout,
   splitArticleBody,
 } from "@/lib/demo/life-article-layout";
+import { DemoSiteTrail } from "./DemoSiteTrail";
 import { LifeArticleBody } from "./LifeArticleBody";
 
 export function LifeSportArticle({
@@ -23,13 +23,13 @@ export function LifeSportArticle({
 
   return (
     <article className="site-shell py-10 sm:py-14">
-      <div className="mx-auto max-w-[680px]">
-        <Link
-          href="/life#sport"
-          className="text-sm text-[var(--color-forest)] hover:underline"
-        >
-          ← {zh ? "运动探索" : "Movement"}
-        </Link>
+        <DemoSiteTrail
+          items={[
+            { label: "Home", href: "/" },
+            { label: zh ? "Life Archive" : "Life Archive", href: "/life#sport" },
+            { label: title },
+          ]}
+        />
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-6">
           <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
@@ -53,7 +53,6 @@ export function LifeSportArticle({
         </header>
 
         <LifeArticleBody blocks={blocks} />
-      </div>
     </article>
   );
 }

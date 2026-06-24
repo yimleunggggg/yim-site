@@ -3,21 +3,19 @@
 import Link from "next/link";
 import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
-import { framesIntro, framesUi } from "@/lib/demo/demo-frames-ui";
+import { framesIntro, framesIntroAttribution, framesUi } from "@/lib/demo/demo-frames-ui";
+import { DemoPageHeader, DemoStatusTag } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
 
 type FrameCard = {
   slug: string;
   title: LText;
-  emoji: string;
   location: LText;
   tags: LText[];
   intro: LText;
   cover: string;
-  coverWidth: number;
-  coverHeight: number;
-  coverOrientation: "portrait" | "landscape";
   count: number;
+  ongoing?: boolean;
 };
 
 export function DemoFrames({ frames }: { frames: FrameCard[] }) {
@@ -25,15 +23,17 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
   const zh = locale === "zh";
 
   return (
-    <div className="site-shell demo-frames-page py-10 sm:py-14">
-      <header className="max-w-2xl">
-        <p className="demo-eyebrow">FRAMES</p>
-        <h1 className="demo-frames-title mt-5">{pickText(framesUi.pageTitle, zh)}</h1>
-        <p className="demo-frames-intro mt-5">{pickText(framesIntro, zh)}</p>
-      </header>
+    <div className="site-shell demo-frames-page pt-12 pb-14 sm:pt-16">
+      <DemoPageHeader eyebrow="FRAMES" title={pickText(framesUi.pageTitle, zh)}>
+        <blockquote className="demo-page-quote mt-5">
+          <p>{pickText(framesIntro, zh)}</p>
+          <footer className="demo-page-quote-source">
+            {pickText(framesIntroAttribution, zh)}
+          </footer>
+        </blockquote>
+      </DemoPageHeader>
 
-      {/* 瀑布流：横竖封面自然比例 */}
-      <div className="demo-frames-masonry mt-10">
+      <div className="demo-frames-grid mt-10">
         {frames.map((f, i) => {
           const hasIntro = (zh ? f.intro.zh : f.intro.en ?? f.intro.zh).trim().length > 0;
           return (
@@ -47,9 +47,7 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
                   <LazyImage
                     src={f.cover}
                     alt={pickText(f.title, zh)}
-                    width={f.coverWidth}
-                    height={f.coverHeight}
-                    priority={i < 3}
+                    priority={i < 4}
                     className="demo-frames-cover-img"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
@@ -58,13 +56,15 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
                 <span className="demo-frames-count">
                   {f.count} {pickText(framesUi.photoCount, zh)}
                 </span>
+                {f.ongoing ? (
+                  <span className="demo-frames-live">
+                    <DemoStatusTag tone="live">{pickText(framesUi.ongoingLabel, zh)}</DemoStatusTag>
+                  </span>
+                ) : null}
               </div>
 
               <div className="demo-frames-meta">
-                <p className="demo-frames-location">
-                  <span className="mr-1">{f.emoji}</span>
-                  {pickText(f.location, zh)}
-                </p>
+                <p className="demo-frames-location">{pickText(f.location, zh)}</p>
                 <h2 className="demo-frames-card-title">{pickText(f.title, zh)}</h2>
                 {hasIntro ? (
                   <p className="demo-frames-card-intro">{pickText(f.intro, zh)}</p>

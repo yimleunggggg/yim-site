@@ -5,39 +5,52 @@ import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesUi } from "@/lib/demo/demo-frames-ui";
 import type { FrameImageCaption } from "@/lib/demo/demo-frames-ui";
+import { DemoSiteTrail } from "./DemoSiteTrail";
+import { DemoStatusTag } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
+
+type FrameNeighbor = { slug: string; title: LText };
 
 type FrameDetail = {
   slug: string;
   title: LText;
-  emoji: string;
   location: LText;
   tags: LText[];
   intro: LText;
   images: string[];
   imagesFull: string[];
   imageCaptions: FrameImageCaption[];
+  ongoing?: boolean;
+  prev: FrameNeighbor | null;
+  next: FrameNeighbor | null;
 };
 
 export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
   const { locale } = useLocale();
   const zh = locale === "zh";
+  const title = pickText(frame.title, zh);
 
   const hasIntro = (zh ? frame.intro.zh : frame.intro.en ?? frame.intro.zh).trim().length > 0;
 
   return (
     <article className="site-shell demo-frames-detail py-10 sm:py-14">
       <div className="demo-frames-detail-inner">
-        <Link href="/frames" className="demo-text-link">
-          {pickText(framesUi.backLink, zh)}
-        </Link>
+        <DemoSiteTrail
+          items={[
+            { label: "Home", href: "/" },
+            { label: "FRAMES", href: "/frames" },
+            { label: title },
+          ]}
+        />
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-7">
-          <p className="demo-frames-location">
-            <span className="mr-1">{frame.emoji}</span>
-            {pickText(frame.location, zh)}
-          </p>
-          <h1 className="demo-frames-title mt-3">{pickText(frame.title, zh)}</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="demo-frames-location mb-0">{pickText(frame.location, zh)}</p>
+            {frame.ongoing ? (
+              <DemoStatusTag tone="live">{pickText(framesUi.ongoingLabel, zh)}</DemoStatusTag>
+            ) : null}
+          </div>
+          <h1 className="demo-frames-title mt-3">{title}</h1>
           <div className="demo-frames-tags mt-4">
             {frame.tags.map((t, i) => (
               <span key={i}>{pickText(t, zh)}</span>
@@ -59,7 +72,7 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
                     alt={
                       cap
                         ? `${cap.date} · ${pickText(cap.place, zh)}`
-                        : `${pickText(frame.title, zh)} ${i + 1}`
+                        : `${title} ${i + 1}`
                     }
                     priority={i < 1}
                     className="h-auto w-full select-none"
@@ -76,6 +89,28 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
             );
           })}
         </div>
+
+        {(frame.prev || frame.next) && (
+          <nav className="demo-frames-album-nav" aria-label={zh ? "相册导航" : "Album navigation"}>
+            {frame.prev ? (
+              <Link href={`/frames/${frame.prev.slug}`} className="demo-frames-album-link">
+                <span className="demo-frames-album-dir">{pickText(framesUi.prevAlbum, zh)}</span>
+                <span className="demo-frames-album-title">{pickText(frame.prev.title, zh)}</span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {frame.next ? (
+              <Link
+                href={`/frames/${frame.next.slug}`}
+                className="demo-frames-album-link demo-frames-album-link--next"
+              >
+                <span className="demo-frames-album-dir">{pickText(framesUi.nextAlbum, zh)}</span>
+                <span className="demo-frames-album-title">{pickText(frame.next.title, zh)}</span>
+              </Link>
+            ) : null}
+          </nav>
+        )}
       </div>
     </article>
   );

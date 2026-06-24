@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { DemoFrameDetail } from "@/components/demo/DemoFrameDetail";
-import { getFrameBySlug, getFrameSlugs } from "@/lib/demo/demo-frames";
+import { getAdjacentFrames, getFrameBySlug, getFrameSlugs } from "@/lib/demo/demo-frames";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -21,18 +21,22 @@ export default async function FrameDetailPage({ params }: Props) {
   const frame = getFrameBySlug(slug);
   if (!frame) notFound();
 
+  const { prev, next } = getAdjacentFrames(slug);
+
   return (
     <DemoFrameDetail
       frame={{
         slug: frame.slug,
         title: frame.title,
-        emoji: frame.emoji,
         location: frame.location,
         tags: frame.tags,
         intro: frame.intro,
         images: frame.images,
         imagesFull: frame.imagesFull,
         imageCaptions: frame.imageCaptions,
+        ongoing: frame.ongoing,
+        prev,
+        next,
       }}
     />
   );

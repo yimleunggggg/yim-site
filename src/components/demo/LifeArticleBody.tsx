@@ -38,9 +38,16 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
           );
         }
         return (
-          <figure key={idx} className="life-figure-grid" aria-label="">
-            {block.sources.map((src) => (
-              <LazyImage key={src} src={src} alt="" className="h-auto w-full" />
+          <figure key={idx} className="life-masonry" aria-label="">
+            {block.sources.map((src, j) => (
+              <div key={src} className="life-masonry-item">
+                <LazyImage
+                  src={src}
+                  alt=""
+                  priority={idx < 2 && j < 2}
+                  className="life-masonry-img"
+                />
+              </div>
             ))}
           </figure>
         );

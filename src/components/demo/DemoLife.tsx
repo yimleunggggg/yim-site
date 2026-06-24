@@ -8,7 +8,7 @@ import {
   demoLifeSportIntro,
 } from "@/lib/demo/demo-life-sport";
 import { useLocale } from "@/components";
-import { DemoCover, DemoSectionHeading } from "./DemoPrimitives";
+import { DemoCover, DemoPageHeader, DemoSectionHeading } from "./DemoPrimitives";
 import { LifeSportGallery } from "./LifeSportGallery";
 
 export function DemoLife() {
@@ -17,23 +17,21 @@ export function DemoLife() {
 
   return (
     <div className="life-page">
-      <section className="site-shell life-page-header pt-12 pb-8 sm:pt-16">
-        <h1 className="font-serif text-3xl font-bold leading-[1.15] text-[var(--color-ink)] sm:text-5xl">
-          {pickText(demoLifeHeader.title, zh)}
-        </h1>
-        <p className="mt-4 max-w-xl text-base text-[var(--color-ink-muted)] sm:text-lg">
-          {pickText(demoLifeHeader.tagline, zh)}
-        </p>
+      <section className="site-shell pt-12 pb-10 sm:pt-16">
+        <DemoPageHeader
+          eyebrow="LIFE ARCHIVE"
+          title={pickText(demoLifeHeader.title, zh)}
+          lead={pickText(demoLifeHeader.tagline, zh)}
+        />
       </section>
 
-      <section className="site-shell life-section" id="journal">
+      <section className="site-shell life-section py-10 sm:py-14" id="journal">
         <DemoSectionHeading
           eyebrow="JOURNAL"
-          title={zh ? "记录" : "Journal"}
           subtitle={
             zh
-              ? "旅行、义工、禅修、随笔——点击进入全文。"
-              : "Travel, volunteering, retreats, essays."
+              ? "旅行、义工、禅修、随笔——点标题看全文和图。"
+              : "Travel, volunteering, retreats, essays — click for full text and photos."
           }
         />
         <ul className="life-dispatch-feed mt-7">

@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { pickText } from "@/lib/demo/demo-data";
 import type { LifeJournalEntry } from "@/lib/demo/demo-life-journal";
 import {
   buildEditorialLayout,
 } from "@/lib/demo/life-article-layout";
+import { DemoSiteTrail } from "./DemoSiteTrail";
 import { LifeArticleBody } from "./LifeArticleBody";
 
 export function LifeJournalArticle({
@@ -23,13 +23,13 @@ export function LifeJournalArticle({
 
   return (
     <article className="site-shell py-10 sm:py-14">
-      <div className="mx-auto max-w-[680px]">
-        <Link
-          href="/life#journal"
-          className="text-sm text-[var(--color-forest)] hover:underline"
-        >
-          ← Life Archive
-        </Link>
+        <DemoSiteTrail
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Life Archive", href: "/life#journal" },
+            { label: title },
+          ]}
+        />
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-6">
           <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
@@ -58,7 +58,6 @@ export function LifeJournalArticle({
         </header>
 
         <LifeArticleBody blocks={blocks} />
-      </div>
     </article>
   );
 }
