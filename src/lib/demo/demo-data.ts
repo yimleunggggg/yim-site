@@ -488,8 +488,8 @@ export const demoAboutProjects: DemoAboutProject[] = [
     slug: "yakushima-bus-now",
     title: { zh: "Yakushima Bus", en: "Yakushima Bus" },
     tagline: {
-      zh: "屋久岛交通查询工具",
-      en: "Yakushima transit lookup tool",
+      zh: "屋久岛公交、船运、登山路线与 92 处 POI 地图",
+      en: "Yakushima bus, ferry, hiking routes & 92-point POI map",
     },
     status: "live",
     categories: ["product", "travel"],
@@ -632,14 +632,14 @@ export const demoProjects: DemoProject[] = [
   {
     slug: "yakushima-bus-now",
     title: { zh: "Yakushima Bus" },
-    tagline: { zh: "屋久岛交通查询工具" },
+    tagline: { zh: "屋久岛公交、船运、登山路线与 92 处 POI 地图" },
     type: { zh: "产品 · 静态站" },
     status: { zh: "Live" },
     statusTone: "live",
-    period: "2025",
+    period: "2025–2026",
     liveUrl: "https://yakushimabus.com",
     githubUrl: "https://github.com/yimleunggggg/Yakushima-bus",
-    cover: "/work/yakushima-cover.jpg",
+    cover: "/work/projects/yakushima-bus/yakushima-cover.jpg",
   },
   {
     slug: "ai-training",

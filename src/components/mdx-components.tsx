@@ -9,6 +9,7 @@ import {
   PipelineDiagram,
 } from "@/components";
 import { BeerTravelHongKong } from "@/components/demo/BeerTravelHongKong";
+import { YakushimaBusScreenshots } from "@/components/demo/YakushimaBusScreenshots";
 
 function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   const { alt, src, ...rest } = props;
@@ -40,5 +41,6 @@ export const mdxComponents = {
   SupplementBlock,
   PipelineDiagram,
   BeerTravelHongKong,
+  YakushimaBusScreenshots,
   img: MdxImage,
 };
