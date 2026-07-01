@@ -140,18 +140,18 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
         aria-expanded={open}
         className="demo-work-trigger tap-target"
       >
-        <span className="demo-work-head">
-          <span className="demo-work-line">
-            <span className="demo-work-company">{pickText(work.company, zh)}</span>
-            <span className="demo-work-sep" aria-hidden>
-              ·
-            </span>
-            <span className="demo-work-role">{pickText(work.role, zh)}</span>
-            <span className="demo-work-sep demo-work-sep--meta" aria-hidden>
-              ·
+        <span className="demo-work-main">
+          <span className="demo-work-top">
+            <span className="demo-work-identity">
+              <span className="demo-work-company">{pickText(work.company, zh)}</span>
+              <span className="demo-work-role">{pickText(work.role, zh)}</span>
             </span>
             <span className="demo-work-meta">
-              {work.period} · {pickText(work.location, zh)}
+              {work.period}
+              <span className="demo-work-meta-sep" aria-hidden>
+                ·
+              </span>
+              {pickText(work.location, zh)}
             </span>
           </span>
           {tags.length > 0 ? (

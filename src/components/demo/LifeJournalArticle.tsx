@@ -18,7 +18,6 @@ export function LifeJournalArticle({
     flow: entry.flow,
     paragraphs,
     images: entry.images,
-    intro: entry.oneLine ? pickText(entry.oneLine, zh) : undefined,
     imageFirst: entry.imageFirst,
     singleLongImage: entry.imageFirst && entry.images.length === 1,
     imagesAtEnd: entry.imagesAtEnd,
@@ -53,6 +52,11 @@ export function LifeJournalArticle({
               </>
             ) : null}
           </div>
+          {entry.oneLine ? (
+            <p className="life-article-deck mt-4 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
+              {pickText(entry.oneLine, zh)}
+            </p>
+          ) : null}
         </header>
 
         <LifeArticleBody blocks={blocks} />

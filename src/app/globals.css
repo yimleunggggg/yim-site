@@ -567,7 +567,59 @@
     opacity: 0.65;
   }
 
-  /* 微信原文转载 + 啤酒旅行社活动 */
+  .project-related-card--stacked {
+    display: block;
+    cursor: default;
+  }
+
+  .project-related-card--stacked:hover {
+    border-color: color-mix(in srgb, var(--color-forest) 45%, var(--color-border));
+    box-shadow: 0 8px 24px -16px rgb(26 26 24 / 14%);
+  }
+
+  .project-related-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .project-related-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.875rem;
+    border: 1px solid color-mix(in srgb, var(--color-forest) 28%, var(--color-border));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-forest) 6%, var(--color-paper));
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-forest);
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .project-related-action:hover {
+    border-color: color-mix(in srgb, var(--color-forest) 55%, var(--color-border));
+    background: color-mix(in srgb, var(--color-forest) 12%, var(--color-paper));
+    color: var(--color-ink);
+  }
+
+  .project-related-action .project-related-arrow {
+    grid-column: auto;
+    grid-row: auto;
+    font-size: 0.8125rem;
+    opacity: 0.7;
+  }
+
+  .beer-matters-activity-list {
+    margin-top: 1rem;
+  }
   .beer-travel-section {
     margin-top: 3rem;
     padding-top: 2rem;
@@ -2213,7 +2265,7 @@
 
 .demo-work-trigger {
   align-items: flex-start;
-  padding: 0.65rem 0;
+  padding: 0.85rem 0;
   border-radius: 2px;
   transition: background-color 0.15s ease;
 }
@@ -2222,47 +2274,37 @@
   background: color-mix(in srgb, var(--color-forest) 4%, transparent);
 }
 
-.demo-work-head {
+.demo-work-main {
   display: flex;
   min-width: 0;
   flex: 1;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.55rem;
 }
 
-.demo-work-line {
+.demo-work-top {
   display: flex;
   min-width: 0;
-  flex: 1;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem 0.5rem;
-  row-gap: 0.25rem;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
 }
 
-.demo-work-sep {
-  color: color-mix(in srgb, var(--color-ink-muted) 55%, transparent);
-  font-size: 0.75rem;
-  user-select: none;
-}
-
-.demo-work-sep--meta {
-  display: none;
-}
-
-@media (min-width: 480px) {
-  .demo-work-sep--meta {
-    display: inline;
-  }
+.demo-work-identity {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
 }
 
 .demo-work-company {
   font-family: var(--font-serif, Georgia, serif);
   font-size: 0.9375rem;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--color-ink);
-  white-space: nowrap;
 }
 
 @media (min-width: 640px) {
@@ -2273,17 +2315,20 @@
 
 .demo-work-role {
   font-size: 0.8125rem;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--color-forest);
-  white-space: nowrap;
 }
 
 .demo-work-meta {
+  display: inline-flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.5625rem;
   letter-spacing: 0.04em;
   color: var(--color-ink-muted);
-  white-space: nowrap;
 }
 
 @media (min-width: 640px) {
@@ -2292,11 +2337,14 @@
   }
 }
 
+.demo-work-meta-sep {
+  opacity: 0.55;
+}
+
 .demo-work-tags-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 0.5rem;
-  margin-top: 0.1rem;
+  gap: 0.35rem 0.45rem;
 }
 
 .demo-work-tags-inline {
@@ -2443,7 +2491,7 @@
 }
 
 .demo-project-table-head {
-  padding: 0.5rem 0 0.65rem;
+  padding: 0.5rem 0 0.65rem 0.75rem;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.5625rem;
   letter-spacing: 0.1em;
@@ -2459,23 +2507,24 @@
 }
 
 .demo-project-table-row {
-  padding: 0.875rem 0;
+  padding: 0.875rem 0 0.875rem 0.75rem;
   border-bottom: 1px solid var(--color-border);
+  border-left: 3px solid transparent;
   text-decoration: none;
   color: inherit;
   transition:
     background 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-.demo-project-table-row--link {
-  box-shadow: inset 3px 0 0 transparent;
+    border-color 0.15s ease;
 }
 
 .demo-project-table-row--link:hover,
 .demo-project-table-row--link:focus-visible {
   background: color-mix(in srgb, var(--color-forest) 5%, transparent);
-  box-shadow: inset 3px 0 0 var(--color-terracotta);
+  border-left-color: var(--color-terracotta);
+}
+
+.demo-project-table-row--link {
+  box-shadow: none;
 }
 
 .demo-project-table-name {
@@ -2629,73 +2678,8 @@
 
 .beer-matters-activity-list {
   list-style: none;
-  margin: 1.25rem 0 0;
+  margin: 1rem 0 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.beer-matters-activity-item {
-  padding: 1rem 1.125rem;
-  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--color-card) 94%, white);
-}
-
-.beer-matters-activity-title {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
-  font-weight: 500;
-  line-height: 1.35;
-  color: var(--color-ink);
-}
-
-@media (min-width: 640px) {
-  .beer-matters-activity-title {
-    font-size: 1.25rem;
-  }
-}
-
-.beer-matters-activity-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-.beer-matters-activities .beer-matters-activity-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 0.875rem;
-  border: 1px solid color-mix(in srgb, var(--color-forest) 28%, var(--color-border));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-forest) 6%, var(--color-paper));
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: 0;
-  color: var(--color-forest);
-  text-decoration: none;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.beer-matters-activities .beer-matters-activity-link:hover {
-  border-color: color-mix(in srgb, var(--color-forest) 55%, var(--color-border));
-  background: color-mix(in srgb, var(--color-forest) 12%, var(--color-paper));
-  color: var(--color-ink);
-}
-
-.beer-matters-activity-arrow {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  opacity: 0.7;
 }
 
 @media (max-width: 767px) {
@@ -2732,30 +2716,32 @@
   }
 }
 
-/* Life Archive — 叙事列表（纯文字索引，无缩略图） */
+/* Life Archive — 日记卡片列表 */
 .life-dispatch-feed {
   list-style: none;
   margin: 0;
   padding: 0;
   width: 100%;
   max-width: none;
-  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
 }
 
-.life-dispatch-row {
-  display: grid;
-  grid-template-columns: minmax(5.25rem, 6.75rem) minmax(0, 1fr) auto;
-  gap: 0.75rem 1.25rem;
-  align-items: start;
+.life-dispatch-card {
+  display: block;
   width: 100%;
-  padding: 1.125rem 0.35rem;
-  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 1.125rem;
+  border: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-card) 92%, white);
   text-align: left;
   text-decoration: none;
   color: inherit;
   transition:
-    background-color 0.18s ease,
-    border-color 0.18s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .life-dispatch-link {
@@ -2769,11 +2755,11 @@
 .life-dispatch-link:focus-visible {
   outline: 2px solid var(--color-terracotta);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 .life-dispatch-link:hover {
-  background: color-mix(in srgb, var(--color-callout) 50%, transparent);
+  border-color: color-mix(in srgb, var(--color-forest) 45%, var(--color-border));
+  box-shadow: 0 8px 24px -16px rgb(26 26 24 / 14%);
 }
 
 .life-dispatch-link:hover .life-dispatch-title {
@@ -2785,23 +2771,19 @@
   transform: translateX(3px);
 }
 
-.life-dispatch-row--static {
-  display: grid;
-  grid-template-columns: minmax(5.25rem, 6.75rem) minmax(0, 1fr);
-  gap: 0.75rem 1.25rem;
-  align-items: start;
-  width: 100%;
-  padding: 1.125rem 0.35rem;
-  border-bottom: 1px solid var(--color-border);
-  cursor: default;
-  opacity: 0.92;
+.life-dispatch-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
 }
 
-.life-dispatch-date {
+.life-dispatch-meta {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding-top: 0.1rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.625rem;
   letter-spacing: 0.05em;
@@ -2816,27 +2798,29 @@
   color: color-mix(in srgb, var(--color-ink-muted) 88%, var(--color-forest));
 }
 
+.life-dispatch-date-loc::before {
+  content: "·";
+  margin-right: 0.35rem;
+  opacity: 0.55;
+}
+
 .life-dispatch-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  margin-top: 0.15rem;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
 }
 
 .life-tag--meta {
-  font-size: 0.5rem;
-  padding: 0.12rem 0.35rem;
+  font-size: 0.5625rem;
+  padding: 0.18rem 0.45rem;
   letter-spacing: 0.04em;
-}
-
-.life-dispatch-copy {
-  min-width: 0;
 }
 
 .life-dispatch-title {
   margin: 0;
   font-family: var(--font-serif, Georgia, serif);
-  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  font-size: clamp(1.0625rem, 2.2vw, 1.25rem);
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -2845,11 +2829,10 @@
 }
 
 .life-dispatch-oneline {
-  margin: 0.4rem 0 0;
+  margin: 0.45rem 0 0;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   line-height: 1.65;
-  letter-spacing: 0.02em;
   color: var(--color-ink-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2878,42 +2861,14 @@
 }
 
 .life-dispatch-arrow {
-  align-self: center;
+  flex-shrink: 0;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.8125rem;
   color: var(--color-forest);
-  opacity: 0.4;
+  opacity: 0.45;
   transition:
     opacity 0.18s ease,
     transform 0.18s ease;
-}
-
-@media (max-width: 479px) {
-  .life-dispatch-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.5rem 0.75rem;
-    padding: 1rem 0.15rem;
-  }
-
-  .life-dispatch-date {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.35rem 0.65rem;
-    padding-top: 0;
-  }
-
-  .life-dispatch-copy {
-    grid-column: 1;
-  }
-
-  .life-dispatch-arrow {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-    margin-top: 0.15rem;
-  }
 }
 
 .life-dispatch-modal-media {

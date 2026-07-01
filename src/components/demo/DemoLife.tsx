@@ -40,35 +40,35 @@ export function DemoLife() {
               <li key={entry.id}>
                 <Link
                   href={`/life/journal/${entry.id}`}
-                  className="life-dispatch-row life-dispatch-link tap-target"
+                  className="life-dispatch-card life-dispatch-link tap-target"
                   aria-label={title}
                 >
-                  <div className="life-dispatch-date">
-                    <time dateTime={entry.date}>{entry.date}</time>
-                    {location ? (
-                      <span className="life-dispatch-date-loc">{location}</span>
-                    ) : null}
-                    {entry.tags.length > 0 ? (
-                      <div className="life-dispatch-tags">
-                        {entry.tags.map((tag) => (
-                          <span key={tag} className="life-tag life-tag--meta">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
+                  <div className="life-dispatch-card-head">
+                    <div className="life-dispatch-meta">
+                      <time dateTime={entry.date}>{entry.date}</time>
+                      {location ? (
+                        <span className="life-dispatch-date-loc">{location}</span>
+                      ) : null}
+                    </div>
+                    <span className="life-dispatch-arrow" aria-hidden>
+                      →
+                    </span>
                   </div>
-                  <div className="life-dispatch-copy">
-                    <h3 className="life-dispatch-title">{title}</h3>
-                    {entry.oneLine ? (
-                      <p className="life-dispatch-oneline">
-                        {pickText(entry.oneLine, zh)}
-                      </p>
-                    ) : null}
-                  </div>
-                  <span className="life-dispatch-arrow" aria-hidden>
-                    →
-                  </span>
+                  <h3 className="life-dispatch-title">{title}</h3>
+                  {entry.oneLine ? (
+                    <p className="life-dispatch-oneline">
+                      {pickText(entry.oneLine, zh)}
+                    </p>
+                  ) : null}
+                  {entry.tags.length > 0 ? (
+                    <div className="life-dispatch-tags">
+                      {entry.tags.map((tag) => (
+                        <span key={tag} className="life-tag life-tag--meta">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </Link>
               </li>
             );

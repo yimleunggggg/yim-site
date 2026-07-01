@@ -35,7 +35,7 @@ export type LifeJournalEntry = {
   body: LText[];
   /** 长图条目：modal 内图片完整展示 */
   imageFirst?: boolean;
-  /** 无 flow 时：正文在前、图在文末 */
+  /** 无 flow 时：正文在前、图在文末 masonry 2–3 张混排（Life Archive 本地篇默认） */
   imagesAtEnd?: boolean;
   /** 默认读 life-journal-bodies.json；false = 只用本条目 body */
   importBodyFromFile?: boolean;
@@ -78,8 +78,7 @@ function withImportedBodies(entries: LifeJournalEntry[]): LifeJournalEntry[] {
       entry.useFlow === false || localBody.length > 0 || entry.importBodyFromFile === false
         ? undefined
         : (importedFlow ?? undefined);
-    const imagesAtEnd =
-      entry.imagesAtEnd ?? (flow == null && assets.images.length > 0);
+    const imagesAtEnd = entry.imagesAtEnd ?? flow == null;
     return {
       ...entry,
       cover: assets.cover || entry.cover,
@@ -95,16 +94,23 @@ function pickBodyText(p: LText): string {
   return p.zh ?? p.en ?? "";
 }
 
+function sortJournalByDate(entries: LifeJournalEntry[]): LifeJournalEntry[] {
+  return [...entries].sort((a, b) => b.date.localeCompare(a.date));
+}
+
 const journalEntriesBase: LifeJournalEntry[] = [
   {
     id: "yakushima",
     date: "2026-05",
-    title: { zh: "日本屋久岛 · 徒步与露营", en: "Yakushima · Trekking & Camping" },
-    location: { zh: "鹿儿岛 · 屋久岛", en: "Kagoshima · Yakushima" },
-    tags: ["旅行", "徒步", "露营"],
+    title: {
+      zh: "海上原始森林，万物静默，野蛮生长",
+      en: "Ancient forest by the sea — quiet, wild, and growing",
+    },
+    location: { zh: "日本，屋久岛", en: "Japan · Yakushima" },
+    tags: ["露营", "徒步", "背包旅行"],
     oneLine: {
-      zh: "屋久岛重装徒步，雨下了整整六小时，鞋里灌满水。",
-      en: "Backpacking Yakushima — six hours of rain, shoes full of water.",
+      zh: "自己在海边扎营，醒了就进山徒步，晚上找温泉洗漱，又野又自在的离岛生活",
+      en: "Camped by the sea, hiked by day, hot springs at night — wild and free on a remote island",
     },
     cover: "",
     images: [],
@@ -113,12 +119,15 @@ const journalEntriesBase: LifeJournalEntry[] = [
   {
     id: "wonderfruit",
     date: "2025-12",
-    title: { zh: "Wonderfruit · 十周年", en: "Wonderfruit · 10th Anniversary" },
-    location: { zh: "泰国", en: "Thailand" },
-    tags: ["音乐节", "旅行"],
+    title: {
+      zh: "音乐，音乐太美好了",
+      en: "The music — the music was so beautiful",
+    },
+    location: { zh: "泰国，芭提雅", en: "Thailand · Pattaya" },
+    tags: ["音乐节", "冥想", "露营", "背包旅行"],
     oneLine: {
-      zh: "Wonderfruit 十周年，帐篷、音乐、艺术和一堆脏脚丫。",
-      en: "Wonderfruit at ten — tents, music, art, and very dirty feet.",
+      zh: "在田中扎营、音乐、艺术和一堆脏脚丫",
+      en: "Camped in the fields — music, art, and very dirty feet",
     },
     cover: "",
     images: [],
@@ -126,22 +135,26 @@ const journalEntriesBase: LifeJournalEntry[] = [
   },
   {
     id: "turning-31",
-    date: "2025-09-22",
+    date: "2025-09",
     title: { zh: "写在 31 岁这一天", en: "On Turning 31" },
-    tags: ["随笔"],
+    location: { zh: "中国，杭州", en: "China · Hangzhou" },
+    tags: ["随笔", "日记"],
     cover: "",
     images: [],
     body: [],
   },
   {
     id: "west-sichuan-2025",
-    date: "2025-06",
-    title: { zh: "川西 Road Trip", en: "West Sichuan Road Trip" },
-    location: { zh: "四川 · 川西", en: "Sichuan · Western Sichuan" },
-    tags: ["旅行", "川西"],
+    date: "2025-05",
+    title: {
+      zh: "临时起意的road trip",
+      en: "A last-minute road trip",
+    },
+    location: { zh: "中国，川藏", en: "China · Sichuan–Tibet route" },
+    tags: ["公路", "自驾游", "旅行"],
     oneLine: {
-      zh: "几天几段，车窗外的山与云。",
-      en: "Days on the road — mountains and clouds through the window.",
+      zh: "几天几段，与山与云",
+      en: "Days and segments — with mountains and clouds",
     },
     cover: "",
     images: [],
@@ -163,12 +176,15 @@ const journalEntriesBase: LifeJournalEntry[] = [
   {
     id: "pa-pae",
     date: "2025-01",
-    title: { zh: "Pa Pae · 禅修营", en: "Pa Pae · Meditation Retreat" },
-    location: { zh: "泰国", en: "Thailand" },
-    tags: ["禅修", "旅行"],
+    title: {
+      zh: "泰北山中禅修几日",
+      en: "A few days of meditation in the northern hills",
+    },
+    location: { zh: "泰国，清迈", en: "Thailand · Chiang Mai" },
+    tags: ["禅修", "旅行", "佛教"],
     oneLine: {
-      zh: "泰国 Pa Pae，一周禁语，只剩走路、吃饭和坐着。",
-      en: "Pa Pae, Thailand — a week of silence, walking, eating, sitting.",
+      zh: "学习审视自己的身体，和自己对话",
+      en: "Learning to notice my body and talk to myself",
     },
     cover: "",
     images: [],
@@ -176,12 +192,30 @@ const journalEntriesBase: LifeJournalEntry[] = [
   },
   {
     id: "keep-growing",
-    date: "2024-09-22",
-    title: { zh: "继续生长 · 写在 30 岁", en: "Keep Growing · On Turning 30" },
-    tags: ["随笔"],
+    date: "2024-09",
+    title: { zh: "写在 30 岁这一天", en: "On Turning 30" },
+    location: { zh: "中国，广东，广州", en: "China · Guangzhou, Guangdong" },
+    tags: ["随笔", "日记"],
     oneLine: {
-      zh: "好像来到了一个很大的「人生节点」，其实什么大事儿都没完成。",
-      en: "Felt like a big life milestone — hadn't actually finished anything big.",
+      zh: "好像来到了一个很大的人生节点，其实什么大事儿都没完成。",
+      en: "Felt like a huge life milestone — hadn't actually finished anything big.",
+    },
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
+    id: "lamma-island",
+    date: "2024-09",
+    title: {
+      zh: "离岛上喝酒认识年长30岁的老友 一见十年",
+      en: "Drinks on the island — a godfather thirty years older, ten years in one night",
+    },
+    location: { zh: "香港，南丫岛", en: "Hong Kong · Lamma Island" },
+    tags: ["旅行", "随笔"],
+    oneLine: {
+      zh: "十年，时移势易，世界纷纭，小岛恒常。",
+      en: "Ten years — the world shifts, the little island stays the same.",
     },
     cover: "",
     images: [],
@@ -202,25 +236,14 @@ const journalEntriesBase: LifeJournalEntry[] = [
     body: [],
   },
   {
-    id: "surf-volunteer",
-    date: "2023-07",
-    title: { zh: "冲浪店义工 · 七月的海水味", en: "Surf Shop Volunteer · July by the Sea" },
-    location: { zh: "广东惠州", en: "Huizhou, Guangdong" },
-    tags: ["冲浪", "义工", "随笔"],
-    oneLine: {
-      zh: "惠州冲浪店义工，整个七月泡在海水和防晒里。",
-      en: "Surf shop volunteer in Huizhou — all of July in salt water and sunscreen.",
-    },
-    cover: "",
-    images: [],
-    body: [],
-  },
-  {
     id: "sabah-ow",
     date: "2023-08",
-    title: { zh: "OW 潜水证 · 马来西亚亚庇", en: "OW Certification · Kota Kinabalu" },
-    location: { zh: "沙巴 · 亚庇", en: "Sabah · Kota Kinabalu" },
-    tags: ["潜水", "旅行"],
+    title: {
+      zh: "「它将永远改变您体验世界的方式」",
+      en: "It will forever change the way you experience the world",
+    },
+    location: { zh: "马来西亚，仙本那", en: "Malaysia · Semporna" },
+    tags: ["潜水", "背包旅行"],
     oneLine: {
       zh: "亚庇学 OW，第一次咬着呼吸器在水下走路。",
       en: "Open Water in Kota Kinabalu — first steps underwater with a regulator.",
@@ -230,9 +253,29 @@ const journalEntriesBase: LifeJournalEntry[] = [
     body: [],
   },
   {
+    id: "surf-volunteer",
+    date: "2023-07",
+    title: {
+      zh: "风景是别的 人是别的 又是别的",
+      en: "Different scenery, different people, something else again",
+    },
+    location: { zh: "中国，广东，惠州", en: "China · Huizhou, Guangdong" },
+    tags: ["义工", "冲浪", "随笔"],
+    oneLine: {
+      zh: "在冲浪店做了一个月义工，生活满是海水味，满身夏天的痕迹",
+      en: "A month volunteering at a surf shop — life smelled of seawater and traces of summer",
+    },
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
     id: "sri-lanka",
     date: "2016-06",
-    title: { zh: "斯里兰卡 · 国际义工", en: "Sri Lanka · International Volunteer" },
+    title: {
+      zh: "印度洋上的明珠",
+      en: "Pearl of the Indian Ocean",
+    },
     location: { zh: "斯里兰卡", en: "Sri Lanka" },
     tags: ["义工", "旅行"],
     oneLine: {
@@ -245,7 +288,7 @@ const journalEntriesBase: LifeJournalEntry[] = [
   },
 ];
 
-export const demoLifeJournal = withImportedBodies(journalEntriesBase);
+export const demoLifeJournal = sortJournalByDate(withImportedBodies(journalEntriesBase));
 
 export function getLifeJournalSlugs(): string[] {
   return demoLifeJournal.map((e) => e.id);

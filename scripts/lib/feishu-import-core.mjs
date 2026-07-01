@@ -17,7 +17,14 @@ export async function proxyNew(url) {
 
 export async function proxyEval(targetId, js) {
   const res = await fetch(`${FEISHU_PROXY}/eval?target=${targetId}`, { method: "POST", body: js });
-  const data = await res.json();
+  const text = await res.text();
+  if (!text.trim()) return null;
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error("proxy eval returned invalid JSON");
+  }
   if (data.error) throw new Error(data.error);
   const raw = data.value ?? data.result;
   if (typeof raw === "string") {
@@ -190,7 +197,17 @@ async function fetchMissingImages(targetId, imgMap, srcs) {
 
 async function getToc(targetId) {
   const js = `(() => JSON.stringify([...document.querySelectorAll(".catalogue__item-title")].map((el) => el.textContent.trim()).filter(Boolean)))()`;
-  return proxyEval(targetId, js);
+  const raw = await proxyEval(targetId, js);
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === "string") {
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  }
+  return [];
 }
 
 async function clickTocItem(targetId, title) {
@@ -212,11 +229,19 @@ export async function fetchFeishuDoc(url, { useToc = false, onProgress } = {}) {
   const imgMap = new Map();
 
   async function pass(label) {
-    await proxyEval(targetId, SCROLL_JS).catch(() => {});
+    try {
+      await proxyEval(targetId, SCROLL_JS);
+    } catch {
+      /* scroll best-effort */
+    }
     await new Promise((r) => setTimeout(r, 500));
-    mergeBlocks(allBlocks, await proxyEval(targetId, EXTRACT_BLOCKS_JS));
-    for (const im of await proxyEval(targetId, CAPTURE_IMAGES_JS)) {
-      if (im.data) imgMap.set(im.src, im.data);
+    const extracted = await proxyEval(targetId, EXTRACT_BLOCKS_JS);
+    if (Array.isArray(extracted)) mergeBlocks(allBlocks, extracted);
+    const captured = await proxyEval(targetId, CAPTURE_IMAGES_JS);
+    if (Array.isArray(captured)) {
+      for (const im of captured) {
+        if (im.data) imgMap.set(im.src, im.data);
+      }
     }
     log(`${label}: ${allBlocks.length} blocks, ${imgMap.size} imgs`);
   }
@@ -224,11 +249,15 @@ export async function fetchFeishuDoc(url, { useToc = false, onProgress } = {}) {
   await pass("initial");
 
   if (useToc) {
-    const toc = await getToc(targetId);
+    const toc = (await getToc(targetId)) ?? [];
     for (const title of toc) {
-      await clickTocItem(targetId, title);
-      await new Promise((r) => setTimeout(r, 900));
-      await pass(title.slice(0, 24));
+      try {
+        await clickTocItem(targetId, title);
+        await new Promise((r) => setTimeout(r, 1200));
+        await pass(title.slice(0, 24));
+      } catch (e) {
+        log(`skip toc「${title.slice(0, 20)}」: ${e.message}`);
+      }
     }
     await pass("final-scroll");
   } else {

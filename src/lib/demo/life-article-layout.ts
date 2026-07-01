@@ -51,25 +51,26 @@ export type BuildLifeArticleOptions = {
   imagesAtEnd?: boolean;
 };
 
-/** 段落全部在前，图片以全宽 figure 集中在文末（无 masonry 边框） */
+/** 段落全部在前，图片在文末以 masonry 混排（2–3 张一组，不遗漏） */
 export function buildImagesAtEndLayout(
   paragraphs: string[],
   images: string[],
 ): LayoutBlock[] {
   const blocks: LayoutBlock[] = [];
   for (const text of paragraphs) blocks.push({ type: "paragraph", text });
-  for (const src of images) {
-    blocks.push({ type: "figure", src, variant: "wide" });
-  }
+  pushImages(blocks, images);
   return blocks;
 }
 
-/** Life 文章统一块流：flow 优先，否则从 body+images 生成 */
+/** Life 文章统一块流（Life Archive 专用）
+ *  - 有 flow：保留正文顺序，连续图片块一律合并为 2–3 张 masonry
+ *  - 无 flow：正文在前 + manifest 全部图片文末 masonry
+ */
 export function buildLifeArticleBlocks(opts: BuildLifeArticleOptions): LayoutBlock[] {
   let base: LayoutBlock[];
   if (opts.flow?.length) {
-    base = opts.flow;
-  } else if (opts.imagesAtEnd) {
+    base = rebuildFlowImagesAsMasonry(opts.flow);
+  } else if (opts.imagesAtEnd !== false) {
     base = buildImagesAtEndLayout(opts.paragraphs, opts.images);
   } else {
     base = buildEditorialLayout(opts.paragraphs, opts.images, {
@@ -78,6 +79,35 @@ export function buildLifeArticleBlocks(opts: BuildLifeArticleOptions): LayoutBlo
     });
   }
   return mergeIntroIntoBlocks(base, opts.intro);
+}
+
+/** flow 中连续 figure/masonry 合并为 masonry 组，单图竖排不再出现 */
+function rebuildFlowImagesAsMasonry(blocks: LayoutBlock[]): LayoutBlock[] {
+  const out: LayoutBlock[] = [];
+  let i = 0;
+  while (i < blocks.length) {
+    const block = blocks[i];
+    if (block.type === "figure" || block.type === "masonry") {
+      const sources: string[] = [];
+      while (i < blocks.length) {
+        const row = blocks[i];
+        if (row.type === "figure") {
+          sources.push(row.src);
+          i += 1;
+        } else if (row.type === "masonry") {
+          sources.push(...row.sources);
+          i += 1;
+        } else {
+          break;
+        }
+      }
+      pushImages(out, sources);
+      continue;
+    }
+    out.push(block);
+    i += 1;
+  }
+  return out;
 }
 
 /** 飞书 / Life 正文统一预处理：章节标题成组、列表合并 */
@@ -143,7 +173,13 @@ export function preprocessLifeBlocks(blocks: LayoutBlock[]): LifeEditorialBlock[
   return out;
 }
 
-const MAX_GALLERY = 3;
+/** 2–3 张一组 masonry；余 1 张时并入上一组，避免末尾竖排单图 */
+function galleryChunkSize(remaining: number): number {
+  if (remaining <= 3) return remaining;
+  if (remaining === 4) return 2;
+  if (remaining % 3 === 1) return 2;
+  return 3;
+}
 
 function pushImages(blocks: LayoutBlock[], sources: string[]) {
   if (sources.length === 0) return;
@@ -151,13 +187,17 @@ function pushImages(blocks: LayoutBlock[], sources: string[]) {
     blocks.push({ type: "figure", src: sources[0], variant: "wide" });
     return;
   }
-  for (let i = 0; i < sources.length; i += MAX_GALLERY) {
-    const chunk = sources.slice(i, i + MAX_GALLERY);
+  let i = 0;
+  while (i < sources.length) {
+    const remaining = sources.length - i;
+    const size = galleryChunkSize(remaining);
+    const chunk = sources.slice(i, i + size);
     if (chunk.length === 1) {
       blocks.push({ type: "figure", src: chunk[0], variant: "wide" });
     } else {
       blocks.push({ type: "masonry", sources: chunk });
     }
+    i += size;
   }
 }
 

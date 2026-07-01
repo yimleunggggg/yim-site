@@ -8,7 +8,11 @@ export const JOURNAL_FOLDERS = {
   "2023.8 马来西亚亚庇考了OW潜水证 ": "sabah-ow",
   "2023.8 马来西亚亚庇考了OW潜水证": "sabah-ow",
   "2026.5 日本屋久岛徒步及露营行程": "yakushima",
+  "2024.9 南丫岛": "lamma-island",
 };
 
 /** 飞书导入的 journal slug：import-life 从 public 目录同步 manifest，不覆盖 flow */
 export const FEISHU_JOURNAL_SLUGS = ["turning-31", "sri-lanka", "west-sichuan-2025"];
+
+/** 暂不展示图片（拼图待还原前勿 import） */
+export const JOURNAL_IMAGE_DISABLED = ["keep-growing"];

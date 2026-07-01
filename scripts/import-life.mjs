@@ -9,7 +9,7 @@ import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 
-import { JOURNAL_FOLDERS, FEISHU_JOURNAL_SLUGS } from "./life-journal-folders.mjs";
+import { JOURNAL_FOLDERS, FEISHU_JOURNAL_SLUGS, JOURNAL_IMAGE_DISABLED } from "./life-journal-folders.mjs";
 
 const ROOT = process.cwd();
 const SRC = path.join(ROOT, "生活体验");
@@ -118,6 +118,10 @@ const manifest = fs.existsSync(MANIFEST_OUT)
   : {};
 
 for (const [folder, slug] of Object.entries(JOURNAL_FOLDERS)) {
+  if (JOURNAL_IMAGE_DISABLED.includes(slug)) {
+    console.log(`  journal/${slug}: skip (images disabled)`);
+    continue;
+  }
   importJournalFolder(folder, slug, manifest);
 }
 
@@ -132,6 +136,9 @@ for (const slug of FEISHU_JOURNAL_SLUGS) {
 // 移除已删条目的 manifest
 for (const removed of ["chiang-mai-2024", "hk-brewery-hike", "gansu-hops"]) {
   delete manifest[removed];
+}
+for (const slug of JOURNAL_IMAGE_DISABLED) {
+  manifest[slug] = { cover: "", images: [] };
 }
 
 fs.writeFileSync(MANIFEST_OUT, JSON.stringify(manifest, null, 2) + "\n", "utf8");
