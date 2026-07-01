@@ -36,7 +36,7 @@ export function LifeJournalArticle({
         />
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-6">
-          <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
+          <h1 className="editorial-article-title">
             {title}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-[var(--color-ink-muted)]">
@@ -55,7 +55,7 @@ export function LifeJournalArticle({
             ) : null}
           </div>
           {entry.oneLine ? (
-            <p className="life-article-deck mt-4 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
+            <p className="editorial-article-deck mt-4">
               {pickText(entry.oneLine, zh)}
             </p>
           ) : null}

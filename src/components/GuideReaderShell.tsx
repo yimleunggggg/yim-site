@@ -93,7 +93,7 @@ export function GuideReaderShell({
               <p className="font-mono-index text-[var(--color-terracotta)]">
                 {seriesLabel}
               </p>
-              <h1 className="mt-3 font-serif text-3xl font-bold md:text-4xl">{title}</h1>
+              <h1 className="editorial-article-title mt-3">{title}</h1>
               <p className="mt-2 text-sm text-[var(--color-ink-muted)]">
                 {locale === "zh"
                   ? `第 ${idx + 1} 章 / 共 ${chapters.length} 章`
@@ -101,7 +101,7 @@ export function GuideReaderShell({
               </p>
             </header>
 
-            <div className="prose-playbook">{children}</div>
+            <div className="prose-playbook editorial-content">{children}</div>
 
             <nav className="mt-12 flex justify-between gap-4 border-t border-[var(--color-border)] pt-8 text-sm">
               {prev ? (

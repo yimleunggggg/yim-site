@@ -12,8 +12,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Yim Leung · Life × AI Lab",
-    template: "%s · Yim Leung",
+    default: siteConfig.title,
+    template: `%s · ${siteConfig.title}`,
   },
   description: siteConfig.description,
   openGraph: {

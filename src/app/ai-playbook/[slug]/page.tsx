@@ -64,10 +64,10 @@ export default async function ChapterPage({ params }: Props) {
                 )}
                 <TimeBadge variant="original" date={chapter.originalDate} />
               </div>
-              <h1 className="mt-3 font-serif text-3xl font-bold leading-tight md:text-4xl">
+              <h1 className="editorial-article-title mt-3">
                 {chapter.title}
               </h1>
-              <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-muted)]">
+              <p className="editorial-article-deck">
                 {chapter.summary}
               </p>
               <p className="mt-2 font-mono text-xs text-[var(--color-ink-muted)]">
@@ -75,7 +75,7 @@ export default async function ChapterPage({ params }: Props) {
               </p>
             </header>
 
-            <div className="prose-playbook">
+            <div className="prose-playbook editorial-content">
               <MdxContent source={chapter.content} />
             </div>
 

@@ -63,15 +63,15 @@ export default async function ArticlePage({ params }: Props) {
               <span>·</span>
               <span>{topicLabel}</span>
             </div>
-            <h1 className="mt-3 font-serif text-3xl font-bold leading-tight sm:text-4xl">
+            <h1 className="editorial-article-title mt-3">
               {article.title}
             </h1>
             {article.summary && (
-              <p className="mt-3 text-[var(--color-ink-muted)]">{article.summary}</p>
+              <p className="editorial-article-deck">{article.summary}</p>
             )}
           </header>
 
-          <div className="prose-playbook mt-8 max-w-none">
+          <div className="prose-playbook editorial-content mt-8 max-w-none">
             <MdxContent source={article.body} />
           </div>
 

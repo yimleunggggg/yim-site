@@ -53,6 +53,10 @@ export function ProjectPageView({
   const period = detail?.period;
   const body = bodyText ? pickText(bodyText, zh) : mdxBodyZh ?? null;
   const relatedLinks: ProjectRelatedLink[] = projectMeta?.related ?? [];
+  const demoOnlyRelated =
+    relatedLinks.length > 0 &&
+    relatedLinks.every((link) => link.kind === "demo" && !link.items?.length);
+  const hideDemoRelatedOnMobile = demoOnlyRelated && Boolean(demoUrl || liveUrl);
 
   return (
     <article className="project-page-view site-shell py-8 sm:py-14">
@@ -61,10 +65,10 @@ export function ProjectPageView({
       </Link>
 
       <header className="project-page-header mt-5 border-b border-[var(--color-border)] pb-5 sm:mt-6 sm:pb-6">
-        <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
+        <h1 className="editorial-article-title">
           {title}
         </h1>
-        <p className="mt-2.5 text-base leading-relaxed text-[var(--color-ink-muted)] sm:mt-3 sm:text-lg">
+        <p className="editorial-article-deck mt-2.5 sm:mt-3">
           {tagline}
         </p>
         <div className="project-page-meta mt-3 flex flex-wrap items-center gap-1.5 sm:mt-4 sm:gap-2">
@@ -96,7 +100,7 @@ export function ProjectPageView({
       </div>
 
       {(liveUrl || demoUrl) && (
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="project-demo-actions mt-6 flex flex-wrap gap-3">
           {liveUrl ? (
             <a
               href={liveUrl}
@@ -120,7 +124,12 @@ export function ProjectPageView({
         </div>
       )}
 
-      {relatedLinks.length > 0 ? <ProjectRelatedLinks links={relatedLinks} /> : null}
+      {relatedLinks.length > 0 ? (
+        <ProjectRelatedLinks
+          links={relatedLinks}
+          className={hideDemoRelatedOnMobile ? "project-related-section--hide-mobile" : ""}
+        />
+      ) : null}
 
       {body ? (
         <div className="prose-playbook demo-article editorial-content mt-8 max-w-none sm:mt-10">

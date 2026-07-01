@@ -159,8 +159,8 @@
   .prose-playbook {
     width: 100%;
     max-width: none;
-    font-size: 1rem;
-    line-height: 1.95;
+    font-size: var(--editorial-body-size, 0.9375rem);
+    line-height: var(--editorial-body-leading, 1.85);
     color: color-mix(in srgb, var(--color-ink) 78%, var(--color-ink-muted));
   }
 
@@ -631,6 +631,25 @@
     opacity: 0.7;
   }
 
+  /* MDX 正文内嵌的延伸阅读卡片：不受 prose 链接样式影响 */
+  .prose-playbook .project-related-section a.project-related-action {
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .prose-playbook .project-related-section .project-related-kind {
+    color: var(--color-forest);
+  }
+
+  .prose-playbook .project-related-section .project-related-title {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .prose-playbook .project-related-section .project-related-note {
+    color: var(--color-ink-muted);
+  }
+
   .beer-matters-activity-list {
     margin-top: 1rem;
   }
@@ -909,6 +928,39 @@
    追加在文件末尾，不影响任何现有规则。
    ===================================================================== */
 
+/* Editorial 阅读尺度 — Life / Writing / 项目 MDX 共用 */
+:root {
+  --editorial-body-size: 0.9375rem;
+  --editorial-body-leading: 1.78;
+  --editorial-body-tracking: 0.018em;
+  --editorial-lede-size: 1.0625rem;
+  --editorial-lede-leading: 1.82;
+  --editorial-h2-size: 1.375rem;
+  --editorial-h3-size: 1rem;
+  --editorial-section-title-size: 1.375rem;
+  --editorial-section-deck-size: 0.9375rem;
+  --editorial-blockquote-size: 0.9375rem;
+  --editorial-article-title-size: clamp(1.5rem, 2.2vw, 1.875rem);
+  --editorial-article-deck-size: 0.9375rem;
+}
+
+.editorial-article-title {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: var(--editorial-article-title-size);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.editorial-article-deck {
+  margin-top: 1rem;
+  font-family: var(--font-sans);
+  font-size: var(--editorial-article-deck-size);
+  line-height: 1.65;
+  color: var(--color-ink-muted);
+}
+
 /* 文章正文：全局 editorial 排版（Life / Writing / 项目 MDX 共用） */
 .demo-article {
   line-height: inherit;
@@ -919,77 +971,48 @@
   width: 100%;
   max-width: none;
   font-family: var(--font-sans);
-  font-size: 1.0625rem;
-  line-height: 1.85;
-  letter-spacing: 0.02em;
+  font-size: var(--editorial-body-size);
+  line-height: var(--editorial-body-leading);
+  letter-spacing: var(--editorial-body-tracking);
   color: var(--color-ink);
   font-feature-settings: "kern" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-@media (min-width: 640px) {
-  .editorial-content.prose-playbook {
-    font-size: 1.125rem;
-    line-height: 1.9;
-    letter-spacing: 0.022em;
-  }
-}
-
 .editorial-content.prose-playbook p {
-  margin: 0 0 1.35em;
+  margin: 0 0 1.25em;
 }
 
 .editorial-content.prose-playbook .life-lede {
-  font-size: 1.125rem;
-  line-height: 1.88;
+  font-size: var(--editorial-lede-size);
+  line-height: var(--editorial-lede-leading);
   color: color-mix(in srgb, var(--color-ink) 88%, var(--color-ink-muted));
-  margin-bottom: 1.5em;
-}
-
-@media (min-width: 640px) {
-  .editorial-content.prose-playbook .life-lede {
-    font-size: 1.1875rem;
-    line-height: 1.92;
-  }
+  margin-bottom: 1.35em;
 }
 
 .editorial-content.prose-playbook h2,
 .life-section-title {
   font-family: var(--font-serif);
-  margin-top: 2.5em;
+  margin-top: 2.25em;
   margin-bottom: 0.45em;
-  font-size: 1.5rem;
+  font-size: var(--editorial-h2-size);
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: -0.01em;
   color: var(--color-ink);
 }
 
-@media (min-width: 640px) {
-  .editorial-content.prose-playbook h2,
-  .life-section-title {
-    font-size: 1.625rem;
-  }
-}
-
 .editorial-content.prose-playbook h3,
 .life-section-deck {
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--editorial-h3-size);
   margin-top: 0;
   margin-bottom: 0.4em;
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--color-ink-muted);
   font-weight: 400;
-}
-
-@media (min-width: 640px) {
-  .editorial-content.prose-playbook h3,
-  .life-section-deck {
-    font-size: 1.125rem;
-  }
 }
 
 .editorial-content.prose-playbook ul,
@@ -1008,7 +1031,7 @@
   padding-left: 1rem;
   border-left: 2px solid color-mix(in srgb, var(--color-terracotta) 45%, var(--color-border));
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--editorial-blockquote-size);
   line-height: 1.75;
   color: var(--color-ink-muted);
   font-style: normal;
@@ -1031,10 +1054,10 @@
   font-weight: 500;
 }
 
-/* 项目页正文：与「延伸阅读」卡片标题同字号 */
+/* 项目页正文：与 editorial 尺度对齐 */
 .project-page-view {
-  --project-body-size: 0.9375rem;
-  --project-body-leading: 1.75;
+  --project-body-size: var(--editorial-body-size);
+  --project-body-leading: var(--editorial-body-leading);
 }
 
 .project-page-view .demo-article.editorial-content.prose-playbook {
@@ -1050,6 +1073,16 @@
   font-size: inherit;
   line-height: inherit;
   color: inherit;
+}
+
+@media (min-width: 768px) {
+  .prose-playbook:not(.editorial-content) h2 {
+    font-size: 1.375rem;
+  }
+
+  .prose-playbook:not(.editorial-content) h3 {
+    font-size: 1.0625rem;
+  }
 }
 
 @media (min-width: 640px) {
@@ -1579,21 +1612,25 @@
 
 .demo-page-quote {
   margin: 0;
-  max-width: 36rem;
+  max-width: 40rem;
   border: none;
-  padding: 0;
+  border-left: 2px solid color-mix(in srgb, var(--color-forest) 40%, transparent);
+  padding: 0.75rem 0 0.75rem 0.875rem;
 }
 
 .demo-page-quote p {
   margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.75;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 0.8125rem;
+  line-height: 1.72;
   font-style: italic;
-  color: color-mix(in srgb, var(--color-ink) 72%, var(--color-ink-muted));
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--color-ink-muted) 88%, var(--color-ink));
 }
 
 .demo-page-quote-source {
-  margin-top: 0.625rem;
+  margin-top: 0.5rem;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.625rem;
   letter-spacing: 0.06em;
@@ -2308,7 +2345,13 @@
 /* ---- ABOUT：简介 / 履历 / 项目 ---- */
 
 .demo-about-header {
-  max-width: 32rem;
+  max-width: none;
+}
+
+.demo-about-header .demo-page-lead {
+  max-width: none;
+  font-size: 0.875rem;
+  line-height: 1.72;
 }
 
 .demo-about-header .demo-page-extra {
@@ -2341,32 +2384,37 @@
   }
 }
 
-/* Life 列表页：无大标题，整体上移 */
-.demo-life-header .demo-page-lead {
-  margin-top: 0.75rem;
-}
-
-.life-page .demo-page-shell.demo-life-header {
-  padding-bottom: 0;
-}
-
+/* Life 列表页：无页头，JOURNAL 作为首屏 */
 .life-page #journal.demo-page-section {
-  padding-top: 1.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1rem;
 }
 
 @media (min-width: 640px) {
   .life-page #journal.demo-page-section {
-    padding-top: 1.75rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.25rem;
+  }
+}
+
+.life-page #sport.demo-page-section {
+  padding-top: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .life-page #sport.demo-page-section {
+    padding-top: 1.5rem;
   }
 }
 
 @media (max-width: 767px) {
-  .life-page .demo-page-shell.demo-life-header {
-    padding-top: 1.5rem;
+  .life-page #journal.demo-page-section {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
   }
 
-  .life-page #journal.demo-page-section {
-    padding-top: 1.125rem;
+  .life-page #sport.demo-page-section {
+    padding-top: 1rem;
   }
 }
 
@@ -2434,7 +2482,7 @@
   display: flex;
   min-width: 0;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.35rem 1rem;
 }
@@ -2442,9 +2490,9 @@
 .demo-work-identity {
   display: flex;
   min-width: 0;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
 }
 
 .demo-work-company {
@@ -2464,14 +2512,8 @@
 .demo-work-role {
   font-size: 0.8125rem;
   line-height: 1.35;
-  color: var(--color-forest);
-}
-
-.demo-work-role::before {
-  content: "·";
-  margin-right: 0.45rem;
-  color: color-mix(in srgb, var(--color-ink-muted) 65%, transparent);
   font-weight: 400;
+  color: var(--color-ink-muted);
 }
 
 .demo-work-meta {
@@ -2619,6 +2661,25 @@
 }
 
 /* 项目表格（About 页） */
+.demo-section-heading--projects .demo-section-lead {
+  max-width: 40rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding: 0.75rem 0 0.75rem 0.875rem;
+  border-left: 2px solid color-mix(in srgb, var(--color-forest) 40%, transparent);
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 0.8125rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--color-ink-muted) 88%, var(--color-ink));
+}
+
+.demo-section-heading--projects + .demo-page-content {
+  margin-top: 1.125rem;
+}
+
 .demo-project-table {
   border-top: none;
 }
@@ -2627,8 +2688,8 @@
 .demo-project-table-row {
   display: grid;
   grid-template-columns: minmax(7.5rem, 1.1fr) minmax(0, 2fr) minmax(6.5rem, 1fr) 5.75rem;
-  gap: 0.75rem 1.25rem;
-  align-items: center;
+  gap: 0.875rem 1.25rem;
+  align-items: start;
 }
 
 .demo-project-table-head > span:last-child,
@@ -2646,7 +2707,7 @@
 }
 
 .demo-project-table-head {
-  padding: 0.5rem 0 0.65rem;
+  padding: 0.625rem 0.625rem 0.75rem 0.875rem;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
@@ -2662,7 +2723,7 @@
 }
 
 .demo-project-table-row {
-  padding: 0.875rem 0;
+  padding: 1.0625rem 0.625rem 1.0625rem 0.875rem;
   border-bottom: 1px solid var(--color-border);
   border-left: 3px solid transparent;
   text-decoration: none;
@@ -2686,10 +2747,11 @@
   display: inline-flex;
   align-items: baseline;
   gap: 0.25rem;
+  padding-top: 0.0625rem;
   font-family: var(--font-serif, Georgia, serif);
   font-size: 0.9375rem;
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--color-ink);
   transition: color 0.15s ease;
 }
@@ -2720,7 +2782,7 @@
 
 .demo-project-table-desc {
   font-size: 0.875rem;
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--color-ink-muted);
 }
 
@@ -2728,12 +2790,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
+  padding-top: 0.0625rem;
 }
 
 .demo-project-table-status {
   justify-self: end;
   text-align: right;
   white-space: nowrap;
+  padding-top: 0.125rem;
 }
 
 .demo-cat-pill {
@@ -3789,34 +3853,21 @@
 .life-section-title {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: 1.625rem;
+  font-size: var(--editorial-section-title-size);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--color-ink);
-}
-
-@media (min-width: 640px) {
-  .life-section-title {
-    font-size: 1.875rem;
-  }
 }
 
 .life-section-deck {
   margin: 0.35rem 0 0;
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--editorial-section-deck-size);
   font-weight: 400;
   line-height: 1.55;
   letter-spacing: 0.01em;
   color: var(--color-ink-muted);
-}
-
-@media (min-width: 640px) {
-  .life-section-deck {
-    font-size: 1.125rem;
-    line-height: 1.6;
-  }
 }
 
 .life-article-flow p {
@@ -3850,7 +3901,7 @@
   padding-left: 1rem;
   border-left: 2px solid color-mix(in srgb, var(--color-terracotta) 45%, var(--color-border));
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--editorial-blockquote-size);
   line-height: 1.7;
   color: var(--color-ink-muted);
 }
@@ -3994,6 +4045,71 @@
     padding-right: max(1.625rem, env(safe-area-inset-right));
   }
 
+  /* 移动端排版：列表/卡片标题统一 sans，避免宋体 + 600 在小屏发粗 */
+  .demo-page {
+    --editorial-body-size: 0.875rem;
+    --editorial-body-leading: 1.76;
+    --editorial-article-title-size: 1.375rem;
+    --demo-mobile-list-title-size: 0.9375rem;
+    --demo-mobile-list-title-weight: 500;
+  }
+
+  .demo-page .demo-project-table-name,
+  .demo-page .demo-work-company,
+  .demo-page .demo-frames-card-title,
+  .demo-page .life-dispatch-title,
+  .demo-page .demo-explore-title,
+  .demo-page .editorial-article-title,
+  .demo-page .life-section-title {
+    font-family: var(--font-sans);
+    font-weight: var(--demo-mobile-list-title-weight);
+    letter-spacing: 0;
+  }
+
+  .demo-page .demo-project-table-name,
+  .demo-page .demo-frames-card-title,
+  .demo-page .life-dispatch-title,
+  .demo-page .demo-explore-title {
+    font-size: var(--demo-mobile-list-title-size);
+    line-height: 1.35;
+  }
+
+  .demo-page .demo-work-company {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .demo-page .demo-work-role {
+    font-size: 0.8125rem;
+  }
+
+  .demo-page .demo-work-meta {
+    width: 100%;
+  }
+
+  .demo-page .demo-section-title {
+    font-size: 1.1875rem;
+    font-weight: 500;
+  }
+
+  .demo-page .editorial-article-title {
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .demo-page .editorial-article-deck {
+    font-size: 0.875rem;
+  }
+
+  .demo-page .demo-project-table-desc {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  .project-page-view .project-related-section--hide-mobile {
+    display: none;
+  }
+
   .demo-header {
     border-bottom: none;
   }
@@ -4026,6 +4142,27 @@
 
   .demo-section-heading + .demo-page-content {
     margin-top: 0.625rem;
+  }
+
+  .demo-section-heading--projects .demo-section-lead {
+    font-size: 0.75rem;
+    line-height: 1.68;
+    padding: 0.625rem 0 0.625rem 0.75rem;
+    color: var(--color-ink-muted);
+  }
+
+  .demo-section-heading--projects + .demo-page-content {
+    margin-top: 0.875rem;
+  }
+
+  .demo-page-quote {
+    padding: 0.625rem 0 0.625rem 0.75rem;
+  }
+
+  .demo-page-quote p {
+    font-size: 0.75rem;
+    line-height: 1.68;
+    color: var(--color-ink-muted);
   }
 
   /* 首页 Explore：独立卡片、压低高度 */
@@ -4061,8 +4198,8 @@
 
   /* 正文：移动端正文略小、段距更紧 */
   .editorial-content.prose-playbook {
-    font-size: 0.9375rem;
-    line-height: 1.78;
+    font-size: var(--editorial-body-size, 0.875rem);
+    line-height: var(--editorial-body-leading, 1.76);
     letter-spacing: 0.018em;
   }
 
@@ -4082,21 +4219,11 @@
   }
 
   .editorial-content.prose-playbook .life-lede {
-    font-size: 1rem;
-    line-height: 1.82;
+    font-size: 0.9375rem;
+    line-height: 1.78;
   }
 
   /* 项目页 */
-  .project-page-view h1 {
-    font-size: 1.625rem;
-    line-height: 1.25;
-  }
-
-  .project-page-view .project-page-header p {
-    font-size: 0.9375rem;
-    line-height: 1.65;
-  }
-
   .project-page-view .project-page-meta .demo-cat-pill {
     padding: 0.1rem 0.4rem;
     font-size: 0.5rem;

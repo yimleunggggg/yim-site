@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { demoLifeHeader, demoLifeJournalIntro, pickText } from "@/lib/demo/demo-data";
+import { demoLifeJournalIntro, pickText } from "@/lib/demo/demo-data";
 import { demoLifeJournal } from "@/lib/demo/demo-life-journal";
 import {
   demoLifeSport,
@@ -10,7 +10,7 @@ import {
 } from "@/lib/demo/demo-life-sport";
 import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { useLocale } from "@/components";
-import { DemoPageHeader, DemoSectionHeading } from "./DemoPrimitives";
+import { DemoSectionHeading } from "./DemoPrimitives";
 import { LifeSportGallery } from "./LifeSportGallery";
 
 const MOBILE_LIST_INITIAL = 3;
@@ -23,13 +23,6 @@ export function DemoLife() {
 
   return (
     <div className="life-page">
-      <header className="site-shell demo-page-shell demo-life-header">
-        <DemoPageHeader
-          eyebrow="LIFE ARCHIVE"
-          lead={pickText(demoLifeHeader.tagline, zh)}
-        />
-      </header>
-
       <section className="site-shell demo-page-section life-index-section" id="journal">
         <DemoSectionHeading
           eyebrow="JOURNAL"

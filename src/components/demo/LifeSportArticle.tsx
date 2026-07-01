@@ -32,7 +32,7 @@ export function LifeSportArticle({
         />
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-6">
-          <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
+          <h1 className="editorial-article-title">
             {title}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-[var(--color-ink-muted)]">

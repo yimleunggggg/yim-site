@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.title} · Life × AI Lab`,
+    default: siteConfig.title,
     template: `%s · ${siteConfig.title}`,
   },
   description: siteConfig.description,

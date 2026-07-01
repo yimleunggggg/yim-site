@@ -22,7 +22,6 @@ const MOBILE_LIST_INITIAL = 3;
 export function DemoAbout() {
   const { locale } = useLocale();
   const zh = locale === "zh";
-  const aboutTags = zh ? demoAbout.tags.zh : demoAbout.tags.en;
   const [workExpanded, setWorkExpanded] = useState(false);
   const [introExpanded, setIntroExpanded] = useState(false);
   const workCollapsible = demoWork.length > MOBILE_LIST_INITIAL;
@@ -65,13 +64,6 @@ export function DemoAbout() {
             </button>
           ) : null}
         </DemoPageHeader>
-        <div className="demo-about-tags demo-about-header demo-page-content">
-          {aboutTags.map((t) => (
-            <span key={t} className="demo-about-tag">
-              {t}
-            </span>
-          ))}
-        </div>
       </header>
 
       <section className="site-shell demo-page-section">
@@ -101,6 +93,7 @@ export function DemoAbout() {
           eyebrow="PROJECTS"
           title={zh ? "项目" : "Projects"}
           subtitle={pickText(demoAbout.projectsLead, zh)}
+          className="demo-section-heading--projects"
         />
         <div className="demo-project-table demo-page-content">
           <div className="demo-project-table-head" aria-hidden>

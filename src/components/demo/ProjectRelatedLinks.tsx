@@ -5,7 +5,13 @@ import type { ProjectRelatedLink } from "@/lib/demo/demo-project-meta";
 import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { useLocale } from "@/components";
 
-export function ProjectRelatedLinks({ links }: { links: ProjectRelatedLink[] }) {
+export function ProjectRelatedLinks({
+  links,
+  className = "",
+}: {
+  links: ProjectRelatedLink[];
+  className?: string;
+}) {
   const { locale } = useLocale();
   const zh = locale === "zh";
 
@@ -19,7 +25,7 @@ export function ProjectRelatedLinks({ links }: { links: ProjectRelatedLink[] }) 
     : pickText(demoUiCopy.projectMeta.related, zh);
 
   return (
-    <section className="project-related-section editorial-content mt-8">
+    <section className={`project-related-section editorial-content mt-8 ${className}`.trim()}>
       <h2 className="project-related-section-title">{sectionTitle}</h2>
       <ul className="project-related-list">
         {links.map((link) => {

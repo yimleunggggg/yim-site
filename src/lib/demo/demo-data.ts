@@ -190,10 +190,10 @@ export const demoExplore: DemoExploreCard[] = [
     id: "life",
     icon: "⛰",
     eyebrow: "LIFE ARCHIVE",
-    title: { zh: "life archieve", en: "life archieve" },
+    title: { zh: "生活档案", en: "Life archive" },
     desc: {
-      zh: "和工作无关的事。",
-      en: "Things outside of work.",
+      zh: "旅行、禅修、运动、生活体验...与工作无关的生活探索。",
+      en: "Travel, retreats, sports, life experiments… life exploration beyond work.",
     },
     status: "ONGOING",
     latest: { zh: "屋久岛徒步 · 2026.05", en: "Yakushima trek · 2026.05" },

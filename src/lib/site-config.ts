@@ -5,7 +5,7 @@ export const siteUrl =
 export const siteConfig = {
   url: siteUrl,
   title: "Yim Leung",
-  subtitle: "个人站 · Life × AI Lab",
+  subtitle: "个人站",
   description:
     "探索者 · 运营人 · AI 实践者。独立旅行、运动、精酿、AI 应用——持续探索的个人实验站。",
   githubRepoUrl:
