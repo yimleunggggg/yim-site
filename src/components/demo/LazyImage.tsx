@@ -14,6 +14,10 @@ type LazyImageProps = {
   onContextMenu?: (e: React.MouseEvent<HTMLImageElement>) => void;
 };
 
+/**
+ * 图片加载：始终挂载 src，用浏览器原生 lazy + 可选 priority。
+ * （旧版 IntersectionObserver 延迟设 src 会导致高度从 0 顶高、逐张弹出。）
+ */
 export function LazyImage({
   src,
   alt,
@@ -25,45 +29,27 @@ export function LazyImage({
   onContextMenu,
 }: LazyImageProps) {
   const ref = useRef<HTMLImageElement | null>(null);
-  const [activeSrc, setActiveSrc] = useState(priority ? src : undefined);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (priority) return;
-    const el = ref.current;
-    if (!el) return;
-
-    if (!("IntersectionObserver" in window)) {
-      setActiveSrc(src);
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setActiveSrc(src);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "480px 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [priority, src]);
+    setFailed(false);
+  }, [src]);
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       ref={ref}
-      src={activeSrc}
+      src={failed ? undefined : src}
       alt={alt}
       width={width}
       height={height}
       loading={priority ? "eager" : "lazy"}
-      decoding="async"
-      fetchPriority={priority ? "high" : "low"}
+      decoding={priority ? "sync" : "async"}
+      fetchPriority={priority ? "high" : "auto"}
       className={className}
       draggable={draggable}
       onContextMenu={onContextMenu}
+      onError={() => setFailed(true)}
     />
   );
 }

@@ -6,7 +6,7 @@ import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesUi } from "@/lib/demo/demo-frames-ui";
 import type { FrameImageCaption } from "@/lib/demo/demo-frames-ui";
 import { DemoSiteTrail } from "./DemoSiteTrail";
-import { DemoStatusTag } from "./DemoPrimitives";
+import { DemoLiveIndicator } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
 
 type FrameNeighbor = { slug: string; title: LText };
@@ -47,7 +47,10 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
           <div className="flex flex-wrap items-center gap-2">
             <p className="demo-frames-location mb-0">{pickText(frame.location, zh)}</p>
             {frame.ongoing ? (
-              <DemoStatusTag tone="live">{pickText(framesUi.ongoingLabel, zh)}</DemoStatusTag>
+              <DemoLiveIndicator
+                variant="inline"
+                label={pickText(framesUi.ongoingLabel, zh)}
+              />
             ) : null}
           </div>
           <h1 className="demo-frames-title mt-3">{title}</h1>

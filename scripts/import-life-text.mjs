@@ -1,32 +1,36 @@
 #!/usr/bin/env node
 /**
- * 从 生活体验/<folder>/文字.rtf 提取正文 → src/lib/demo/life-journal-bodies.json
+ * 从 生活体验/<folder>/文字.rtf（或 文字）提取正文 → life-journal-bodies.json
  * 用法: node scripts/import-life-text.mjs
  */
 import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
+import { JOURNAL_FOLDERS } from "./life-journal-folders.mjs";
 
 const ROOT = process.cwd();
 const SRC = path.join(ROOT, "生活体验");
 const OUT = path.join(ROOT, "src/lib/demo/life-journal-bodies.json");
 
-/** 文件夹名 → journal id */
-const FOLDER_TO_ID = {
-  "2023.7 冲浪店义工-1个月": "surf-volunteer",
-  "2024.9.22 写在30岁这一天": "keep-growing",
-  "2025.1 pa pae meditation retreat": "pa-pae",
-  "2025.12 wonderfruit十周年": "wonderfruit",
-  "2025.8 甘肃酒花田之旅，中国酒花共创计划": "gansu-hops",
-  "2023.8 马来西亚亚庇考了OW潜水证 ": "sabah-ow",
-  "2023.8 马来西亚亚庇考了OW潜水证": "sabah-ow",
-};
+function findTextFile(folderPath) {
+  const candidates = ["文字.rtf", "文字.txt", "文字"];
+  for (const name of candidates) {
+    const p = path.join(folderPath, name);
+    if (fs.existsSync(p) && fs.statSync(p).isFile()) return p;
+  }
+  return null;
+}
 
 function rtfToPlain(rtfPath) {
   return execSync(`textutil -convert txt -stdout "${rtfPath}"`, {
     encoding: "utf8",
     maxBuffer: 4 * 1024 * 1024,
   }).trim();
+}
+
+function readTextFile(filePath) {
+  if (filePath.endsWith(".rtf")) return rtfToPlain(filePath);
+  return fs.readFileSync(filePath, "utf8").trim();
 }
 
 /** 去掉 RTF 顶部的 时间/标题/关键词 元信息 */
@@ -69,18 +73,19 @@ function toParagraphs(text) {
   return text
     .split(/\r?\n/)
     .map((p) => p.replace(/\s+/g, " ").trim())
-    .filter((p) => p.length > 0);
+    .filter((p) => p.length > 0 && !/^(时间|标题|关键词)\s*[：:]/u.test(p));
 }
 
 const bodies = {};
 
-for (const [folder, id] of Object.entries(FOLDER_TO_ID)) {
-  const rtf = path.join(SRC, folder, "文字.rtf");
-  if (!fs.existsSync(rtf)) {
-    console.warn(`  skip ${id}: no 文字.rtf in ${folder}`);
+for (const [folder, id] of Object.entries(JOURNAL_FOLDERS)) {
+  const dir = path.join(SRC, folder);
+  const textFile = findTextFile(dir);
+  if (!textFile) {
+    console.warn(`  skip ${id}: no 文字.rtf / 文字 in ${folder}`);
     continue;
   }
-  const plain = stripMeta(rtfToPlain(rtf));
+  const plain = stripMeta(readTextFile(textFile));
   const paragraphs = toParagraphs(plain);
   if (!paragraphs.length) {
     console.warn(`  skip ${id}: empty after parse`);

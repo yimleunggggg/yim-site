@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useLocale } from "@/components";
 import { pickText, type LText } from "@/lib/demo/demo-data";
 import { framesIntro, framesIntroAttribution, framesUi } from "@/lib/demo/demo-frames-ui";
-import { DemoPageHeader, DemoStatusTag } from "./DemoPrimitives";
+import { DemoPageHeader, DemoLiveIndicator } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
 
 type FrameCard = {
@@ -14,6 +14,9 @@ type FrameCard = {
   tags: LText[];
   intro: LText;
   cover: string;
+  coverWidth: number;
+  coverHeight: number;
+  coverOrientation: "portrait" | "landscape";
   count: number;
   ongoing?: boolean;
 };
@@ -23,30 +26,30 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
   const zh = locale === "zh";
 
   return (
-    <div className="site-shell demo-frames-page pt-12 pb-14 sm:pt-16">
-      <DemoPageHeader eyebrow="FRAMES" title={pickText(framesUi.pageTitle, zh)}>
-        <blockquote className="demo-page-quote mt-5">
-          <p>{pickText(framesIntro, zh)}</p>
-          <footer className="demo-page-quote-source">
-            {pickText(framesIntroAttribution, zh)}
-          </footer>
-        </blockquote>
-      </DemoPageHeader>
+    <div className="site-shell demo-frames-page demo-page-shell">
+      <DemoPageHeader
+        eyebrow="FRAMES"
+        title={pickText(framesUi.pageTitle, zh)}
+        quote={pickText(framesIntro, zh)}
+        attribution={pickText(framesIntroAttribution, zh)}
+      />
 
-      <div className="demo-frames-grid mt-10">
+      <div className="demo-page-content demo-frames-masonry">
         {frames.map((f, i) => {
           const hasIntro = (zh ? f.intro.zh : f.intro.en ?? f.intro.zh).trim().length > 0;
           return (
             <Link
               key={f.slug}
               href={`/frames/${f.slug}`}
-              className="demo-frames-card group"
+              className={`demo-frames-card group demo-frames-card--${f.coverOrientation}`}
             >
-              <div className="demo-frames-cover">
+              <div className={`demo-frames-cover demo-frames-cover--${f.coverOrientation}`}>
                 {f.cover ? (
                   <LazyImage
                     src={f.cover}
                     alt={pickText(f.title, zh)}
+                    width={f.coverWidth}
+                    height={f.coverHeight}
                     priority={i < 4}
                     className="demo-frames-cover-img"
                     draggable={false}
@@ -58,7 +61,10 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
                 </span>
                 {f.ongoing ? (
                   <span className="demo-frames-live">
-                    <DemoStatusTag tone="live">{pickText(framesUi.ongoingLabel, zh)}</DemoStatusTag>
+                    <DemoLiveIndicator
+                      variant="overlay"
+                      label={pickText(framesUi.ongoingLabel, zh)}
+                    />
                   </span>
                 ) : null}
               </div>

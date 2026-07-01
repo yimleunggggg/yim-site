@@ -15,6 +15,9 @@ export default function FramesPage() {
     tags: f.tags,
     intro: f.intro,
     cover: f.cover,
+    coverWidth: f.coverWidth,
+    coverHeight: f.coverHeight,
+    coverOrientation: f.coverOrientation,
     count: f.images.length,
     ongoing: f.ongoing,
   }));

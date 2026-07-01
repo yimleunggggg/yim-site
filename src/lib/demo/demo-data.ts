@@ -4,9 +4,20 @@
  * 改这一个文件就能更新：NOW 动态、走马灯照片、运动时间线、
  * 生活体验、项目卡、首页探索卡 / 精选卡、关于页履历 / 证书等。
  *
+ * 其他内容入口：
+ * - 项目详情正文 / 功能：content/demo/projects/*.mdx
+ * - 项目截图列表：src/lib/demo/project-screenshots.ts（页头优先展示）
+ * - 项目技术 / 工具 / 延伸阅读：src/lib/demo/demo-project-meta.ts
+ * - 页面按钮 / 导航等 UI 壳层文案：src/lib/demo/demo-ui-copy.ts
+ * - FRAMES 页 UI：src/lib/demo/demo-frames-ui.ts
+ * - 站点标题 / SEO：src/lib/site-config.ts
+ * - 页头页脚导航：src/components/SiteHeader.tsx、SiteFooter.tsx
+ * - Life 随笔正文：src/lib/demo/life-journal-bodies.json
+ * - AI 培训：content/ai-playbook/*.mdx
+ *
  * 约定：
  * - 文案用 { zh, en? }，中文为主；en 缺省时回退中文（见 pickText）。
- * - slogan / eyebrow 等英文短句直接写英文字符串。
+ * - 图片：项目截图用 next/image；Life/FRAMES 用 LazyImage；Lightbox 看大图。
  * - 图片路径复用 public/ 下现有资源；缺图用 demo-gradient 占位。
  */
 
@@ -54,7 +65,7 @@ export const demoNow: DemoNowItem[] = [
     date: "2026.06",
     emoji: "🏃",
     text: {
-      zh: "Xterra 苏州虞阳夜跑 21km 完赛",
+      zh: "Xterra 苏州虞阳夜跑 21km",
       en: "Xterra Suzhou Yuyang Night Run, 21km",
     },
   },
@@ -70,7 +81,7 @@ export const demoNow: DemoNowItem[] = [
     date: "2026.05",
     emoji: "🏃",
     text: {
-      zh: "NNormal Cadi、Hoka 莫干山 20km 完赛",
+      zh: "NNormal Cadi、Hoka 莫干山 20km",
       en: "NNormal Cadi & Hoka Moganshan, 20km",
     },
   },
@@ -86,7 +97,7 @@ export const demoNow: DemoNowItem[] = [
     date: "2026.04",
     emoji: "🏃",
     text: {
-      zh: "莫干山 UTMB EMG 20km 完赛",
+      zh: "莫干山 UTMB EMG 20km",
       en: "Moganshan UTMB EMG, 20km",
     },
   },
@@ -140,46 +151,46 @@ export type DemoExploreCard = {
 
 export const demoExplore: DemoExploreCard[] = [
   {
-    id: "movement",
-    icon: "⛰",
-    eyebrow: "MOVEMENT",
-    title: { zh: "Trails & Movement" },
+    id: "frames",
+    icon: "◎",
+    eyebrow: "FRAMES",
+    title: { zh: "摄影与旅行", en: "Frames & Travel" },
     desc: {
-      zh: "越野、徒步、冲浪、潜水、拳击——有完赛，也有退赛和练到一半放弃。",
-      en: "Trail, hike, surf, dive, boxing — finishes, DNFs, and abandoned training days.",
+      zh: "在路上遇见的人、山与海。按地点与主题成辑——有些相册还在慢慢长。",
+      en: "People, mountains, and seas along the way. Themed albums — some still growing.",
     },
-    status: "ONGOING",
-    latest: { zh: "屋久岛 21KM · 2025.05", en: "Yakushima 21KM · 2025.05" },
-    linkLabel: { zh: "LIFE ARCHIVE →", en: "LIFE ARCHIVE →" },
-    href: "/life",
-  },
-  {
-    id: "building",
-    icon: "◈",
-    eyebrow: "BUILDING",
-    title: { zh: "Learning in progress" },
-    desc: {
-      zh: "用 AI 做自己想用的工具，顺便把过程写下来。没有大项目，只有持续在做、在试、在学的状态。",
-      en: "Building the tools I want with AI, writing the process down. No big projects — just doing, trying, and learning.",
-    },
-    status: "CURRENT FOCUS",
-    latest: { zh: "PACKLOG 上线 · 2026.05", en: "PACKLOG shipped · 2026.05" },
-    linkLabel: { zh: "PROJECTS & WRITING →", en: "PROJECTS & WRITING →" },
-    href: "/about#projects",
-  },
-  {
-    id: "elsewhere",
-    icon: "○",
-    eyebrow: "ELSEWHERE",
-    title: { zh: "Travel, people & the rest" },
-    desc: {
-      zh: "旅行、禅修、精酿、音乐节、志愿者、与陌生人喝酒认识了十年的朋友——不太好分类的那些事。",
-      en: "Travel, retreats, craft beer, festivals, volunteering, friends made over drinks — things that don't fit a box.",
-    },
-    status: "ALWAYS",
-    latest: { zh: "大阪 · 2026.06", en: "Osaka · 2026.06" },
+    status: "LIVE",
+    latest: { zh: "永远喜欢日落 · 更新中", en: "Sunsets · ongoing" },
     linkLabel: { zh: "FRAMES →", en: "FRAMES →" },
     href: "/frames",
+  },
+  {
+    id: "about",
+    icon: "◈",
+    eyebrow: "ABOUT",
+    title: { zh: "关于我", en: "About" },
+    desc: {
+      zh: "八年用户运营与品牌数字化，现在在杭州探索 AI、户外和独立构建。履历、项目与正在做的事，都整理在这里。",
+      en: "Eight years in user ops and brand digital — now in Hangzhou, exploring AI, the outdoors, and building on my own. Résumé, projects, and what I'm working on.",
+    },
+    status: "CURRENT FOCUS",
+    latest: { zh: "Yakushima Bus 上线 · 2026.05", en: "Yakushima Bus shipped · 2026.05" },
+    linkLabel: { zh: "ABOUT →", en: "ABOUT →" },
+    href: "/about",
+  },
+  {
+    id: "life",
+    icon: "⛰",
+    eyebrow: "LIFE ARCHIVE",
+    title: { zh: "Life Archive", en: "Life Archive" },
+    desc: {
+      zh: "旅行随笔、禅修义工、赛事与运动——「冲线是另一个开场」。文字和照片，按时间留在册子里。",
+      en: "Travel notes, retreats, races, and movement — “The finish line is another kind of opening.” Words and photos, kept in order.",
+    },
+    status: "ONGOING",
+    latest: { zh: "屋久岛徒步 · 2026.05", en: "Yakushima trek · 2026.05" },
+    linkLabel: { zh: "LIFE ARCHIVE →", en: "LIFE ARCHIVE →" },
+    href: "/life",
   },
 ];
 
@@ -210,7 +221,7 @@ export const demoHomeUi = {
   nowViewAll: { zh: "全部 →", en: "All →" } as LText,
   nowLatest: { zh: "LATEST", en: "LATEST" } as LText,
   exploreEyebrow: { zh: "WHAT I EXPLORE", en: "WHAT I EXPLORE" } as LText,
-  exploreTitle: { zh: "我在探索的三件事", en: "Three things I explore" } as LText,
+  exploreTitle: { zh: "三个入口", en: "Three doors in" } as LText,
   marqueeViewAll: { zh: "全部 →", en: "All →" } as LText,
   modalClose: { zh: "关闭", en: "Close" } as LText,
 };
@@ -488,8 +499,8 @@ export const demoAboutProjects: DemoAboutProject[] = [
     slug: "yakushima-bus-now",
     title: { zh: "Yakushima Bus", en: "Yakushima Bus" },
     tagline: {
-      zh: "屋久岛公交、船运、登山路线与 92 处 POI 地图",
-      en: "Yakushima bus, ferry, hiking routes & 92-point POI map",
+      zh: "因自己上岛查交通的痛点，为屋久岛旅行者做的免费信息工具——我的第一个 vibe coding 项目",
+      en: "A free info tool for Yakushima travelers, born from my own transit pain — my first vibe coding project",
     },
     status: "live",
     categories: ["product", "travel"],
@@ -529,8 +540,9 @@ export const demoAboutProjects: DemoAboutProject[] = [
       zh: "精酿内容 × 社群 × 活动 × 电商，含啤酒旅行社等线下活动",
       en: "Craft content, community, events & e-commerce — including Beer Travel Club trips",
     },
-    status: "live",
+    status: "building",
     categories: ["experience", "travel"],
+    liveUrl: "https://beermatters.cn/",
     hasDetailPage: true,
   },
   {
@@ -631,12 +643,15 @@ export const demoProjects: DemoProject[] = [
   },
   {
     slug: "yakushima-bus-now",
-    title: { zh: "Yakushima Bus" },
-    tagline: { zh: "屋久岛公交、船运、登山路线与 92 处 POI 地图" },
-    type: { zh: "产品 · 静态站" },
-    status: { zh: "Live" },
+    title: { zh: "Yakushima Bus", en: "Yakushima Bus" },
+    tagline: {
+      zh: "因自己上岛查交通的痛点，为屋久岛旅行者做的免费信息工具——我的第一个 vibe coding 项目",
+      en: "A free info tool for Yakushima travelers, born from my own transit pain — my first vibe coding project",
+    },
+    type: { zh: "产品 · 静态站", en: "Product · static site" },
+    status: { zh: "Live", en: "Live" },
     statusTone: "live",
-    period: "2025–2026",
+    period: "2026.5",
     liveUrl: "https://yakushimabus.com",
     githubUrl: "https://github.com/yimleunggggg/Yakushima-bus",
     cover: "/work/projects/yakushima-bus/yakushima-cover.jpg",

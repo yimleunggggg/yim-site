@@ -1,6 +1,9 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import type { Locale } from "@/lib/i18n";
+import { pickText } from "./demo-data";
+import { demoProjectBodies } from "./demo-project-bodies";
 
 /* ------------------------------ 写作文章 ------------------------------ */
 
@@ -77,8 +80,12 @@ export function getRelatedDemoWriting(slug: string, limit = 2): DemoWritingMeta[
 
 const PROJECTS_DIR = path.join(process.cwd(), "content/demo/projects");
 
-/** 项目详情正文（可选）。没有对应 MDX 时返回 null，详情页用 data 兜底。 */
-export function getDemoProjectBody(slug: string): string | null {
+/** 项目详情正文（可选）。双语条目见 demo-project-bodies.ts；否则读 MDX（中文）。 */
+export function getDemoProjectBody(slug: string, locale: Locale = "zh"): string | null {
+  const bilingual = demoProjectBodies[slug];
+  if (bilingual) {
+    return pickText(bilingual, locale === "zh");
+  }
   const file = path.join(PROJECTS_DIR, `${slug}.mdx`);
   if (!fs.existsSync(file)) return null;
   const raw = fs.readFileSync(file, "utf-8");

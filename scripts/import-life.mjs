@@ -7,6 +7,8 @@ import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 
+import { JOURNAL_FOLDERS } from "./life-journal-folders.mjs";
+
 const ROOT = process.cwd();
 const SRC = path.join(ROOT, "生活体验");
 const JOURNAL_OUT = path.join(ROOT, "public/life/journal");
@@ -14,17 +16,6 @@ const SPORT_OUT = path.join(ROOT, "public/life/sport");
 const MAX_W = 1400;
 const THUMB_W = 480;
 const MANIFEST_OUT = path.join(ROOT, "src/lib/demo/life-journal-images.json");
-
-const JOURNAL_FOLDERS = {
-  "2025.1 pa pae meditation retreat": "pa-pae",
-  "2025.12 wonderfruit十周年": "wonderfruit",
-  "2024.9.22 写在30岁这一天": "keep-growing",
-  "2023.7 冲浪店义工-1个月": "surf-volunteer",
-  "2023.8 马来西亚亚庇考了OW潜水证 ": "sabah-ow",
-  "2023.8 马来西亚亚庇考了OW潜水证": "sabah-ow",
-  "2025.8 甘肃酒花田之旅，中国酒花共创计划": "gansu-hops",
-  "2026.5 日本屋久岛徒步及露营行程": "yakushima",
-};
 
 const IMG_RE = /\.(jpe?g|png|webp|heic|heif)$/i;
 

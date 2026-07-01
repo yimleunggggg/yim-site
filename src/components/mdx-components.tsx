@@ -8,7 +8,8 @@ import {
   SupplementBlock,
   PipelineDiagram,
 } from "@/components";
-import { BeerTravelHongKong } from "@/components/demo/BeerTravelHongKong";
+import { BeerMattersActivities } from "@/components/demo/BeerMattersActivities";
+import { BeerMattersGallery } from "@/components/demo/BeerMattersGallery";
 import { ProjectScreenshots } from "@/components/demo/ProjectScreenshots";
 
 function MdxImage(props: ImgHTMLAttributes<HTMLImageElement>) {
@@ -40,7 +41,8 @@ export const mdxComponents = {
   BeforeAfter,
   SupplementBlock,
   PipelineDiagram,
-  BeerTravelHongKong,
+  BeerMattersActivities,
+  BeerMattersGallery,
   ProjectScreenshots,
   img: MdxImage,
 };

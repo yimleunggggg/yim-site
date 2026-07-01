@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { pickText } from "@/lib/demo/demo-data";
 import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
+import { MovementNoteBadge } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
 
 function formatSportDate(raw: string): string {
@@ -33,10 +34,9 @@ function SportTile({
       <Link
         href={`/life/sport/${entry.id}`}
         className="movement-tile movement-tile--text movement-tile--note"
+        aria-label={`${title}${zh ? "，阅读笔记" : ", read notes"}`}
       >
-        <span className="movement-note-mark" aria-hidden>
-          ◆
-        </span>
+        <MovementNoteBadge />
         <time className="movement-text-date">{formatSportDate(entry.date)}</time>
         <p className="movement-text-title">{title}</p>
         {location ? <p className="movement-text-loc">{location}</p> : null}
@@ -56,11 +56,7 @@ function SportTile({
         />
       </div>
       {primaryKw ? <span className="movement-kw">{primaryKw}</span> : null}
-      {hasNotes ? (
-        <span className="movement-note-mark" title={zh ? "赛后笔记" : "Notes"} aria-hidden>
-          ◆
-        </span>
-      ) : null}
+      {hasNotes ? <MovementNoteBadge /> : null}
       <div className="movement-tile-scrim">
         <time className="movement-tile-date">{formatSportDate(entry.date)}</time>
         <p className="movement-tile-title">{title}</p>
@@ -109,9 +105,6 @@ export function LifeSportGallery({
           <SportTile key={entry.id} entry={entry} zh={zh} priority={i < 6} />
         ))}
       </div>
-      <p className="movement-wall-hint">
-        {zh ? "标 ◆ 的可点击查看赛后想法" : "◆ marks entries with race notes"}
-      </p>
     </div>
   );
 }

@@ -23,38 +23,38 @@ export function DemoAbout() {
 
   return (
     <>
-      <section className="site-shell pt-12 pb-10 sm:pt-16">
+      <header className="site-shell demo-page-shell">
         <DemoPageHeader
           eyebrow="ABOUT"
           title={zh ? "梁言 · 一个持续在动的人" : "Yim · always in motion"}
         >
-          <div className="demo-page-lead mt-5 max-w-2xl space-y-3">
+          <div className="demo-page-lead demo-page-lead-stack">
             {demoAbout.intro.map((p, i) => (
               <p key={i}>{pickText(p, zh)}</p>
             ))}
           </div>
         </DemoPageHeader>
-        <div className="demo-about-tags mt-6 max-w-2xl">
+        <div className="demo-about-tags demo-page-content">
           {aboutTags.map((t) => (
             <span key={t} className="demo-about-tag">
               {t}
             </span>
           ))}
         </div>
-      </section>
+      </header>
 
-      <section className="site-shell py-10 sm:py-14">
+      <section className="site-shell demo-page-section">
         <DemoSectionHeading eyebrow="WORK" title={zh ? "工作履历" : "Experience"} />
-        <ul className="demo-work-list mt-7">
+        <ul className="demo-work-list demo-page-content">
           {demoWork.map((w) => (
             <WorkRow key={w.id} work={w} zh={zh} />
           ))}
         </ul>
       </section>
 
-      <section id="projects" className="site-shell scroll-mt-20 py-10 sm:py-14">
+      <section id="projects" className="site-shell demo-page-section scroll-mt-20">
         <DemoSectionHeading eyebrow="PROJECTS" title={zh ? "项目" : "Projects"} />
-        <div className="demo-project-table mt-7">
+        <div className="demo-project-table demo-page-content">
           <div className="demo-project-table-head" aria-hidden>
             <span>{zh ? "名称" : "Name"}</span>
             <span>{zh ? "简介" : "About"}</span>

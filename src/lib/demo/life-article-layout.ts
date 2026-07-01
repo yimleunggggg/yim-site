@@ -4,6 +4,18 @@ export type LayoutBlock =
   | { type: "figure"; src: string; variant: "full" | "wide" }
   | { type: "masonry"; sources: string[] };
 
+function pushImages(blocks: LayoutBlock[], sources: string[]) {
+  if (sources.length === 0) return;
+  if (sources.length === 1) {
+    blocks.push({ type: "figure", src: sources[0], variant: "wide" });
+    return;
+  }
+  const CHUNK = 12;
+  for (let i = 0; i < sources.length; i += CHUNK) {
+    blocks.push({ type: "masonry", sources: sources.slice(i, i + CHUNK) });
+  }
+}
+
 export function buildEditorialLayout(
   paragraphs: string[],
   images: string[],
@@ -28,7 +40,7 @@ export function buildEditorialLayout(
     if (images.length === 1) {
       blocks.push({ type: "figure", src: images[0], variant: "wide" });
     } else if (images.length > 1) {
-      blocks.push({ type: "masonry", sources: images });
+      pushImages(blocks, images);
     }
     return blocks;
   }
@@ -39,7 +51,7 @@ export function buildEditorialLayout(
   if (images.length === 1) {
     blocks.push({ type: "figure", src: images[0], variant: "wide" });
   } else if (images.length > 1) {
-    blocks.push({ type: "masonry", sources: images });
+    pushImages(blocks, images);
   }
 
   return blocks;

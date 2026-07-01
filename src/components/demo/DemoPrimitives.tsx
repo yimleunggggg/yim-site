@@ -2,26 +2,38 @@
 
 import type { ReactNode } from "react";
 
-/** 页面顶栏：带横线的 mono eyebrow + serif 大标题 + 可选导语 */
+/** 页面顶栏：带横线的 mono eyebrow + serif 大标题 + 导语 / 引语（About · Life · FRAMES 共用） */
 export function DemoPageHeader({
   eyebrow,
   title,
   lead,
+  quote,
+  attribution,
   children,
   className = "",
 }: {
   eyebrow: string;
   title: ReactNode;
   lead?: ReactNode;
+  quote?: ReactNode;
+  attribution?: ReactNode;
   children?: ReactNode;
   className?: string;
 }) {
   return (
-    <header className={`demo-page-header max-w-2xl ${className}`}>
+    <header className={`demo-page-header ${className}`.trim()}>
       <p className="demo-eyebrow">{eyebrow}</p>
-      <h1 className="demo-page-title mt-5">{title}</h1>
-      {lead ? <p className="demo-page-lead mt-5">{lead}</p> : null}
-      {children}
+      <h1 className="demo-page-title">{title}</h1>
+      {lead ? <p className="demo-page-lead">{lead}</p> : null}
+      {quote ? (
+        <blockquote className="demo-page-quote">
+          <p>{quote}</p>
+          {attribution ? (
+            <footer className="demo-page-quote-source">{attribution}</footer>
+          ) : null}
+        </blockquote>
+      ) : null}
+      {children ? <div className="demo-page-extra">{children}</div> : null}
     </header>
   );
 }
@@ -31,23 +43,28 @@ export function DemoSectionHeading({
   eyebrow,
   title,
   subtitle,
+  subtitleEmphasis = false,
   className = "",
 }: {
   eyebrow?: string;
   title?: ReactNode;
   subtitle?: ReactNode;
+  /** 副标题加粗展示（如 Life · MOVEMENT 导语） */
+  subtitleEmphasis?: boolean;
   className?: string;
 }) {
   const hasTitle = title != null && title !== "";
   return (
-    <div className={className}>
+    <div className={`demo-section-heading ${className}`.trim()}>
       {eyebrow ? <p className="demo-section-eyebrow">{eyebrow}</p> : null}
-      {hasTitle ? (
-        <h2 className={`demo-section-title ${eyebrow ? "mt-2" : ""}`}>{title}</h2>
-      ) : null}
+      {hasTitle ? <h2 className="demo-section-title">{title}</h2> : null}
       {subtitle ? (
         <p
-          className={`demo-section-subtitle ${hasTitle ? "mt-2" : eyebrow ? "mt-2" : ""}`}
+          className={
+            subtitleEmphasis
+              ? "demo-section-subtitle demo-section-subtitle--emphasis"
+              : "demo-section-subtitle"
+          }
         >
           {subtitle}
         </p>
@@ -128,6 +145,50 @@ export function DemoStatusTag({
       }`}
     >
       {children}
+    </span>
+  );
+}
+
+/** 持续更新：脉冲圆点（无文案），供 FRAMES 等封面 overlay / 内页 inline 使用 */
+export function DemoLiveIndicator({
+  label,
+  variant = "overlay",
+}: {
+  label: string;
+  variant?: "overlay" | "inline";
+}) {
+  return (
+    <span
+      className={`demo-live-indicator demo-live-indicator--${variant}`}
+      role="status"
+      aria-label={label}
+      title={label}
+    >
+      <span className="demo-live-indicator__ring" aria-hidden />
+      <span className="demo-live-indicator__dot" aria-hidden />
+    </span>
+  );
+}
+
+/** 运动墙：有赛后笔记的卡片角标（文档图标，无 ◆ 文案） */
+export function MovementNoteBadge() {
+  return (
+    <span className="movement-note-badge" aria-hidden>
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+        <path
+          d="M2.25 1.75h4.55l2.95 2.95v5.05H2.25z"
+          stroke="currentColor"
+          strokeWidth="1.15"
+          strokeLinejoin="round"
+        />
+        <path d="M6.8 1.75v3h3" stroke="currentColor" strokeWidth="1.15" strokeLinejoin="round" />
+        <path
+          d="M3.75 6.25h4.5M3.75 8.25h2.75"
+          stroke="currentColor"
+          strokeWidth="1.15"
+          strokeLinecap="round"
+        />
+      </svg>
     </span>
   );
 }

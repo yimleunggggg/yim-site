@@ -8,7 +8,7 @@ import {
   demoLifeSportIntro,
 } from "@/lib/demo/demo-life-sport";
 import { useLocale } from "@/components";
-import { DemoCover, DemoPageHeader, DemoSectionHeading } from "./DemoPrimitives";
+import { DemoPageHeader, DemoSectionHeading } from "./DemoPrimitives";
 import { LifeSportGallery } from "./LifeSportGallery";
 
 export function DemoLife() {
@@ -17,82 +17,89 @@ export function DemoLife() {
 
   return (
     <div className="life-page">
-      <section className="site-shell pt-12 pb-10 sm:pt-16">
+      <header className="site-shell demo-page-shell">
         <DemoPageHeader
           eyebrow="LIFE ARCHIVE"
           title={pickText(demoLifeHeader.title, zh)}
           lead={pickText(demoLifeHeader.tagline, zh)}
         />
-      </section>
+      </header>
 
-      <section className="site-shell life-section py-10 sm:py-14" id="journal">
+      <section className="site-shell demo-page-section" id="journal">
         <DemoSectionHeading
           eyebrow="JOURNAL"
           subtitle={
             zh
-              ? "旅行、义工、禅修、随笔——点标题看全文和图。"
-              : "Travel, volunteering, retreats, essays — click for full text and photos."
+              ? "旅行、义工、禅修、随笔——点标题进入全文。"
+              : "Travel, volunteering, retreats, essays — open an entry to read."
           }
         />
-        <ul className="life-dispatch-feed mt-7">
-          {demoLifeJournal.map((entry) => (
-            <li key={entry.id}>
-              <Link
-                href={`/life/journal/${entry.id}`}
-                className="life-dispatch-row life-dispatch-link tap-target"
-              >
-                {entry.cover ? (
-                  <div className="life-dispatch-thumb">
-                    <DemoCover src={entry.cover} alt="" priority={entry.id === demoLifeJournal[0]?.id} />
-                  </div>
-                ) : (
-                  <div className="life-dispatch-thumb life-dispatch-thumb--placeholder" />
-                )}
-                <div className="life-dispatch-copy">
-                  <p className="life-dispatch-meta">
-                    <span>{entry.date}</span>
-                    {entry.location ? (
-                      <>
-                        <span aria-hidden> · </span>
-                        <span>{pickText(entry.location, zh)}</span>
-                      </>
+        <ul className="life-dispatch-feed demo-page-content">
+          {demoLifeJournal.map((entry) => {
+            const title = pickText(entry.title, zh);
+            const location = entry.location ? pickText(entry.location, zh) : null;
+            const photoCount = entry.images.length;
+
+            return (
+              <li key={entry.id}>
+                <Link
+                  href={`/life/journal/${entry.id}`}
+                  className="life-dispatch-row life-dispatch-link tap-target"
+                  aria-label={title}
+                >
+                  <div className="life-dispatch-date">
+                    <time dateTime={entry.date}>{entry.date}</time>
+                    {location ? (
+                      <span className="life-dispatch-date-loc">{location}</span>
                     ) : null}
-                  </p>
-                  <h3 className="life-dispatch-title">
-                    {pickText(entry.title, zh)}
-                  </h3>
-                  <p className="life-dispatch-oneline">
-                    {pickText(entry.oneLine, zh)}
-                  </p>
-                  {entry.tags.length > 0 ? (
-                    <div className="life-tag-row">
-                      {entry.tags.map((tag) => (
-                        <span key={tag} className="life-tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-                <span className="life-dispatch-arrow" aria-hidden>
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
+                  </div>
+                  <div className="life-dispatch-copy">
+                    <h3 className="life-dispatch-title">{title}</h3>
+                    <p className="life-dispatch-oneline">
+                      {pickText(entry.oneLine, zh)}
+                    </p>
+                    {(entry.tags.length > 0 || photoCount > 0) ? (
+                      <div className="life-dispatch-foot">
+                        {entry.tags.length > 0 ? (
+                          <div className="life-tag-row">
+                            {entry.tags.map((tag) => (
+                              <span key={tag} className="life-tag">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
+                        {photoCount > 0 ? (
+                          <span className="life-dispatch-photos">
+                            {photoCount} {zh ? "张图" : "photos"}
+                          </span>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </div>
+                  <span className="life-dispatch-arrow" aria-hidden>
+                    →
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </section>
 
-      <section className="section-band" id="sport">
-        <div className="site-shell py-12 sm:py-16">
+      <section className="section-band demo-page-section" id="sport">
+        <div className="site-shell">
           <div className="life-section">
             <DemoSectionHeading
               eyebrow="MOVEMENT"
               title={zh ? "运动探索" : "Movement"}
               subtitle={pickText(demoLifeSportIntro, zh)}
+              subtitleEmphasis
             />
           </div>
-          <LifeSportGallery entries={demoLifeSport} zh={zh} />
+          <div className="demo-page-content">
+            <LifeSportGallery entries={demoLifeSport} zh={zh} />
+          </div>
         </div>
       </section>
     </div>
