@@ -10,33 +10,29 @@ function splitActivityTitle(title: string): { kind: string; name: string } {
 
 export function BeerMattersActivities() {
   return (
-    <section className="beer-matters-activities editorial-content prose-playbook demo-article mt-10 max-w-none">
-      <h2>做过的一些好玩的：</h2>
-      <ul className="project-related-list beer-matters-activity-list">
-        {beerMattersHighlights.map((item) => {
+    <section className="project-related-section editorial-content mt-10">
+      <h2 className="project-related-section-title">做过的一些好玩的：</h2>
+      <ul className="project-related-list">
+        {beerMattersHighlights.flatMap((item) => {
           const { kind, name } = splitActivityTitle(item.title);
-          return (
-            <li key={item.title} className="project-related-card project-related-card--stacked">
-              <span className="project-related-kind">{kind}</span>
-              <span className="project-related-title">{name}</span>
-              <div className="project-related-actions">
-                {item.links.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-related-action tap-target"
-                  >
-                    <span>{link.label}</span>
-                    <span className="project-related-arrow" aria-hidden>
-                      →
-                    </span>
-                  </a>
-                ))}
-              </div>
+          return item.links.map((link) => (
+            <li key={`${item.title}-${link.url}`}>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-related-card tap-target"
+              >
+                <span className="project-related-kind">{kind}</span>
+                <span className="project-related-title">
+                  {name} · {link.label}
+                </span>
+                <span className="project-related-arrow" aria-hidden>
+                  →
+                </span>
+              </a>
             </li>
-          );
+          ));
         })}
       </ul>
     </section>

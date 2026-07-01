@@ -1,3 +1,5 @@
+"use client";
+
 import type { LayoutBlock } from "@/lib/demo/life-article-layout";
 import { preprocessLifeBlocks } from "@/lib/demo/life-article-layout";
 import { LazyImage } from "./LazyImage";
@@ -5,6 +7,8 @@ import { LazyImage } from "./LazyImage";
 export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
   const editorial = preprocessLifeBlocks(blocks);
   if (!editorial.length) return null;
+
+  let galleryIdx = 0;
 
   return (
     <div className="life-article-flow prose-playbook demo-article editorial-content mt-8 max-w-none">
@@ -52,6 +56,8 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
         }
 
         if (block.type === "figure") {
+          const priority = galleryIdx === 0;
+          galleryIdx += 1;
           return (
             <figure
               key={idx}
@@ -64,7 +70,7 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
               <LazyImage
                 src={block.src}
                 alt=""
-                priority={idx < 2}
+                priority={priority}
                 className="life-figure-img"
               />
             </figure>
@@ -72,6 +78,8 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
         }
 
         const count = block.sources.length;
+        const groupIdx = galleryIdx;
+        galleryIdx += 1;
         return (
           <figure
             key={idx}
@@ -83,7 +91,7 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
                 <LazyImage
                   src={src}
                   alt=""
-                  priority={idx < 2 && j < 2}
+                  priority={groupIdx < 2}
                   className="life-gallery-img"
                 />
               </div>

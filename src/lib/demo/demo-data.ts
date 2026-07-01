@@ -23,6 +23,14 @@
 
 export type LText = { zh: string; en?: string };
 
+export type AboutIntroPart =
+  | { type: "text"; value: LText }
+  | { type: "link"; label: LText; href: string };
+
+export type AboutIntroParagraph = {
+  parts: AboutIntroPart[];
+};
+
 export function pickText(t: LText, zh: boolean): string {
   return zh ? t.zh : t.en ?? t.zh;
 }
@@ -154,10 +162,10 @@ export const demoExplore: DemoExploreCard[] = [
     id: "frames",
     icon: "◎",
     eyebrow: "FRAMES",
-    title: { zh: "摄影与旅行", en: "Frames & Travel" },
+    title: { zh: "影像记录", en: "Image notes" },
     desc: {
-      zh: "在路上遇见的人、山与海。按地点与主题成辑——有些相册还在慢慢长。",
-      en: "People, mountains, and seas along the way. Themed albums — some still growing.",
+      zh: "喜欢观察人，也喜欢拍没有人的地方。马来西亚的渔村、川西的雪山、潮州古城、斯里兰卡洋畔...这里是我偶尔拍下的瞬间。",
+      en: "I like watching people, and I like shooting places with no one in frame. Fishing villages in Malaysia, Sichuan peaks, Chaozhou old town, Sri Lanka by the sea… moments I catch when I have a camera.",
     },
     status: "LIVE",
     latest: { zh: "永远喜欢日落 · 更新中", en: "Sunsets · ongoing" },
@@ -168,10 +176,10 @@ export const demoExplore: DemoExploreCard[] = [
     id: "about",
     icon: "◈",
     eyebrow: "ABOUT",
-    title: { zh: "关于我", en: "About" },
+    title: { zh: "还是「关于我」", en: 'Still "About me"' },
     desc: {
-      zh: "八年用户运营与品牌数字化，现在在杭州探索 AI、户外和独立构建。履历、项目与正在做的事，都整理在这里。",
-      en: "Eight years in user ops and brand digital — now in Hangzhou, exploring AI, the outdoors, and building on my own. Résumé, projects, and what I'm working on.",
+      zh: "9 年的运营经验，电商、产品、品牌、会员、社群、跨境、精酿、旅行策划、线下活动...看着散乱，但新的场景会推着人长出新的办法。最近在玩 AI，欢迎看看我做的小玩具。",
+      en: "Nine years in ops — e-commerce, product, brand, membership, community, cross-border, craft beer, trip planning, offline events… looks scattered, but new scenes keep pushing out new moves. Playing with AI lately — welcome to peek at my little toys.",
     },
     status: "CURRENT FOCUS",
     latest: { zh: "Yakushima Bus 上线 · 2026.05", en: "Yakushima Bus shipped · 2026.05" },
@@ -182,10 +190,10 @@ export const demoExplore: DemoExploreCard[] = [
     id: "life",
     icon: "⛰",
     eyebrow: "LIFE ARCHIVE",
-    title: { zh: "Life Archive", en: "Life Archive" },
+    title: { zh: "life archieve", en: "life archieve" },
     desc: {
-      zh: "旅行随笔、禅修义工、赛事与运动——「冲线是另一个开场」。文字和照片，按时间留在册子里。",
-      en: "Travel notes, retreats, races, and movement — “The finish line is another kind of opening.” Words and photos, kept in order.",
+      zh: "旅行、禅修、运动、生活体验...更多和工作无关的「我」。",
+      en: "Travel, retreats, sports, life experiments… more of me that has nothing to do with work.",
     },
     status: "ONGOING",
     latest: { zh: "屋久岛徒步 · 2026.05", en: "Yakushima trek · 2026.05" },
@@ -293,14 +301,71 @@ export const demoFeatured: DemoFeatured[] = [
 export const demoAbout = {
   intro: [
     {
-      zh: "做过 8 年用户运营与品牌数字化，现在在杭州探索 AI 工具、户外运动和独立构建。",
-      en: "Eight years in user ops and brand digitalization — now in Hangzhou, exploring AI tools, the outdoors, and building on my own.",
+      parts: [
+        {
+          type: "text",
+          value: {
+            zh: "内蒙人，生在西北，经常迁徙。后来在北上广深杭工作和生活过，搬过十几次家，把「游牧」这词儿坐实了，现在在杭州。喜欢晒太阳，喜欢行走，喜欢山野和海，喜欢精酿。也喜欢用",
+            en: "From Inner Mongolia, raised in the northwest, always moving. I've lived and worked in Beijing, Shanghai, Guangzhou, Shenzhen, and Hangzhou — more than ten moves, fully earning the word nomad. Now in Hangzhou. I like sun, walking, mountains and sea, craft beer. I also like to use a lens to ",
+          },
+        },
+        {
+          type: "link",
+          label: { zh: "镜头记录周围", en: "capture what's around me" },
+          href: "/frames",
+        },
+        {
+          type: "text",
+          value: {
+            zh: "的一切，且自认为拍的还不错。",
+            en: " — and I think I'm not bad at it.",
+          },
+        },
+      ],
     },
-  ] as LText[],
+    {
+      parts: [
+        {
+          type: "text",
+          value: {
+            zh: "应该是「好学生里看起来像坏蛋的那个」。好的部分是脑子还凑合、学东西也够快，坏的部分是常走一些不着边际和脱离常态的路。这些年在大的互联网公司当过螺丝钉，也在创业公司扛过旗。电商、产品、品牌、会员、社群、跨境、精酿、旅行策划、线下活动，倒是什么都做了一段时间。看着散乱，但新的场景会推着人长出新的办法。",
+            en: "The kind of good student who looks like trouble. The good part: a decent brain and quick to learn. The bad part: paths that wander off the map. I've been a cog at big internet companies and carried the flag at startups — e-commerce, product, brand, membership, community, cross-border, craft beer, trip planning, offline events, a bit of everything. It looks scattered, but new scenes keep pushing out new ways to work.",
+          },
+        },
+      ],
+    },
+    {
+      parts: [
+        {
+          type: "text",
+          value: {
+            zh: "这个网站作为一个小基地，集合我的",
+            en: "This site is a small base camp — ",
+          },
+        },
+        {
+          type: "link",
+          label: { zh: "生活、路上的笔记", en: "life on the road" },
+          href: "/life",
+        },
+        {
+          type: "text",
+          value: {
+            zh: "、项目、运动和一些还没归类的想法。最近又在一个 Career Break 期，基于自己的兴趣出发开始做一些 AI 相关的小东西，感兴趣的话可以拉到下面看看。",
+            en: ", projects, sports, and ideas that don't fit a folder yet. I'm in another career break, building small AI things from curiosity — scroll down if you're interested.",
+          },
+        },
+      ],
+    },
+  ] as AboutIntroParagraph[],
   tags: {
     zh: ["Builder", "户外", "独旅", "精酿", "INTP"],
     en: ["Builder", "Outdoors", "Solo travel", "Craft beer", "INTP"],
   },
+  projectsLead: {
+    zh: "一年前我完全不知道 AI 有啥用，如今成了我每天最爱玩的玩具。如果只是因为某个工具就做成了一件事，说明这件事价值也不高，功劳是工具的。让人着迷的是那些生而为人的本能。你的好奇、思考、审美、热爱，它会因为工具变成更多形状和方式。",
+    en: "A year ago I had no idea what AI was for — now it's my favorite toy to play with every day. If something only happened because of a tool, the tool gets the credit and the thing probably wasn't worth much. What stays fascinating is what's human by nature: curiosity, thinking, taste, love — tools just give them more shapes and ways to show up.",
+  } as LText,
 };
 
 /* ----------------------------- 工作履历 ----------------------------- */

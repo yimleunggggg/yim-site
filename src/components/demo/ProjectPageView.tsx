@@ -55,19 +55,19 @@ export function ProjectPageView({
   const relatedLinks: ProjectRelatedLink[] = projectMeta?.related ?? [];
 
   return (
-    <article className="site-shell py-10 sm:py-14">
+    <article className="project-page-view site-shell py-8 sm:py-14">
       <Link href="/about#projects" className="text-sm text-[var(--color-forest)] hover:underline">
         {pickText(demoUiCopy.projectPage.backLink, zh)}
       </Link>
 
-      <header className="mt-6 border-b border-[var(--color-border)] pb-6">
+      <header className="project-page-header mt-5 border-b border-[var(--color-border)] pb-5 sm:mt-6 sm:pb-6">
         <h1 className="font-serif text-3xl font-bold leading-tight text-[var(--color-ink)] sm:text-4xl">
           {title}
         </h1>
-        <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
+        <p className="mt-2.5 text-base leading-relaxed text-[var(--color-ink-muted)] sm:mt-3 sm:text-lg">
           {tagline}
         </p>
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="project-page-meta mt-3 flex flex-wrap items-center gap-1.5 sm:mt-4 sm:gap-2">
           {about?.categories.map((c: ProjectCategory) => (
             <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
               {pickText(projectCategoryLabel[c], zh)}
@@ -123,7 +123,7 @@ export function ProjectPageView({
       {relatedLinks.length > 0 ? <ProjectRelatedLinks links={relatedLinks} /> : null}
 
       {body ? (
-        <div className="prose-playbook demo-article editorial-content mt-10 max-w-none">
+        <div className="prose-playbook demo-article editorial-content mt-8 max-w-none sm:mt-10">
           <MdxContent key={locale} source={body} />
         </div>
       ) : null}

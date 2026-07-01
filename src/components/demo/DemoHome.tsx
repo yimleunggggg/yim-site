@@ -17,7 +17,7 @@ export function DemoHome() {
 
   return (
     <>
-      <section className="site-shell demo-hero pt-10 pb-5 sm:pt-14 sm:pb-7">
+      <section className="site-shell demo-hero pt-8 pb-4 sm:pt-14 sm:pb-7">
         <div className="demo-hero-copy">
           <p className="demo-eyebrow">{demoHero.eyebrow}</p>
           <h1 className="demo-hero-title mt-6">
@@ -34,9 +34,9 @@ export function DemoHome() {
 
       <DemoMarquee />
 
-      <section className="site-shell demo-explore-section pb-20 pt-10 sm:pt-14 sm:pb-24">
+      <section className="site-shell demo-explore-section pb-12 pt-6 sm:pt-14 sm:pb-24">
         <p className="demo-eyebrow">{pickText(demoHomeUi.exploreEyebrow, zh)}</p>
-        <div className="demo-explore-grid mt-8">
+        <div className="demo-explore-grid mt-5 sm:mt-8">
           {demoExplore.map((c) => (
             <ExploreCard key={c.id} card={c} zh={zh} />
           ))}

@@ -14,12 +14,17 @@ import {
   type ProjectCategory,
   type DemoAboutProject,
 } from "@/lib/demo/demo-data";
+import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { DemoPageHeader, DemoSectionHeading, DemoStatusTag } from "./DemoPrimitives";
+
+const MOBILE_LIST_INITIAL = 3;
 
 export function DemoAbout() {
   const { locale } = useLocale();
   const zh = locale === "zh";
   const aboutTags = zh ? demoAbout.tags.zh : demoAbout.tags.en;
+  const [workExpanded, setWorkExpanded] = useState(false);
+  const workCollapsible = demoWork.length > MOBILE_LIST_INITIAL;
 
   return (
     <>
@@ -29,8 +34,18 @@ export function DemoAbout() {
           title={zh ? "梁言 · 一个持续在动的人" : "Yim · always in motion"}
         >
           <div className="demo-page-lead demo-page-lead-stack">
-            {demoAbout.intro.map((p, i) => (
-              <p key={i}>{pickText(p, zh)}</p>
+            {demoAbout.intro.map((block, i) => (
+              <p key={i}>
+                {block.parts.map((part, j) =>
+                  part.type === "link" ? (
+                    <Link key={j} href={part.href} className="demo-about-intro-link">
+                      {pickText(part.label, zh)}
+                    </Link>
+                  ) : (
+                    <span key={j}>{pickText(part.value, zh)}</span>
+                  ),
+                )}
+              </p>
             ))}
           </div>
         </DemoPageHeader>
@@ -45,15 +60,32 @@ export function DemoAbout() {
 
       <section className="site-shell demo-page-section">
         <DemoSectionHeading eyebrow="WORK" title={zh ? "工作履历" : "Experience"} />
-        <ul className="demo-work-list demo-page-content">
+        <ul
+          className="demo-work-list demo-page-content demo-collapsible-list"
+          data-collapsed={workCollapsible && !workExpanded ? "true" : "false"}
+        >
           {demoWork.map((w) => (
             <WorkRow key={w.id} work={w} zh={zh} />
           ))}
         </ul>
+        {workCollapsible ? (
+          <button
+            type="button"
+            className="demo-list-expand-btn"
+            aria-expanded={workExpanded}
+            onClick={() => setWorkExpanded((v) => !v)}
+          >
+            {pickText(workExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.lifePage.showAll, zh)}
+          </button>
+        ) : null}
       </section>
 
       <section id="projects" className="site-shell demo-page-section scroll-mt-20">
-        <DemoSectionHeading eyebrow="PROJECTS" title={zh ? "项目" : "Projects"} />
+        <DemoSectionHeading
+          eyebrow="PROJECTS"
+          title={zh ? "项目" : "Projects"}
+          subtitle={pickText(demoAbout.projectsLead, zh)}
+        />
         <div className="demo-project-table demo-page-content">
           <div className="demo-project-table-head" aria-hidden>
             <span>{zh ? "名称" : "Name"}</span>

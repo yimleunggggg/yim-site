@@ -189,6 +189,7 @@ const journalEntriesBase: LifeJournalEntry[] = [
     cover: "",
     images: [],
     body: [],
+    useFlow: true,
   },
   {
     id: "keep-growing",
@@ -245,8 +246,8 @@ const journalEntriesBase: LifeJournalEntry[] = [
     location: { zh: "马来西亚，仙本那", en: "Malaysia · Semporna" },
     tags: ["潜水", "背包旅行"],
     oneLine: {
-      zh: "亚庇学 OW，第一次咬着呼吸器在水下走路。",
-      en: "Open Water in Kota Kinabalu — first steps underwater with a regulator.",
+      zh: "从OW开始，第一次跳出屏幕看到海下世界。",
+      en: "From OW onward — the first time stepping off the screen into the world beneath the sea.",
     },
     cover: "",
     images: [],

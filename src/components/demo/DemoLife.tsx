@@ -1,19 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { demoLifeHeader, demoLifeJournalIntro, pickText } from "@/lib/demo/demo-data";
 import { demoLifeJournal } from "@/lib/demo/demo-life-journal";
 import {
   demoLifeSport,
   demoLifeSportIntro,
 } from "@/lib/demo/demo-life-sport";
+import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { useLocale } from "@/components";
 import { DemoPageHeader, DemoSectionHeading } from "./DemoPrimitives";
 import { LifeSportGallery } from "./LifeSportGallery";
 
+const MOBILE_LIST_INITIAL = 3;
+
 export function DemoLife() {
   const { locale } = useLocale();
   const zh = locale === "zh";
+  const [journalExpanded, setJournalExpanded] = useState(false);
+  const journalCollapsible = demoLifeJournal.length > MOBILE_LIST_INITIAL;
 
   return (
     <div className="life-page">
@@ -31,7 +37,10 @@ export function DemoLife() {
           title={zh ? "日记" : "Journal"}
           subtitle={pickText(demoLifeJournalIntro, zh)}
         />
-        <ul className="life-dispatch-feed demo-page-content">
+        <ul
+          className="life-dispatch-feed demo-page-content demo-collapsible-list"
+          data-collapsed={journalCollapsible && !journalExpanded ? "true" : "false"}
+        >
           {demoLifeJournal.map((entry) => {
             const title = pickText(entry.title, zh);
             const location = entry.location ? pickText(entry.location, zh) : null;
@@ -74,6 +83,16 @@ export function DemoLife() {
             );
           })}
         </ul>
+        {journalCollapsible ? (
+          <button
+            type="button"
+            className="demo-list-expand-btn"
+            aria-expanded={journalExpanded}
+            onClick={() => setJournalExpanded((v) => !v)}
+          >
+            {pickText(journalExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.lifePage.showAll, zh)}
+          </button>
+        ) : null}
       </section>
 
       <section className="section-band demo-page-section" id="sport">

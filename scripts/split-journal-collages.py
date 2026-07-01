@@ -121,7 +121,7 @@ def main():
   # west-sichuan: 02-05 各拆 3 张
     ws_images = rebuild_slug(
         "west-sichuan-2025",
-        {"01.jpg": "keep", "02.jpg": "thirds", "03.jpg": "thirds", "04.jpg": "thirds", "05.jpg": "thirds", "06.jpg": "keep"},
+        {"01.jpg": "keep", "02.jpg": "thirds", "03.jpg": "thirds", "04.jpg": "thirds", "05.jpg": "thirds", "06.jpg": "thirds"},
     )
     print(f"west-sichuan-2025: {len(ws_images)} images")
 

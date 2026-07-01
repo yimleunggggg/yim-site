@@ -313,34 +313,12 @@
       "text": "突然一个转弯…大晴大暖"
     },
     {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/02.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/03.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/04.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/05.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/06.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/07.jpg",
-      "variant": "wide"
+      "type": "masonry",
+      "sources": [
+        "/life/journal/west-sichuan-2025/02.jpg",
+        "/life/journal/west-sichuan-2025/03.jpg",
+        "/life/journal/west-sichuan-2025/04.jpg"
+      ]
     },
     {
       "type": "paragraph",
@@ -367,34 +345,20 @@
       "text": "一天找到十几个虫草，一个卖出三四十，这就是他们的收入方式。村里没有蔬菜种植，全靠理塘运上来。养牛，喂马，挖虫草，接待少量的游客。村子里大部分人汉话都不太好，路边见了你都会热情的招呼一声“扎西德勒”。"
     },
     {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/08.jpg",
-      "variant": "wide"
+      "type": "masonry",
+      "sources": [
+        "/life/journal/west-sichuan-2025/05.jpg",
+        "/life/journal/west-sichuan-2025/06.jpg",
+        "/life/journal/west-sichuan-2025/07.jpg"
+      ]
     },
     {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/09.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/10.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/11.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/12.jpg",
-      "variant": "wide"
-    },
-    {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/13.jpg",
-      "variant": "wide"
+      "type": "masonry",
+      "sources": [
+        "/life/journal/west-sichuan-2025/08.jpg",
+        "/life/journal/west-sichuan-2025/09.jpg",
+        "/life/journal/west-sichuan-2025/10.jpg"
+      ]
     },
     {
       "type": "paragraph",
@@ -409,9 +373,78 @@
       "text": "在巴塘时候很妙，住在边界，眼前就是一座山，翻过去就能到西藏。后几天的车程长了起来，三天跑了近1200km，几个小时前在海拔一千，一会又到了四千八。雪山、草原、村庄、湖泊、寺庙，一路快门没停下来过。八郎生都好适合露营，下次带着帐篷去。"
     },
     {
-      "type": "figure",
-      "src": "/life/journal/west-sichuan-2025/14.jpg",
-      "variant": "wide"
+      "type": "masonry",
+      "sources": [
+        "/life/journal/west-sichuan-2025/11.jpg",
+        "/life/journal/west-sichuan-2025/12.jpg",
+        "/life/journal/west-sichuan-2025/13.jpg"
+      ]
+    },
+    {
+      "type": "masonry",
+      "sources": [
+        "/life/journal/west-sichuan-2025/14.jpg",
+        "/life/journal/west-sichuan-2025/15.jpg",
+        "/life/journal/west-sichuan-2025/16.jpg"
+      ]
+    }
+  ],
+  "pa-pae": [
+    {
+      "type": "paragraph",
+      "text": "在清迈旅居期间，因为当地结识的一个朋友推荐来到了Pa Pae。在此之前从没有尝试过禅修，甚至觉得有点玄学。"
+    },
+    {
+      "type": "paragraph",
+      "text": "山中几日，摸黑醒来能听到西边的鸡鸣，近处的狗吠。以全然的专注开启一天，早间冥想后在森林走着，被晨雾和露水包裹，等着厨房方向摇起铃铛就知道要去早餐了。有时候晚上会在篝火、烛火边，木头烧的噼啪作响，河水潺潺，蛙声蝉鸣，风在林间窸窣作响。"
+    },
+    {
+      "type": "masonry",
+      "sources": [
+        "/life/journal/pa-pae/01.jpg",
+        "/life/journal/pa-pae/02.jpg",
+        "/life/journal/pa-pae/03.jpg",
+        "/life/journal/pa-pae/04.jpg",
+        "/life/journal/pa-pae/05.jpg",
+        "/life/journal/pa-pae/06.jpg",
+        "/life/journal/pa-pae/07.jpg",
+        "/life/journal/pa-pae/08.jpg"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "有时候我们会坐在一起聊天，聊到家人，有个僧人说他祖母当时不理解他的选择，觉得这孩子是不是出了什么问题。但多年后见到他的状态，祖母慢慢接受了。他说：\"爱你的人，终究会为你的快乐感到高兴的。\"然后他补了一句：\"你不需要把自己的快乐放在别人的反应上。\"两句话放在一起，有点矛盾但又不矛盾。有点老生常谈，但从一个绕了一大圈才找到自己生活节奏的人嘴里说出来，听感还是不一样。"
+    },
+    {
+      "type": "masonry",
+      "sources": [
+        "/life/journal/pa-pae/09.jpg",
+        "/life/journal/pa-pae/10.jpg",
+        "/life/journal/pa-pae/11.jpg",
+        "/life/journal/pa-pae/12.jpg",
+        "/life/journal/pa-pae/13.jpg",
+        "/life/journal/pa-pae/14.jpg",
+        "/life/journal/pa-pae/15.jpg",
+        "/life/journal/pa-pae/16.jpg"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "关于冥想本身，有时候这件事是被误解得挺严重的。很多人（包括我）觉得冥想是玄学的东西/某种神秘体验/\"忽然开悟\"的时刻。在Pa Pae待了几天之后，我意识到这其实是对脑子的训练，是mental fitness.学校教我们用脑子学东西，但从没有人教我们怎么控制这个大脑。你的注意力去哪里，你的情绪从哪里来，你的身体现在感受到什么——这些基本的东西从来没有课程讲。冥想于我就是在补这个课，需要练习，像刷牙一样，一开始也觉得麻烦，习惯了就是日常。最有意思的是这个工具可以用在任何地方：情绪上来的时候，疼的时候，要做决定的时候，甚至是做ice bath专注呼吸的时候，而不是坐在蒲团上才能用的东西。"
+    },
+    {
+      "type": "masonry",
+      "sources": [
+        "/life/journal/pa-pae/17.jpg",
+        "/life/journal/pa-pae/18.jpg",
+        "/life/journal/pa-pae/19.jpg",
+        "/life/journal/pa-pae/20.jpg",
+        "/life/journal/pa-pae/21.jpg",
+        "/life/journal/pa-pae/22.jpg",
+        "/life/journal/pa-pae/23.jpg",
+        "/life/journal/pa-pae/24.jpg",
+        "/life/journal/pa-pae/25.jpg"
+      ]
     }
   ]
 }

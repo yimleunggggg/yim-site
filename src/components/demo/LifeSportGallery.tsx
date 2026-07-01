@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { pickText } from "@/lib/demo/demo-data";
 import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
 import { MovementNoteBadge } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
+import { LifeSportNoteModal } from "./LifeSportNoteModal";
 
 function formatSportDate(raw: string): string {
   const m = raw.match(/^(\d{4})[-./](\d{1,2})(?:[-./](\d{1,2}))?/);
@@ -18,10 +19,12 @@ function SportTile({
   entry,
   zh,
   priority,
+  onOpenNote,
 }: {
   entry: LifeSportEntry;
   zh: boolean;
   priority?: boolean;
+  onOpenNote: (entry: LifeSportEntry) => void;
 }) {
   const title = pickText(entry.title, zh);
   const location = entry.location ? pickText(entry.location, zh) : null;
@@ -31,10 +34,11 @@ function SportTile({
   if (!entry.cover) {
     if (!hasNotes) return null;
     return (
-      <Link
-        href={`/life/sport/${entry.id}`}
+      <button
+        type="button"
         className="movement-tile movement-tile--text movement-tile--note"
         aria-label={`${title}${zh ? "，阅读笔记" : ", read notes"}`}
+        onClick={() => onOpenNote(entry)}
       >
         <MovementNoteBadge />
         <time className="movement-text-date">{formatSportDate(entry.date)}</time>
@@ -44,7 +48,7 @@ function SportTile({
         <span className="movement-text-read-hint" aria-hidden>
           {zh ? "阅读笔记" : "Read notes"}
         </span>
-      </Link>
+      </button>
     );
   }
 
@@ -75,13 +79,14 @@ function SportTile({
 
   if (hasNotes) {
     return (
-      <Link
-        href={`/life/sport/${entry.id}`}
+      <button
+        type="button"
         className="movement-tile movement-tile--note"
         aria-label={`${title}${zh ? "，阅读笔记" : ", read notes"}`}
+        onClick={() => onOpenNote(entry)}
       >
         {inner}
-      </Link>
+      </button>
     );
   }
 
@@ -99,13 +104,28 @@ export function LifeSportGallery({
   entries: LifeSportEntry[];
   zh: boolean;
 }) {
+  const [activeEntry, setActiveEntry] = useState<LifeSportEntry | null>(null);
+
   return (
-    <div className="movement-wall-wrap">
-      <div className="movement-wall">
-        {entries.map((entry, i) => (
-          <SportTile key={entry.id} entry={entry} zh={zh} priority={i < 6} />
-        ))}
+    <>
+      <div className="movement-wall-wrap">
+        <div className="movement-wall">
+          {entries.map((entry, i) => (
+            <SportTile
+              key={entry.id}
+              entry={entry}
+              zh={zh}
+              priority={i < 6}
+              onOpenNote={setActiveEntry}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+      <LifeSportNoteModal
+        entry={activeEntry}
+        zh={zh}
+        onClose={() => setActiveEntry(null)}
+      />
+    </>
   );
 }

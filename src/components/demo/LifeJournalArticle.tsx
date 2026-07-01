@@ -3,6 +3,8 @@ import type { LifeJournalEntry } from "@/lib/demo/demo-life-journal";
 import { buildLifeArticleBlocks } from "@/lib/demo/life-article-layout";
 import { DemoSiteTrail } from "./DemoSiteTrail";
 import { LifeArticleBody } from "./LifeArticleBody";
+import { LifeJournalImageWarmup } from "./LifeJournalImageWarmup";
+import { LifeJournalImagePreload } from "./LifeJournalImagePreload";
 
 export function LifeJournalArticle({
   entry,
@@ -59,6 +61,10 @@ export function LifeJournalArticle({
           ) : null}
         </header>
 
+        {entry.images.length > 0 ? (
+          <LifeJournalImagePreload images={entry.images} />
+        ) : null}
+        <LifeJournalImageWarmup images={entry.images} />
         <LifeArticleBody blocks={blocks} />
     </article>
   );

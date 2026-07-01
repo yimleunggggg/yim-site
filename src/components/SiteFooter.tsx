@@ -16,9 +16,9 @@ export function SiteFooter({ note }: SiteFooterProps) {
   return (
     <footer
       id="contact"
-      className="mt-20 scroll-mt-24 border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-callout)_88%,var(--color-paper))]"
+      className="mt-10 scroll-mt-24 border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-callout)_88%,var(--color-paper))] md:mt-20"
     >
-      <div className="site-shell grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
+      <div className="site-shell grid gap-6 py-8 md:grid-cols-2 md:gap-10 md:py-12 lg:grid-cols-4">
         <div className="lg:col-span-1">
           <p className="font-mono-index text-[var(--color-forest)]">{t.siteTitle}</p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-muted)]">

@@ -28,6 +28,8 @@ export const demoUiCopy = {
   lifePage: {
     backHome: { zh: "Home", en: "Home" } as LText,
     lifeArchive: { zh: "Life Archive", en: "Life Archive" } as LText,
+    showAll: { zh: "展开全部", en: "Show all" } as LText,
+    showLess: { zh: "收起", en: "Show less" } as LText,
   },
   writingPage: {
     backLink: { zh: "← Writing", en: "← Writing" } as LText,

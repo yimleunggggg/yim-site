@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 type LazyImageProps = {
   src: string;
@@ -16,8 +16,13 @@ type LazyImageProps = {
   fit?: "cover" | "contain";
 };
 
+function markLoaded(img: HTMLImageElement | null): boolean {
+  return Boolean(img && img.complete && img.naturalWidth > 0);
+}
+
 /**
- * 预留宽高比 + 占位底色，加载后淡入，避免 masonry 逐张顶高。
+ * 始终输出 src，靠浏览器原生 lazy + priority 控制加载顺序。
+ * 缓存命中时需读 complete，否则 onLoad 已错过会一直 opacity:0。
  */
 export function LazyImage({
   src,
@@ -30,6 +35,7 @@ export function LazyImage({
   onContextMenu,
   fit = "cover",
 }: LazyImageProps) {
+  const imgRef = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const ratio = width && height ? `${width} / ${height}` : undefined;
@@ -39,25 +45,32 @@ export function LazyImage({
     setFailed(false);
   }, [src]);
 
+  useLayoutEffect(() => {
+    if (markLoaded(imgRef.current)) setLoaded(true);
+  }, [src]);
+
   const img = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      ref={imgRef}
       src={failed ? undefined : src}
       alt={alt}
       width={width}
       height={height}
       loading={priority ? "eager" : "lazy"}
-      decoding={priority ? "sync" : "async"}
+      decoding="async"
       fetchPriority={priority ? "high" : "auto"}
       draggable={draggable}
       onContextMenu={onContextMenu}
       onLoad={() => setLoaded(true)}
       onError={() => setFailed(true)}
-      className={`lazy-img__el lazy-img__el--${fit} ${loaded ? "is-loaded" : ""} ${className}`.trim()}
+      className={`lazy-img__el lazy-img__el--${fit} ${loaded ? "is-loaded" : ""} ${failed ? "is-failed" : ""} ${className}`.trim()}
     />
   );
 
-  if (!ratio) return img;
+  if (!ratio) {
+    return <span className="lazy-img-host">{img}</span>;
+  }
 
   return (
     <span className="lazy-img-slot" style={{ aspectRatio: ratio }}>
