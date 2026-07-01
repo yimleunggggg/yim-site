@@ -2,12 +2,14 @@
 /**
  * 从 生活体验/ 导入 journal & sport 图片到 public/life/
  * 用法: node scripts/import-life.mjs
+ *
+ * manifest 会与已有 life-journal-images.json 合并，并保留飞书条目的 public 目录扫描结果。
  */
 import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 
-import { JOURNAL_FOLDERS } from "./life-journal-folders.mjs";
+import { JOURNAL_FOLDERS, FEISHU_JOURNAL_SLUGS } from "./life-journal-folders.mjs";
 
 const ROOT = process.cwd();
 const SRC = path.join(ROOT, "生活体验");
@@ -45,6 +47,22 @@ function listImages(dir) {
       };
       return score(a) - score(b) || a.localeCompare(b);
     });
+}
+
+function manifestFromPublicDir(slug) {
+  const outDir = path.join(JOURNAL_OUT, slug);
+  if (!fs.existsSync(outDir)) return null;
+  const numbered = fs
+    .readdirSync(outDir)
+    .filter((f) => /^\d+\.jpg$/i.test(f))
+    .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  if (!numbered.length) return null;
+  const images = numbered.map((f) => `/life/journal/${slug}/${f}`);
+  const coverPath = path.join(outDir, "cover.jpg");
+  const cover = fs.existsSync(coverPath)
+    ? `/life/journal/${slug}/cover.jpg`
+    : images[0];
+  return { cover, images };
 }
 
 function importJournalFolder(folderName, slug, manifest) {
@@ -94,24 +112,26 @@ function importSportFile(filePath) {
 
 console.log("Importing life journal images…");
 ensureDir(JOURNAL_OUT);
-const manifest = {};
+
+const manifest = fs.existsSync(MANIFEST_OUT)
+  ? JSON.parse(fs.readFileSync(MANIFEST_OUT, "utf8"))
+  : {};
+
 for (const [folder, slug] of Object.entries(JOURNAL_FOLDERS)) {
   importJournalFolder(folder, slug, manifest);
 }
 
-// turning-31 长图
-const t31src = path.join(ROOT, "public/writing/turning-31/01.png");
-if (fs.existsSync(t31src)) {
-  const slug = "turning-31";
-  const outDir = path.join(JOURNAL_OUT, slug);
-  ensureDir(outDir);
-  toJpeg(t31src, path.join(outDir, "cover.jpg"), THUMB_W);
-  toJpeg(t31src, path.join(outDir, "01.jpg"), MAX_W);
-  manifest[slug] = {
-    cover: `/life/journal/${slug}/cover.jpg`,
-    images: [`/life/journal/${slug}/01.jpg`],
-  };
-  console.log("  journal/turning-31: from writing image");
+for (const slug of FEISHU_JOURNAL_SLUGS) {
+  const fromDisk = manifestFromPublicDir(slug);
+  if (fromDisk) {
+    manifest[slug] = fromDisk;
+    console.log(`  journal/${slug}: ${fromDisk.images.length} images (from public)`);
+  }
+}
+
+// 移除已删条目的 manifest
+for (const removed of ["chiang-mai-2024", "hk-brewery-hike", "gansu-hops"]) {
+  delete manifest[removed];
 }
 
 fs.writeFileSync(MANIFEST_OUT, JSON.stringify(manifest, null, 2) + "\n", "utf8");

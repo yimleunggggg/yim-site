@@ -19,6 +19,8 @@ export type LifeJournalEntry = {
   body: LText[];
   /** 长图条目：modal 内图片完整展示 */
   imageFirst?: boolean;
+  /** 无 flow 时：正文在前、图在文末 */
+  imagesAtEnd?: boolean;
 };
 
 function journalAssets(slug: string): { cover: string; images: string[] } {
@@ -44,12 +46,15 @@ function withImportedBodies(entries: LifeJournalEntry[]): LifeJournalEntry[] {
     const imported = bodyFromFile(entry.id);
     const assets = journalAssets(entry.id);
     const flow = flowFromFile(entry.id);
+    const imagesAtEnd =
+      entry.imagesAtEnd ?? (flow == null && assets.images.length > 0);
     return {
       ...entry,
       cover: assets.cover || entry.cover,
       images: assets.images.length ? assets.images : entry.images,
       flow: flow ?? undefined,
       body: imported.length ? imported : entry.body,
+      imagesAtEnd,
     };
   });
 }
@@ -120,34 +125,6 @@ const journalEntriesBase: LifeJournalEntry[] = [
     body: [],
   },
   {
-    id: "gansu-hops",
-    date: "2025-08",
-    title: { zh: "甘肃酒花田 · 中国酒花共创计划" },
-    location: { zh: "甘肃" },
-    tags: ["精酿", "旅行"],
-    oneLine: {
-      zh: "甘肃酒花田，第一次见鲜啤酒花，闻起来像青柠和草。",
-      en: "Gansu hop fields — first time smelling fresh hops, like lime and grass.",
-    },
-    cover: "",
-    images: [],
-    body: [],
-  },
-  {
-    id: "hk-brewery-hike",
-    date: "2025-03",
-    title: { zh: "香港酒厂探访及离岛徒步" },
-    location: { zh: "香港" },
-    tags: ["精酿", "徒步", "旅行"],
-    oneLine: {
-      zh: "带队走访酒厂，离岛徒步。",
-      en: "Brewery visits and island hikes in Hong Kong.",
-    },
-    cover: "",
-    images: [],
-    body: [],
-  },
-  {
     id: "pa-pae",
     date: "2025-01",
     title: { zh: "Pa Pae · 禅修营" },
@@ -183,20 +160,6 @@ const journalEntriesBase: LifeJournalEntry[] = [
     oneLine: {
       zh: "一周六练，学会如何「打人」和「挨打」。",
       en: "Six days a week — learning to throw and take a punch.",
-    },
-    cover: "",
-    images: [],
-    body: [],
-  },
-  {
-    id: "chiang-mai-2024",
-    date: "2024-12",
-    title: { zh: "因跑半马而开始的清迈旅居" },
-    location: { zh: "泰国 · 清迈" },
-    tags: ["旅行", "跑步"],
-    oneLine: {
-      zh: "跑完清迈半马，索性在小城住下来。",
-      en: "After the Chiang Mai half — stayed in the city.",
     },
     cover: "",
     images: [],

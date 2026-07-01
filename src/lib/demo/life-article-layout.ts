@@ -47,16 +47,34 @@ export type BuildLifeArticleOptions = {
   intro?: string;
   imageFirst?: boolean;
   singleLongImage?: boolean;
+  /** 正文在前、图片集中在文末（本地文件夹导入条目默认） */
+  imagesAtEnd?: boolean;
 };
+
+/** 段落全部在前，图片 masonry 集中在文末 */
+export function buildImagesAtEndLayout(
+  paragraphs: string[],
+  images: string[],
+): LayoutBlock[] {
+  const blocks: LayoutBlock[] = [];
+  for (const text of paragraphs) blocks.push({ type: "paragraph", text });
+  pushImages(blocks, images);
+  return blocks;
+}
 
 /** Life 文章统一块流：flow 优先，否则从 body+images 生成 */
 export function buildLifeArticleBlocks(opts: BuildLifeArticleOptions): LayoutBlock[] {
-  const base =
-    opts.flow ??
-    buildEditorialLayout(opts.paragraphs, opts.images, {
+  let base: LayoutBlock[];
+  if (opts.flow?.length) {
+    base = opts.flow;
+  } else if (opts.imagesAtEnd) {
+    base = buildImagesAtEndLayout(opts.paragraphs, opts.images);
+  } else {
+    base = buildEditorialLayout(opts.paragraphs, opts.images, {
       imageFirst: opts.imageFirst,
       singleLongImage: opts.singleLongImage,
     });
+  }
   return mergeIntroIntoBlocks(base, opts.intro);
 }
 

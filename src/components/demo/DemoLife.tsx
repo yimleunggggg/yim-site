@@ -28,6 +28,7 @@ export function DemoLife() {
       <section className="site-shell demo-page-section life-index-section" id="journal">
         <DemoSectionHeading
           eyebrow="JOURNAL"
+          title={zh ? "日记" : "Journal"}
           subtitle={pickText(demoLifeJournalIntro, zh)}
         />
         <ul className="life-dispatch-feed demo-page-content">

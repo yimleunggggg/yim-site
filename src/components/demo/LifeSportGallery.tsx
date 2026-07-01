@@ -41,6 +41,9 @@ function SportTile({
         <p className="movement-text-title">{title}</p>
         {location ? <p className="movement-text-loc">{location}</p> : null}
         {primaryKw ? <span className="movement-kw movement-kw--text">{primaryKw}</span> : null}
+        <span className="movement-text-read-hint" aria-hidden>
+          {zh ? "阅读笔记" : "Read notes"}
+        </span>
       </Link>
     );
   }
@@ -61,6 +64,11 @@ function SportTile({
         <time className="movement-tile-date">{formatSportDate(entry.date)}</time>
         <p className="movement-tile-title">{title}</p>
         {location ? <p className="movement-tile-loc">{location}</p> : null}
+        {hasNotes ? (
+          <span className="movement-tile-read-hint" aria-hidden>
+            {zh ? "阅读笔记" : "Read notes"}
+          </span>
+        ) : null}
       </div>
     </>
   );

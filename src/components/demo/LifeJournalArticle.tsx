@@ -21,6 +21,7 @@ export function LifeJournalArticle({
     intro: entry.oneLine ? pickText(entry.oneLine, zh) : undefined,
     imageFirst: entry.imageFirst,
     singleLongImage: entry.imageFirst && entry.images.length === 1,
+    imagesAtEnd: entry.imagesAtEnd,
   });
 
   return (

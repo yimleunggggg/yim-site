@@ -101,52 +101,6 @@
       "/life/journal/aboro-boxing/14.jpg"
     ]
   },
-  "chiang-mai-2024": {
-    "cover": "/life/journal/chiang-mai-2024/cover.jpg",
-    "images": [
-      "/life/journal/chiang-mai-2024/01.jpg",
-      "/life/journal/chiang-mai-2024/02.jpg",
-      "/life/journal/chiang-mai-2024/03.jpg",
-      "/life/journal/chiang-mai-2024/04.jpg",
-      "/life/journal/chiang-mai-2024/05.jpg",
-      "/life/journal/chiang-mai-2024/06.jpg",
-      "/life/journal/chiang-mai-2024/07.jpg",
-      "/life/journal/chiang-mai-2024/08.jpg",
-      "/life/journal/chiang-mai-2024/09.jpg",
-      "/life/journal/chiang-mai-2024/10.jpg",
-      "/life/journal/chiang-mai-2024/11.jpg",
-      "/life/journal/chiang-mai-2024/12.jpg",
-      "/life/journal/chiang-mai-2024/13.jpg",
-      "/life/journal/chiang-mai-2024/14.jpg",
-      "/life/journal/chiang-mai-2024/15.jpg",
-      "/life/journal/chiang-mai-2024/16.jpg",
-      "/life/journal/chiang-mai-2024/17.jpg",
-      "/life/journal/chiang-mai-2024/18.jpg",
-      "/life/journal/chiang-mai-2024/19.jpg",
-      "/life/journal/chiang-mai-2024/20.jpg",
-      "/life/journal/chiang-mai-2024/21.jpg",
-      "/life/journal/chiang-mai-2024/22.jpg",
-      "/life/journal/chiang-mai-2024/23.jpg",
-      "/life/journal/chiang-mai-2024/24.jpg",
-      "/life/journal/chiang-mai-2024/25.jpg",
-      "/life/journal/chiang-mai-2024/26.jpg",
-      "/life/journal/chiang-mai-2024/27.jpg",
-      "/life/journal/chiang-mai-2024/28.jpg",
-      "/life/journal/chiang-mai-2024/29.jpg",
-      "/life/journal/chiang-mai-2024/30.jpg",
-      "/life/journal/chiang-mai-2024/31.jpg"
-    ]
-  },
-  "hk-brewery-hike": {
-    "cover": "/life/journal/hk-brewery-hike/cover.jpg",
-    "images": [
-      "/life/journal/hk-brewery-hike/01.jpg",
-      "/life/journal/hk-brewery-hike/02.jpg",
-      "/life/journal/hk-brewery-hike/03.jpg",
-      "/life/journal/hk-brewery-hike/04.jpg",
-      "/life/journal/hk-brewery-hike/05.jpg"
-    ]
-  },
   "surf-volunteer": {
     "cover": "/life/journal/surf-volunteer/cover.jpg",
     "images": [
@@ -208,24 +162,6 @@
       "/life/journal/sabah-ow/31.jpg"
     ]
   },
-  "gansu-hops": {
-    "cover": "/life/journal/gansu-hops/cover.jpg",
-    "images": [
-      "/life/journal/gansu-hops/01.jpg",
-      "/life/journal/gansu-hops/02.jpg",
-      "/life/journal/gansu-hops/03.jpg",
-      "/life/journal/gansu-hops/04.jpg",
-      "/life/journal/gansu-hops/05.jpg",
-      "/life/journal/gansu-hops/06.jpg",
-      "/life/journal/gansu-hops/07.jpg",
-      "/life/journal/gansu-hops/08.jpg",
-      "/life/journal/gansu-hops/09.jpg",
-      "/life/journal/gansu-hops/10.jpg",
-      "/life/journal/gansu-hops/11.jpg",
-      "/life/journal/gansu-hops/12.jpg",
-      "/life/journal/gansu-hops/13.jpg"
-    ]
-  },
   "yakushima": {
     "cover": "/life/journal/yakushima/cover.jpg",
     "images": [
@@ -278,6 +214,34 @@
       "/life/journal/turning-31/15.jpg",
       "/life/journal/turning-31/16.jpg",
       "/life/journal/turning-31/17.jpg"
+    ]
+  },
+  "sri-lanka": {
+    "cover": "/life/journal/sri-lanka/cover.jpg",
+    "images": [
+      "/life/journal/sri-lanka/01.jpg",
+      "/life/journal/sri-lanka/02.jpg",
+      "/life/journal/sri-lanka/03.jpg",
+      "/life/journal/sri-lanka/04.jpg",
+      "/life/journal/sri-lanka/05.jpg",
+      "/life/journal/sri-lanka/06.jpg",
+      "/life/journal/sri-lanka/07.jpg",
+      "/life/journal/sri-lanka/08.jpg",
+      "/life/journal/sri-lanka/09.jpg",
+      "/life/journal/sri-lanka/10.jpg",
+      "/life/journal/sri-lanka/11.jpg",
+      "/life/journal/sri-lanka/12.jpg"
+    ]
+  },
+  "west-sichuan-2025": {
+    "cover": "/life/journal/west-sichuan-2025/cover.jpg",
+    "images": [
+      "/life/journal/west-sichuan-2025/01.jpg",
+      "/life/journal/west-sichuan-2025/02.jpg",
+      "/life/journal/west-sichuan-2025/03.jpg",
+      "/life/journal/west-sichuan-2025/04.jpg",
+      "/life/journal/west-sichuan-2025/05.jpg",
+      "/life/journal/west-sichuan-2025/06.jpg"
     ]
   }
 }
