@@ -89,12 +89,12 @@ export const FRAMES_META: FrameMeta[] = [
   {
     slug: "window-views",
     order: 4,
-    title: { zh: "前挡风玻璃外的电影帧", en: "Frames Through the Windshield" },
-    location: { zh: "多国 · 路途", en: "Multi · On the road" },
+    title: { zh: "透过前车窗", en: "Frames Through the Windshield" },
+    location: { zh: "多地 · 路途", en: "Multi · On the road" },
     ongoing: true,
     tags: [
       { zh: "车窗", en: "Car window" },
-      { zh: "路途", en: "Journey" },
+      { zh: "旅行", en: "Journey" },
     ],
     intro: { zh: "", en: "" },
   },
@@ -127,7 +127,7 @@ export const FRAMES_META: FrameMeta[] = [
   {
     slug: "sunsets",
     order: 7,
-    title: { zh: "永远喜欢日落", en: "Always the Sunset" },
+    title: { zh: "日落收集", en: "Always the Sunset" },
     emoji: "🌅",
     location: { zh: "多地 · 日落", en: "Multi · Sunsets" },
     ongoing: true,
@@ -153,7 +153,7 @@ export const FRAMES_META: FrameMeta[] = [
   {
     slug: "sri-lanka",
     order: 9,
-    title: { zh: "在印度洋畔做志愿者", en: "Volunteering by the Indian Ocean" },
+    title: { zh: "在印度洋畔做义工的日子", en: "Volunteering by the Indian Ocean" },
     emoji: "🤝",
     location: { zh: "斯里兰卡 · 南部", en: "Sri Lanka · South" },
     tags: [

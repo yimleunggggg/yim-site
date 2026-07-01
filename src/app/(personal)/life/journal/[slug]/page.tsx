@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!entry) return {};
   return {
     title: entry.title.zh,
-    description: entry.oneLine.zh,
+    description: entry.oneLine?.zh ?? entry.title.zh,
   };
 }
 

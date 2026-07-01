@@ -92,10 +92,6 @@ export function ImageLightbox({ images, index, onClose, onNavigate, captions }: 
           src={images[index]}
           alt={caption ?? ""}
           className="image-lightbox-img max-h-[min(78dvh,calc(100dvh-8rem))] max-w-[min(100%,42rem)] w-auto h-auto object-contain select-none"
-        <img
-          src={images[index]}
-          alt={caption ?? ""}
-          className="image-lightbox-img max-h-[min(78dvh,calc(100dvh-8rem))] max-w-[min(100%,42rem)] w-auto h-auto object-contain select-none"
           draggable={false}
         />
       </div>

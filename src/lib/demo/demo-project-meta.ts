@@ -6,7 +6,7 @@
 import type { LText } from "./demo-data";
 
 export type ProjectRelatedLink = {
-  kind: "wechat" | "external" | "writing";
+  kind: "wechat" | "external" | "writing" | "demo";
   title: LText;
   url: string;
   note?: LText;
@@ -133,7 +133,7 @@ export const demoProjectMeta: Record<string, DemoProjectMeta> = {
     devTools: ["Cursor", "TypeScript", "Supabase", "Git / GitHub"],
     related: [
       {
-        kind: "external",
+        kind: "demo",
         title: { zh: "线上 Demo", en: "Live demo" },
         url: "https://packlog.yimleung-ly.workers.dev/",
         note: { zh: "可直接试用", en: "Try it now" },
@@ -168,7 +168,7 @@ export const demoProjectMeta: Record<string, DemoProjectMeta> = {
     devTools: ["Cursor", "TypeScript", "Git / GitHub"],
     related: [
       {
-        kind: "external",
+        kind: "demo",
         title: { zh: "线上 Demo", en: "Live demo" },
         url: "https://offtrack-eta.vercel.app/",
         note: { zh: "内测预览", en: "Private beta preview" },

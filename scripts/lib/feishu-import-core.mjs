@@ -6,6 +6,8 @@ import path from "path";
 
 export const FEISHU_PROXY = process.env.FEISHU_PROXY ?? "http://localhost:3456";
 
+const SKIP_IMG_RE = /v3_0011o_2a552573|avatar|72x72|favicon|emoji/i;
+
 export async function proxyNew(url) {
   const res = await fetch(`${FEISHU_PROXY}/new`, { method: "POST", body: url });
   const data = await res.json();
@@ -35,16 +37,49 @@ export async function proxyClose(targetId) {
 const EXTRACT_BLOCKS_JS = `(() => {
   const root = document.querySelector(".render-unit-wrapper");
   if (!root) return "[]";
+
+  function imgToken(img) {
+    const src = img?.currentSrc || img?.src;
+    if (!src || SKIP_IMG(src)) return "";
+    const w = img.naturalWidth || img.width || 0;
+    if (w > 0 && w < 48) return "";
+    return "[[IMG:" + src + "]]";
+  }
+
+  function SKIP_IMG(src) {
+    return /v3_0011o_2a552573|avatar|72x72|favicon|emoji/i.test(src);
+  }
+
+  function pushImage(blocks, img) {
+    const md = imgToken(img);
+    if (md) blocks.push({ t: "image", md });
+  }
+
+  function walkGrid(el, blocks) {
+    const cols = el.querySelectorAll("[data-block-type='grid_column']");
+    if (cols.length) {
+      for (const col of cols) {
+        for (const child of col.querySelectorAll("[data-block-type]")) {
+          const ct = child.getAttribute("data-block-type");
+          if (ct === "image") pushImage(blocks, child.querySelector("img"));
+        }
+      }
+      return;
+    }
+    for (const img of el.querySelectorAll("img")) pushImage(blocks, img);
+  }
+
   const blocks = [];
   for (const el of root.querySelectorAll("[data-block-type]")) {
     const t = el.getAttribute("data-block-type");
-    if (t === "grid" || t === "grid_column") continue;
+    if (t === "grid_column") continue;
+    if (t === "grid") {
+      walkGrid(el, blocks);
+      continue;
+    }
     let md = "";
     if (t === "image") {
-      const img = el.querySelector("img");
-      const src = img?.currentSrc || img?.src;
-      if (src && (img?.naturalWidth || 0) > 80 && !/v3_0011o_2a552573/.test(src))
-        md = "[[IMG:" + src + "]]";
+      md = imgToken(el.querySelector("img"));
     } else if (t.startsWith("heading") || t === "text" || t === "quote" || t === "bullet") {
       md = el.innerText.replace(/\\u200b/g, "").trim();
       if (t === "bullet") md = md.replace(/^•\\s*/, "");
@@ -56,17 +91,22 @@ const EXTRACT_BLOCKS_JS = `(() => {
 })()`;
 
 const CAPTURE_IMAGES_JS = `(() => {
+  const SKIP = /v3_0011o_2a552573|avatar|72x72|favicon|emoji/i;
   const out = [];
+  const seen = new Set();
   for (const img of document.querySelectorAll("img")) {
     const src = img.currentSrc || img.src;
-    const w = img.naturalWidth || 0;
-    if (w < 120 || /v3_0011o_2a552573|avatar|72x72/.test(src)) continue;
+    if (!src || seen.has(src) || SKIP.test(src)) continue;
+    const w = img.naturalWidth || img.width || 0;
+    const h = img.naturalHeight || img.height || 0;
+    if (w > 0 && w < 48) continue;
+    seen.add(src);
     try {
       const c = document.createElement("canvas");
-      c.width = w;
-      c.height = img.naturalHeight;
-      c.getContext("2d").drawImage(img, 0, 0);
-      out.push({ src, data: c.toDataURL("image/jpeg", 0.9) });
+      c.width = w || img.clientWidth || 800;
+      c.height = h || img.clientHeight || 600;
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      out.push({ src, data: c.toDataURL("image/jpeg", 0.92) });
     } catch (e) {
       out.push({ src, err: e.message });
     }
@@ -76,9 +116,19 @@ const CAPTURE_IMAGES_JS = `(() => {
 
 const SCROLL_JS = `(async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  for (let i = 0; i < 14; i++) {
-    window.scrollTo(0, document.body.scrollHeight);
-    await sleep(200);
+  const max = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  const steps = 28;
+  for (let i = 0; i <= steps; i++) {
+    const y = Math.round((max * i) / steps);
+    window.scrollTo(0, y);
+    await sleep(180);
+  }
+  window.scrollTo(0, 0);
+  await sleep(120);
+  for (let i = 0; i <= steps; i++) {
+    const y = Math.round((max * i) / steps);
+    window.scrollTo(0, y);
+    await sleep(120);
   }
   return "ok";
 })()`;
@@ -101,6 +151,43 @@ export function normalizeFeishuText(md) {
     .replace(/一-(?=祝)/g, "——");
 }
 
+function collectImageSrcs(blocks) {
+  const srcs = [];
+  for (const b of blocks) {
+    const m = b.md?.match(/\[\[IMG:([^\]]+)\]\]/);
+    if (m) srcs.push(m[1]);
+  }
+  return srcs;
+}
+
+async function fetchMissingImages(targetId, imgMap, srcs) {
+  for (const src of srcs) {
+    if (imgMap.has(src)) continue;
+    const js = `(async () => {
+      try {
+        const r = await fetch(${JSON.stringify(src)}, { credentials: "include" });
+        if (!r.ok) return JSON.stringify({ err: "http " + r.status });
+        const blob = await r.blob();
+        return await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.onload = () => resolve(JSON.stringify({ src: ${JSON.stringify(src)}, data: fr.result }));
+          fr.onerror = () => reject(fr.error);
+          fr.readAsDataURL(blob);
+        });
+      } catch (e) {
+        return JSON.stringify({ err: e.message });
+      }
+    })()`;
+    try {
+      const raw = await proxyEval(targetId, js);
+      const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+      if (parsed?.data?.startsWith("data:")) imgMap.set(src, parsed.data);
+    } catch {
+      /* skip */
+    }
+  }
+}
+
 async function getToc(targetId) {
   const js = `(() => JSON.stringify([...document.querySelectorAll(".catalogue__item-title")].map((el) => el.textContent.trim()).filter(Boolean)))()`;
   return proxyEval(targetId, js);
@@ -119,14 +206,14 @@ async function clickTocItem(targetId, title) {
 export async function fetchFeishuDoc(url, { useToc = false, onProgress } = {}) {
   const log = onProgress ?? (() => {});
   const targetId = await proxyNew(url);
-  await new Promise((r) => setTimeout(r, 4500));
+  await new Promise((r) => setTimeout(r, 5000));
 
   const allBlocks = [];
   const imgMap = new Map();
 
   async function pass(label) {
     await proxyEval(targetId, SCROLL_JS).catch(() => {});
-    await new Promise((r) => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 500));
     mergeBlocks(allBlocks, await proxyEval(targetId, EXTRACT_BLOCKS_JS));
     for (const im of await proxyEval(targetId, CAPTURE_IMAGES_JS)) {
       if (im.data) imgMap.set(im.src, im.data);
@@ -140,15 +227,21 @@ export async function fetchFeishuDoc(url, { useToc = false, onProgress } = {}) {
     const toc = await getToc(targetId);
     for (const title of toc) {
       await clickTocItem(targetId, title);
-      await new Promise((r) => setTimeout(r, 700));
+      await new Promise((r) => setTimeout(r, 900));
       await pass(title.slice(0, 24));
     }
+    await pass("final-scroll");
   } else {
-    await pass("scroll");
+    await pass("scroll-2");
+    await pass("scroll-3");
   }
 
+  const needed = collectImageSrcs(allBlocks);
+  await fetchMissingImages(targetId, imgMap, needed);
+  log(`needed ${needed.length} refs, captured ${imgMap.size}`);
+
   await proxyClose(targetId);
-  return { blocks: allBlocks, imgMap };
+  return { blocks: allBlocks, imgMap, neededImageCount: needed.length };
 }
 
 export function saveFeishuImages(imgMap, blocks, outDir) {
@@ -156,7 +249,9 @@ export function saveFeishuImages(imgMap, blocks, outDir) {
   fs.mkdirSync(outDir, { recursive: true });
 
   const imgSrcToFile = new Map();
+  const missing = [];
   let imgIndex = 0;
+
   for (const b of blocks) {
     const src = b.md.match(/\[\[IMG:([^\]]+)\]\]/)?.[1];
     if (!src || imgSrcToFile.has(src)) continue;
@@ -166,30 +261,46 @@ export function saveFeishuImages(imgMap, blocks, outDir) {
     const data = imgMap.get(src);
     if (data) {
       fs.writeFileSync(path.join(outDir, file), Buffer.from(data.split(",")[1], "base64"));
+    } else {
+      missing.push(src);
     }
   }
 
-  return imgSrcToFile;
+  return { imgSrcToFile, missing };
+}
+
+const MAX_GALLERY = 3;
+
+function flushPendingImages(flow, pending, publicBase, imgSrcToFile) {
+  if (!pending.length) return;
+  const sources = pending
+    .map((src) => {
+      const file = imgSrcToFile.get(src);
+      return file ? `${publicBase}/${file}` : null;
+    })
+    .filter(Boolean);
+  pending.length = 0;
+  if (!sources.length) return;
+
+  if (sources.length === 1) {
+    flow.push({ type: "figure", src: sources[0], variant: "wide" });
+    return;
+  }
+
+  for (let i = 0; i < sources.length; i += MAX_GALLERY) {
+    const chunk = sources.slice(i, i + MAX_GALLERY);
+    if (chunk.length === 1) {
+      flow.push({ type: "figure", src: chunk[0], variant: "wide" });
+    } else {
+      flow.push({ type: "masonry", sources: chunk });
+    }
+  }
 }
 
 /** 飞书 blocks → Life 文章 ordered flow（保持文档顺序） */
 export function blocksToLifeFlow(blocks, publicBase, imgSrcToFile) {
   const flow = [];
-  let pendingImages = [];
-
-  function flushImages() {
-    if (!pendingImages.length) return;
-    const sources = pendingImages.map((src) => {
-      const file = imgSrcToFile.get(src);
-      return file ? `${publicBase}/${file}` : null;
-    }).filter(Boolean);
-    pendingImages = [];
-    if (sources.length === 1) {
-      flow.push({ type: "figure", src: sources[0], variant: "wide" });
-    } else if (sources.length > 1) {
-      flow.push({ type: "masonry", sources });
-    }
-  }
+  const pendingImages = [];
 
   for (const block of blocks) {
     let { t, md } = block;
@@ -201,10 +312,11 @@ export function blocksToLifeFlow(blocks, publicBase, imgSrcToFile) {
       continue;
     }
 
-    flushImages();
+    flushPendingImages(flow, pendingImages, publicBase, imgSrcToFile);
 
     if (t.startsWith("heading")) {
-      const level = t === "heading1" ? "##" : "###";
+      const level =
+        t === "heading1" ? "##" : t === "heading2" ? "###" : "####";
       flow.push({ type: "paragraph", text: `${level} ${md}` });
       continue;
     }
@@ -225,7 +337,7 @@ export function blocksToLifeFlow(blocks, publicBase, imgSrcToFile) {
     });
   }
 
-  flushImages();
+  flushPendingImages(flow, pendingImages, publicBase, imgSrcToFile);
   return flow;
 }
 

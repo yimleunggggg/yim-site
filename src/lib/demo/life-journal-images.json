@@ -82,6 +82,71 @@
       "/life/journal/keep-growing/08.jpg"
     ]
   },
+  "aboro-boxing": {
+    "cover": "/life/journal/aboro-boxing/cover.jpg",
+    "images": [
+      "/life/journal/aboro-boxing/01.jpg",
+      "/life/journal/aboro-boxing/02.jpg",
+      "/life/journal/aboro-boxing/03.jpg",
+      "/life/journal/aboro-boxing/04.jpg",
+      "/life/journal/aboro-boxing/05.jpg",
+      "/life/journal/aboro-boxing/06.jpg",
+      "/life/journal/aboro-boxing/07.jpg",
+      "/life/journal/aboro-boxing/08.jpg",
+      "/life/journal/aboro-boxing/09.jpg",
+      "/life/journal/aboro-boxing/10.jpg",
+      "/life/journal/aboro-boxing/11.jpg",
+      "/life/journal/aboro-boxing/12.jpg",
+      "/life/journal/aboro-boxing/13.jpg",
+      "/life/journal/aboro-boxing/14.jpg"
+    ]
+  },
+  "chiang-mai-2024": {
+    "cover": "/life/journal/chiang-mai-2024/cover.jpg",
+    "images": [
+      "/life/journal/chiang-mai-2024/01.jpg",
+      "/life/journal/chiang-mai-2024/02.jpg",
+      "/life/journal/chiang-mai-2024/03.jpg",
+      "/life/journal/chiang-mai-2024/04.jpg",
+      "/life/journal/chiang-mai-2024/05.jpg",
+      "/life/journal/chiang-mai-2024/06.jpg",
+      "/life/journal/chiang-mai-2024/07.jpg",
+      "/life/journal/chiang-mai-2024/08.jpg",
+      "/life/journal/chiang-mai-2024/09.jpg",
+      "/life/journal/chiang-mai-2024/10.jpg",
+      "/life/journal/chiang-mai-2024/11.jpg",
+      "/life/journal/chiang-mai-2024/12.jpg",
+      "/life/journal/chiang-mai-2024/13.jpg",
+      "/life/journal/chiang-mai-2024/14.jpg",
+      "/life/journal/chiang-mai-2024/15.jpg",
+      "/life/journal/chiang-mai-2024/16.jpg",
+      "/life/journal/chiang-mai-2024/17.jpg",
+      "/life/journal/chiang-mai-2024/18.jpg",
+      "/life/journal/chiang-mai-2024/19.jpg",
+      "/life/journal/chiang-mai-2024/20.jpg",
+      "/life/journal/chiang-mai-2024/21.jpg",
+      "/life/journal/chiang-mai-2024/22.jpg",
+      "/life/journal/chiang-mai-2024/23.jpg",
+      "/life/journal/chiang-mai-2024/24.jpg",
+      "/life/journal/chiang-mai-2024/25.jpg",
+      "/life/journal/chiang-mai-2024/26.jpg",
+      "/life/journal/chiang-mai-2024/27.jpg",
+      "/life/journal/chiang-mai-2024/28.jpg",
+      "/life/journal/chiang-mai-2024/29.jpg",
+      "/life/journal/chiang-mai-2024/30.jpg",
+      "/life/journal/chiang-mai-2024/31.jpg"
+    ]
+  },
+  "hk-brewery-hike": {
+    "cover": "/life/journal/hk-brewery-hike/cover.jpg",
+    "images": [
+      "/life/journal/hk-brewery-hike/01.jpg",
+      "/life/journal/hk-brewery-hike/02.jpg",
+      "/life/journal/hk-brewery-hike/03.jpg",
+      "/life/journal/hk-brewery-hike/04.jpg",
+      "/life/journal/hk-brewery-hike/05.jpg"
+    ]
+  },
   "surf-volunteer": {
     "cover": "/life/journal/surf-volunteer/cover.jpg",
     "images": [

@@ -40,7 +40,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "running-milestone-2026-5",
     date: "2026-05-29",
     title: {
-      zh: "跑步两周年 · 10km 进 1 小时",
+      zh: "跑步两周年 · 10km才刚进1小时",
       en: "Two Years Running · Sub-1-Hour 10K",
     },
     location: { zh: "上海", en: "Shanghai" },
@@ -78,7 +78,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "sh-half-2026-3",
     date: "2026-03-15",
     title: {
-      zh: "上海半马",
+      zh: "终于跑上了上海半马 ",
       en: "Shanghai Half Marathon",
     },
     location: { zh: "上海", en: "Shanghai" },
@@ -106,7 +106,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "xterra-taihu-dnf-2025-12",
     date: "2025-12-06",
     title: {
-      zh: "Xterra 太湖 · 50km 组退赛",
+      zh: "Xterra 太湖 · 50km 第一次退赛",
       en: "XTERRA Taihu Trail Run · 55K · DNF",
     },
     location: { zh: "江苏苏州", en: "Suzhou, Jiangsu" },
@@ -122,7 +122,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "wuyi-2025-11",
     date: "2025-11-10",
     title: {
-      zh: "大武夷 · 35km（首次受伤）",
+      zh: "大武夷 · 35km组",
       en: "Grand Wuyi Trail Race · GWY-35K (First Injury)",
     },
     location: { zh: "福建武夷山", en: "Wuyishan, Fujian" },
@@ -154,7 +154,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "kailas-camp-2025-9",
     date: "2025-09 — 11",
     title: {
-      zh: "凯乐石大坡王训练营",
+      zh: "3个月的凯乐石大坡王训练营",
       en: "Kailas FUGA Trail Training Camp",
     },
     location: { zh: "浙江杭州", en: "Hangzhou, Zhejiang" },
@@ -207,7 +207,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "half-chiangmai-2024-12",
     date: "2024-12-22",
     title: {
-      zh: "人生第一场半马 · 清迈半马",
+      zh: "第一场半马 · 清迈半马",
       en: "First Half Marathon · Chiang Mai",
     },
     location: { zh: "泰国清迈", en: "Chiang Mai, Thailand" },
@@ -261,7 +261,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "ow-2023-8",
     date: "2023-08",
     title: {
-      zh: "考取 OW 潜水证",
+      zh: "来到海里，考了OW",
       en: "Open Water Dive Certification",
     },
     location: { zh: "马来西亚仙本那", en: "Semporna, Malaysia" },
@@ -273,7 +273,7 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "surf-2023-7",
     date: "2023-07",
     title: {
-      zh: "开始学习冲浪",
+      zh: "开始学冲浪",
       en: "Started Learning to Surf",
     },
     location: { zh: "广东惠州", en: "Huizhou, Guangdong" },

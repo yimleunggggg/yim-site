@@ -1,8 +1,6 @@
 import { pickText } from "@/lib/demo/demo-data";
 import type { LifeJournalEntry } from "@/lib/demo/demo-life-journal";
-import {
-  buildEditorialLayout,
-} from "@/lib/demo/life-article-layout";
+import { buildLifeArticleBlocks } from "@/lib/demo/life-article-layout";
 import { DemoSiteTrail } from "./DemoSiteTrail";
 import { LifeArticleBody } from "./LifeArticleBody";
 
@@ -16,12 +14,14 @@ export function LifeJournalArticle({
   const title = pickText(entry.title, zh);
   const location = entry.location ? pickText(entry.location, zh) : null;
   const paragraphs = entry.body.map((p) => pickText(p, zh));
-  const blocks =
-    entry.flow ??
-    buildEditorialLayout(paragraphs, entry.images, {
-      imageFirst: entry.imageFirst,
-      singleLongImage: entry.imageFirst && entry.images.length === 1,
-    });
+  const blocks = buildLifeArticleBlocks({
+    flow: entry.flow,
+    paragraphs,
+    images: entry.images,
+    intro: entry.oneLine ? pickText(entry.oneLine, zh) : undefined,
+    imageFirst: entry.imageFirst,
+    singleLongImage: entry.imageFirst && entry.images.length === 1,
+  });
 
   return (
     <article className="site-shell py-10 sm:py-14">
@@ -52,11 +52,6 @@ export function LifeJournalArticle({
               </>
             ) : null}
           </div>
-          {entry.oneLine ? (
-            <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-muted)]">
-              {pickText(entry.oneLine, zh)}
-            </p>
-          ) : null}
         </header>
 
         <LifeArticleBody blocks={blocks} />

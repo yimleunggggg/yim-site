@@ -1,27 +1,41 @@
 import type { LayoutBlock } from "@/lib/demo/life-article-layout";
+import { preprocessLifeBlocks } from "@/lib/demo/life-article-layout";
 import { LazyImage } from "./LazyImage";
 
 export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
-  if (!blocks.length) return null;
+  const editorial = preprocessLifeBlocks(blocks);
+  if (!editorial.length) return null;
 
   return (
     <div className="life-article-flow prose-playbook demo-article editorial-content mt-8 max-w-none">
-      {blocks.map((block, idx) => {
+      {editorial.map((block, idx) => {
+        if (block.type === "section") {
+          return (
+            <header key={idx} className="life-section-head">
+              <h2 className="life-section-title">{block.title}</h2>
+              {block.subtitle ? (
+                <p className="life-section-deck">{block.subtitle}</p>
+              ) : null}
+            </header>
+          );
+        }
+
+        if (block.type === "list") {
+          return (
+            <ul key={idx} className="life-section-list">
+              {block.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          );
+        }
+
+        if (block.type === "blockquote") {
+          return <blockquote key={idx}>{block.text}</blockquote>;
+        }
+
         if (block.type === "paragraph") {
           const text = block.text;
-          if (text.startsWith("## ")) {
-            return (
-              <h2 key={idx}>{text.slice(3)}</h2>
-            );
-          }
-          if (text.startsWith("### ")) {
-            return (
-              <h3 key={idx}>{text.slice(4)}</h3>
-            );
-          }
-          if (text.startsWith("> ")) {
-            return <blockquote key={idx}>{text.slice(2)}</blockquote>;
-          }
           const isNumbered = /^\d+[.)]\s/.test(text);
           if (isNumbered) {
             return (
@@ -30,15 +44,13 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
               </p>
             );
           }
-          if (text.startsWith("- ")) {
-            return (
-              <ul key={idx}>
-                <li>{text.slice(2)}</li>
-              </ul>
-            );
-          }
-          return <p key={idx}>{text}</p>;
+          return (
+            <p key={idx} className={block.lede ? "life-lede" : undefined}>
+              {text}
+            </p>
+          );
         }
+
         if (block.type === "figure") {
           return (
             <figure
@@ -53,20 +65,26 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
                 src={block.src}
                 alt=""
                 priority={idx < 2}
-                className="h-auto w-full"
+                className="life-figure-img"
               />
             </figure>
           );
         }
+
+        const count = block.sources.length;
         return (
-          <figure key={idx} className="life-masonry" aria-label="">
+          <figure
+            key={idx}
+            className={`life-gallery life-gallery--${Math.min(count, 3)}`}
+            aria-label=""
+          >
             {block.sources.map((src, j) => (
-              <div key={src} className="life-masonry-item">
+              <div key={src} className="life-gallery-item">
                 <LazyImage
                   src={src}
                   alt=""
                   priority={idx < 2 && j < 2}
-                  className="life-masonry-img"
+                  className="life-gallery-img"
                 />
               </div>
             ))}

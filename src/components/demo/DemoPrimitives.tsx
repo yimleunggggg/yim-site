@@ -38,18 +38,17 @@ export function DemoPageHeader({
   );
 }
 
-/** 分区标题：mono eyebrow（无横线）+ 可选 serif 标题 + 副标题 */
+/** 分区标题：mono eyebrow + 可选 serif 标题 + 导语 */
 export function DemoSectionHeading({
   eyebrow,
   title,
   subtitle,
-  subtitleEmphasis = false,
   className = "",
 }: {
   eyebrow?: string;
   title?: ReactNode;
   subtitle?: ReactNode;
-  /** 副标题加粗展示（如 Life · MOVEMENT 导语） */
+  /** @deprecated 与 subtitle 统一为 demo-section-lead */
   subtitleEmphasis?: boolean;
   className?: string;
 }) {
@@ -58,17 +57,7 @@ export function DemoSectionHeading({
     <div className={`demo-section-heading ${className}`.trim()}>
       {eyebrow ? <p className="demo-section-eyebrow">{eyebrow}</p> : null}
       {hasTitle ? <h2 className="demo-section-title">{title}</h2> : null}
-      {subtitle ? (
-        <p
-          className={
-            subtitleEmphasis
-              ? "demo-section-subtitle demo-section-subtitle--emphasis"
-              : "demo-section-subtitle"
-          }
-        >
-          {subtitle}
-        </p>
-      ) : null}
+      {subtitle ? <p className="demo-section-lead">{subtitle}</p> : null}
     </div>
   );
 }

@@ -61,7 +61,7 @@ export default async function WritingPage({ params }: Props) {
           </div>
         ) : null}
 
-        <div className="prose-playbook demo-article mt-8 max-w-none">
+        <div className="prose-playbook demo-article editorial-content mt-8 max-w-none">
           <MdxContent source={article.body} />
         </div>
 

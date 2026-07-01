@@ -6,22 +6,24 @@ export function BeerMattersActivities() {
       <h2>做过的一些好玩的：</h2>
       <ul className="beer-matters-activity-list">
         {beerMattersHighlights.map((item) => (
-          <li key={item.title}>
+          <li key={item.title} className="beer-matters-activity-item">
             <p className="beer-matters-activity-title">{item.title}</p>
-            <ul className="beer-matters-activity-links">
+            <div className="beer-matters-activity-links">
               {item.links.map((link) => (
-                <li key={link.url}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="beer-matters-activity-link tap-target"
-                  >
-                    {link.label} →
-                  </a>
-                </li>
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="beer-matters-activity-link tap-target"
+                >
+                  <span>{link.label}</span>
+                  <span className="beer-matters-activity-arrow" aria-hidden>
+                    →
+                  </span>
+                </a>
               ))}
-            </ul>
+            </div>
           </li>
         ))}
       </ul>

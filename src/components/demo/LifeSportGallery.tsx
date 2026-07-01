@@ -91,15 +91,8 @@ export function LifeSportGallery({
   entries: LifeSportEntry[];
   zh: boolean;
 }) {
-  const withNotes = entries.filter((e) => e.body).length;
-
   return (
     <div className="movement-wall-wrap">
-      <p className="movement-wall-legend font-mono-index">
-        {zh
-          ? `${entries.length} 次记录 · ${withNotes} 篇笔记`
-          : `${entries.length} moments · ${withNotes} with notes`}
-      </p>
       <div className="movement-wall">
         {entries.map((entry, i) => (
           <SportTile key={entry.id} entry={entry} zh={zh} priority={i < 6} />

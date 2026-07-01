@@ -76,7 +76,10 @@ function toParagraphs(text) {
     .filter((p) => p.length > 0 && !/^(时间|标题|关键词)\s*[：:]/u.test(p));
 }
 
-const bodies = {};
+let bodies = {};
+if (fs.existsSync(OUT)) {
+  bodies = JSON.parse(fs.readFileSync(OUT, "utf8"));
+}
 
 for (const [folder, id] of Object.entries(JOURNAL_FOLDERS)) {
   const dir = path.join(SRC, folder);

@@ -59,3 +59,22 @@ npm run import:feishu -- --slug <slug>
 > 导入到 Life，slug 叫 xxx，标题 xxx
 
 Agent 应：确认 CDP Proxy → 跑 `npm run import:feishu` → 必要时更新 `demo-life-journal.ts` 条目 → `npm run build`。
+
+## 排版标准（自动，无需每次手改）
+
+飞书 Life 文章导入后由 **`LifeArticleBody` + `preprocessLifeBlocks`** 统一渲染：
+
+| 飞书块 | 站点展示 |
+|--------|----------|
+| heading1 | 章节主标题（`.life-section-title`） |
+| heading2 | 章节副标题 / deck（`.life-section-deck`，紧跟主标题成组） |
+| text / quote | 正文段落 / 引用 |
+| bullet | 合并为 `<ul>` 列表 |
+| 连续图片 | 2–3 列 grid（`.life-gallery`），单图限高 ~34rem |
+| 单张图片 | 居中宽图（`.life-figure--wide`），限高防竖图撑满屏 |
+
+**不要**在 `demo-life-journal.ts` 写「从飞书同步」类占位 `oneLine`；页头只保留文章标题 + 日期/标签。
+
+`oneLine` 仅用于 Life 列表摘要；**文章页**会自动并入正文首段（`mergeIntroIntoBlocks`），不与正文重复分段。
+
+正文排版统一走 `.editorial-content.prose-playbook`（serif、行高 2、首段 `.life-lede`）。

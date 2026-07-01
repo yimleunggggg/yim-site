@@ -63,9 +63,6 @@ export function SiteFooter({ note }: SiteFooterProps) {
             <Link href="/resume" className="text-[var(--color-ink-muted)] hover:text-[var(--color-forest)]">
               {zh ? "PDF 简历" : "PDF resume"}
             </Link>
-            <p className="pt-1 text-xs leading-relaxed text-[var(--color-ink-muted)]">
-              {zh ? "合作、招聘或随便聊聊，邮件即可。" : "For collaboration, hiring, or a hello — email works."}
-            </p>
           </div>
         </div>
 

@@ -44,6 +44,7 @@ function parseArgs(argv) {
     else if (a === "--tags") args.tags = argv[++i].split(/[,，]/).map((s) => s.trim()).filter(Boolean);
     else if (a === "--toc") args.useToc = true;
     else if (a === "--all") args.all = true;
+    else if (a === "--life") args.life = true;
     else if (a === "--help" || a === "-h") args.help = true;
   }
   return args;
@@ -63,13 +64,21 @@ function writeJson(p, data) {
   fs.writeFileSync(p, JSON.stringify(data, null, 2) + "\n", "utf8");
 }
 
-async function importLife(doc, { blocks, imgMap }) {
+async function importLife(doc, { blocks, imgMap, neededImageCount }) {
   const imgDir = path.join(LIFE_IMG_ROOT, doc.slug);
   const publicBase = `/life/journal/${doc.slug}`;
-  const imgSrcToFile = saveFeishuImages(imgMap, blocks, imgDir);
+  const { imgSrcToFile, missing } = saveFeishuImages(imgMap, blocks, imgDir);
   const flow = blocksToLifeFlow(blocks, publicBase, imgSrcToFile);
   const imagePaths = flowToImagePaths(flow);
   const paragraphs = flowToParagraphs(flow);
+
+  if (missing.length) {
+    console.warn(`  ⚠ ${missing.length} images missing for ${doc.slug}`);
+  }
+  const refs = neededImageCount ?? imagePaths.length;
+  if (imagePaths.length < refs) {
+    console.warn(`  ⚠ flow has ${imagePaths.length}/${refs} images — check Feishu doc`);
+  }
 
   const bodies = readJson(LIFE_BODIES, {});
   bodies[doc.slug] = paragraphs;
@@ -95,7 +104,8 @@ async function importLife(doc, { blocks, imgMap }) {
 
 async function importWriting(doc, { blocks, imgMap }) {
   const imgDir = path.join(ROOT, "public/writing", doc.slug);
-  const imgSrcToFile = saveFeishuImages(imgMap, blocks, imgDir);
+  const { imgSrcToFile, missing } = saveFeishuImages(imgMap, blocks, imgDir);
+  if (missing.length) console.warn(`  ⚠ ${missing.length} images missing for ${doc.slug}`);
   const body = blocksToWritingMdx(blocks, doc.slug, imgSrcToFile);
   const plain = body.replace(/!\[[^\]]*\]\([^)]+\)/g, "").replace(/[#>*\-]/g, "");
   const summary =
@@ -162,6 +172,8 @@ async function main() {
 
   if (args.all) {
     docs = loadManifest();
+  } else if (args.life) {
+    docs = loadManifest().filter((d) => d.target === "life");
   } else if (args.slug && !args.url) {
     const hit = loadManifest().find((d) => d.slug === args.slug);
     if (!hit) {

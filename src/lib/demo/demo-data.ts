@@ -463,11 +463,13 @@ export type ProjectCategory = "product" | "travel" | "sport" | "experience";
 
 export const projectStatusLabel: Record<ProjectStatus, LText> = {
   live: { zh: "已上线", en: "Live" },
-  building: { zh: "在做", en: "Building" },
   ongoing: { zh: "持续", en: "Ongoing" },
-  demo: { zh: "Demo 中", en: "Demo" },
-  fuzzy: { zh: "想法中", en: "Fuzzy" },
+  demo: { zh: "Demo", en: "Demo" },
   planned: { zh: "计划中", en: "Planned" },
+  /** @deprecated 统一展示为「计划中」 */
+  fuzzy: { zh: "计划中", en: "Planned" },
+  /** @deprecated 统一展示为「持续」 */
+  building: { zh: "持续", en: "Ongoing" },
 };
 
 export const projectCategoryLabel: Record<ProjectCategory, LText> = {
@@ -557,7 +559,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
       zh: "Music DNA 已跑通；CineMate 与日记 timeline 在构思中。",
       en: "Music DNA is live; CineMate and a diary timeline are in ideation.",
     },
-    status: "fuzzy",
+    status: "planned",
     categories: ["product", "experience"],
     hasDetailPage: true,
   },
@@ -590,10 +592,10 @@ export const demoAboutProjects: DemoAboutProject[] = [
 const PROJECT_STATUS_RANK: Record<ProjectStatus, number> = {
   live: 0,
   ongoing: 1,
-  building: 2,
-  demo: 3,
-  fuzzy: 4,
-  planned: 5,
+  demo: 2,
+  planned: 3,
+  building: 3,
+  fuzzy: 3,
 };
 
 /** About 项目表：已上线优先，其次在做 / Demo / 想法 / 计划 */
@@ -733,6 +735,11 @@ export const demoLifeHeader = {
     zh: "Field Notes from Movement, Places and People",
     en: "Field Notes from Movement, Places and People",
   } as LText,
+};
+
+export const demoLifeJournalIntro: LText = {
+  zh: "持续不断的记录，意义自然浮现。",
+  en: "Keep recording — meaning shows up on its own.",
 };
 
 /** 3.1 生活体验 Dispatches */

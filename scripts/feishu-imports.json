@@ -32,7 +32,16 @@
     "title": "川西 Road Trip",
     "date": "2025-06",
     "tags": ["旅行", "川西"],
-    "target": "writing",
+    "target": "life",
+    "useToc": true
+  },
+  {
+    "slug": "sri-lanka",
+    "url": "https://my.feishu.cn/wiki/X9dBwPjEwiIIiMkI2o6cE3lUnWf",
+    "title": "斯里兰卡 · 国际义工",
+    "date": "2016-06",
+    "tags": ["义工", "旅行"],
+    "target": "life",
     "useToc": true
   }
 ]

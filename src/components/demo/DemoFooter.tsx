@@ -19,9 +19,7 @@ export function DemoFooter() {
           <em>{pickText(demoFooterUi.markLine2, zh)}</em>
         </blockquote>
 
-        <p className="demo-footer-hint mt-8">{pickText(demoFooterUi.contactHint, zh)}</p>
-
-        <div className="demo-footer-links mt-6">
+        <div className="demo-footer-links mt-8">
           <a
             href={`mailto:${demoProfile.email}`}
             className="demo-footer-link"
@@ -35,17 +33,16 @@ export function DemoFooter() {
               href={instagram.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="demo-footer-link"
-              aria-label={pickText(demoFooterUi.instagramLabel, zh)}
+              className="demo-footer-link demo-footer-link--icon"
+              aria-label={`Instagram ${instagram.handle ?? ""}`.trim()}
             >
               <InstagramIcon />
-              <span>{instagram.handle ?? "Instagram"}</span>
             </a>
           ) : null}
         </div>
 
         <p className="demo-footer-meta mt-10">
-          {pickText(demoProfile.location, zh)} · © {year} {pickText(demoProfile.name, zh)}
+          © {year} {pickText(demoProfile.name, zh)}
         </p>
       </div>
     </footer>

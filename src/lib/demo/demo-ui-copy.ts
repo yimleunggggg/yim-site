@@ -17,10 +17,12 @@ export const demoUiCopy = {
     stackOverview: { zh: "技术概览", en: "Technical overview" } as LText,
     devTools: { zh: "开发工具", en: "Tools" } as LText,
     related: { zh: "延伸阅读", en: "Further reading" } as LText,
+    relatedDemo: { zh: "Demo", en: "Demo" } as LText,
     relatedKind: {
       wechat: { zh: "微信公众号", en: "WeChat" } as LText,
       external: { zh: "外链", en: "External" } as LText,
       writing: { zh: "站内文章", en: "On-site" } as LText,
+      demo: { zh: "Demo", en: "Demo" } as LText,
     },
   },
   lifePage: {

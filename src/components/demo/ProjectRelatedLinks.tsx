@@ -14,11 +14,13 @@ export function ProjectRelatedLinks({ links }: { links: ProjectRelatedLink[] }) 
   const relatedKind = (kind: ProjectRelatedLink["kind"]) =>
     pickText(demoUiCopy.projectMeta.relatedKind[kind], zh);
 
+  const sectionTitle = links.every((l) => l.kind === "demo")
+    ? pickText(demoUiCopy.projectMeta.relatedDemo, zh)
+    : pickText(demoUiCopy.projectMeta.related, zh);
+
   return (
     <section className="project-related-section editorial-content mt-8">
-      <h2 className="project-related-section-title">
-        {pickText(demoUiCopy.projectMeta.related, zh)}
-      </h2>
+      <h2 className="project-related-section-title">{sectionTitle}</h2>
       <ul className="project-related-list">
         {links.map((link) => (
           <li key={link.url}>

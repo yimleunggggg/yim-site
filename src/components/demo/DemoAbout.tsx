@@ -121,24 +121,32 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
         aria-expanded={open}
         className="demo-work-trigger tap-target"
       >
-        <span className="demo-work-summary">
+        <span className="demo-work-line">
           <span className="demo-work-company">{pickText(work.company, zh)}</span>
+          <span className="demo-work-sep" aria-hidden>
+            ·
+          </span>
           <span className="demo-work-role">{pickText(work.role, zh)}</span>
+          <span className="demo-work-sep demo-work-sep--meta" aria-hidden>
+            ·
+          </span>
           <span className="demo-work-meta">
             {work.period} · {pickText(work.location, zh)}
           </span>
+          {tags.length > 0 ? (
+            <span className="demo-work-tags-inline">
+              {tags.map((tag) => (
+                <span key={tag} className="demo-work-tag">
+                  {tag}
+                </span>
+              ))}
+            </span>
+          ) : null}
         </span>
         <span className={`demo-work-chevron ${open ? "is-open" : ""}`} aria-hidden>
           ⌄
         </span>
       </button>
-      <div className="demo-work-tags">
-        {tags.map((tag) => (
-          <span key={tag} className="demo-work-tag">
-            {tag}
-          </span>
-        ))}
-      </div>
       {open ? (
         <div className="demo-work-body">
           <ul className="demo-work-bullets">

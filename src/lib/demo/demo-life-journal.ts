@@ -10,7 +10,7 @@ export type LifeJournalEntry = {
   title: LText;
   location?: LText;
   tags: string[];
-  oneLine: LText;
+  oneLine?: LText;
   cover: string;
   images: string[];
   /** 飞书导入的 ordered flow；优先于 body + images 拼装 */
@@ -88,9 +88,32 @@ const journalEntriesBase: LifeJournalEntry[] = [
     date: "2025-09-22",
     title: { zh: "写在 31 岁这一天" },
     tags: ["随笔"],
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
+    id: "west-sichuan-2025",
+    date: "2025-06",
+    title: { zh: "川西 Road Trip" },
+    location: { zh: "四川 · 川西" },
+    tags: ["旅行", "川西"],
     oneLine: {
-      zh: "31 岁这天写给自己的话——图文从飞书文档同步。",
-      en: "Notes to myself at 31 — synced from Feishu.",
+      zh: "几天几段，车窗外的山与云。",
+      en: "Days on the road — mountains and clouds through the window.",
+    },
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
+    id: "two-years-off",
+    date: "2025-05",
+    title: { zh: "离开职场两年" },
+    tags: ["随笔"],
+    oneLine: {
+      zh: "没在职场的这段时间，成长速度比过去二十多年都快。",
+      en: "Away from the office, I grew faster than in the previous twenty-plus years.",
     },
     cover: "",
     images: [],
@@ -105,6 +128,20 @@ const journalEntriesBase: LifeJournalEntry[] = [
     oneLine: {
       zh: "甘肃酒花田，第一次见鲜啤酒花，闻起来像青柠和草。",
       en: "Gansu hop fields — first time smelling fresh hops, like lime and grass.",
+    },
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
+    id: "hk-brewery-hike",
+    date: "2025-03",
+    title: { zh: "香港酒厂探访及离岛徒步" },
+    location: { zh: "香港" },
+    tags: ["精酿", "徒步", "旅行"],
+    oneLine: {
+      zh: "带队走访酒厂，离岛徒步。",
+      en: "Brewery visits and island hikes in Hong Kong.",
     },
     cover: "",
     images: [],
@@ -132,6 +169,34 @@ const journalEntriesBase: LifeJournalEntry[] = [
     oneLine: {
       zh: "好像来到了一个很大的「人生节点」，其实什么大事儿都没完成。",
       en: "Felt like a big life milestone — hadn't actually finished anything big.",
+    },
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
+    id: "aboro-boxing",
+    date: "2024-06",
+    title: { zh: "ABORO AKO · 拳击训练营" },
+    location: { zh: "上海" },
+    tags: ["拳击", "运动"],
+    oneLine: {
+      zh: "一周六练，学会如何「打人」和「挨打」。",
+      en: "Six days a week — learning to throw and take a punch.",
+    },
+    cover: "",
+    images: [],
+    body: [],
+  },
+  {
+    id: "chiang-mai-2024",
+    date: "2024-12",
+    title: { zh: "因跑半马而开始的清迈旅居" },
+    location: { zh: "泰国 · 清迈" },
+    tags: ["旅行", "跑步"],
+    oneLine: {
+      zh: "跑完清迈半马，索性在小城住下来。",
+      en: "After the Chiang Mai half — stayed in the city.",
     },
     cover: "",
     images: [],
@@ -177,14 +242,7 @@ const journalEntriesBase: LifeJournalEntry[] = [
     },
     cover: "",
     images: [],
-    body: [
-      {
-        zh: "2016 年夏天，参加斯里兰卡国际义工项目。从 14 万申请者中被选入 30 人，在 Yala 周边参与社区与环保相关的工作。",
-      },
-      {
-        zh: "那是我较早的一次「把自己丢进完全陌生的环境」——语言不通、习俗不同，但学会了在不确定里把事情做完。后来很多次独旅和换城，都能追溯到这次的经验。",
-      },
-    ],
+    body: [],
   },
 ];
 
