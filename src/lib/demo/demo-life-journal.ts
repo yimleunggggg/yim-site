@@ -1,6 +1,8 @@
 import type { LText } from "./demo-data";
 import journalBodies from "./life-journal-bodies.json";
+import journalFlow from "./life-journal-flow.json";
 import journalImages from "./life-journal-images.json";
+import type { LayoutBlock } from "./life-article-layout";
 
 export type LifeJournalEntry = {
   id: string;
@@ -11,6 +13,8 @@ export type LifeJournalEntry = {
   oneLine: LText;
   cover: string;
   images: string[];
+  /** 飞书导入的 ordered flow；优先于 body + images 拼装 */
+  flow?: LayoutBlock[];
   /** 段落数组，空则仅展示图片 */
   body: LText[];
   /** 长图条目：modal 内图片完整展示 */
@@ -23,6 +27,12 @@ function journalAssets(slug: string): { cover: string; images: string[] } {
   return a;
 }
 
+function flowFromFile(id: string): LayoutBlock[] | null {
+  const flow = journalFlow[id as keyof typeof journalFlow];
+  if (!flow?.length) return null;
+  return flow as LayoutBlock[];
+}
+
 function bodyFromFile(id: string): LText[] {
   const paragraphs = journalBodies[id as keyof typeof journalBodies];
   if (!paragraphs?.length) return [];
@@ -33,10 +43,12 @@ function withImportedBodies(entries: LifeJournalEntry[]): LifeJournalEntry[] {
   return entries.map((entry) => {
     const imported = bodyFromFile(entry.id);
     const assets = journalAssets(entry.id);
+    const flow = flowFromFile(entry.id);
     return {
       ...entry,
       cover: assets.cover || entry.cover,
       images: assets.images.length ? assets.images : entry.images,
+      flow: flow ?? undefined,
       body: imported.length ? imported : entry.body,
     };
   });
@@ -77,13 +89,12 @@ const journalEntriesBase: LifeJournalEntry[] = [
     title: { zh: "写在 31 岁这一天" },
     tags: ["随笔"],
     oneLine: {
-      zh: "2025.9.22，31 岁这天写给自己的长图——向下滚动查看全文。",
-      en: "Sep 22, 2025 — a long visual note to myself at 31. Scroll for the full image.",
+      zh: "31 岁这天写给自己的话——图文从飞书文档同步。",
+      en: "Notes to myself at 31 — synced from Feishu.",
     },
     cover: "",
     images: [],
     body: [],
-    imageFirst: true,
   },
   {
     id: "gansu-hops",

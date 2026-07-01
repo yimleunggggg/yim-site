@@ -12,6 +12,7 @@
     "import:life": "node scripts/import-life.mjs",
     "import:life-text": "node scripts/import-life-text.mjs",
     "import:feishu-writing": "node scripts/import-feishu-writing.mjs",
+    "import:feishu": "node scripts/import-feishu.mjs",
     "import:frame-thumbs": "node scripts/generate-frame-thumbs.mjs",
     "deploy:prod": "node scripts/check-public-assets.mjs && npx vercel deploy --prod"
   },

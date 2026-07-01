@@ -79,6 +79,18 @@ export const demoProjectMeta: Record<string, DemoProjectMeta> = {
     related: [
       {
         kind: "wechat",
+        title: {
+          zh: "上线 1 个月的产品优化：分销联盟、关键事件埋点等",
+          en: "One month in: product optimizations, affiliates & analytics",
+        },
+        url: "https://mp.weixin.qq.com/s/32M4rwGXXC1zGSM_y4Lo8w",
+        note: {
+          zh: "时刻表修复、全岛地图、徒步页、GA4 与联盟接入",
+          en: "Timetable fixes, island map, hiking, GA4 & affiliate setup",
+        },
+      },
+      {
+        kind: "wechat",
         title: { zh: "制作过程与经验总结", en: "Build log & lessons learned" },
         url: "https://mp.weixin.qq.com/s/bN7wbRI6TsWguZ59fTBYoQ",
         note: { zh: "从需求、数据到上线的完整记录", en: "From problem to launch" },

@@ -1,4 +1,4 @@
-/** 将正文段落与图片编排成 editorial 流（非单列大图堆叠） */
+/** 将正文段落与图片编排成 editorial 流（错落 masonry，保持原比例） */
 export type LayoutBlock =
   | { type: "paragraph"; text: string }
   | { type: "figure"; src: string; variant: "full" | "wide" }
@@ -10,10 +10,29 @@ function pushImages(blocks: LayoutBlock[], sources: string[]) {
     blocks.push({ type: "figure", src: sources[0], variant: "wide" });
     return;
   }
-  const CHUNK = 12;
-  for (let i = 0; i < sources.length; i += CHUNK) {
-    blocks.push({ type: "masonry", sources: sources.slice(i, i + CHUNK) });
+  blocks.push({ type: "masonry", sources: [...sources] });
+}
+
+function interleaveParagraphsAndImages(
+  blocks: LayoutBlock[],
+  paragraphs: string[],
+  images: string[],
+) {
+  let imgIdx = 0;
+  const n = paragraphs.length;
+
+  for (let i = 0; i < n; i++) {
+    blocks.push({ type: "paragraph", text: paragraphs[i] });
+    const nextCut = Math.round(((i + 1) * images.length) / n);
+    const slice = images.slice(imgIdx, nextCut);
+    if (slice.length) {
+      pushImages(blocks, slice);
+      imgIdx = nextCut;
+    }
   }
+
+  const rest = images.slice(imgIdx);
+  if (rest.length) pushImages(blocks, rest);
 }
 
 export function buildEditorialLayout(
@@ -37,23 +56,22 @@ export function buildEditorialLayout(
   }
 
   if (paragraphs.length === 0) {
-    if (images.length === 1) {
-      blocks.push({ type: "figure", src: images[0], variant: "wide" });
-    } else if (images.length > 1) {
-      pushImages(blocks, images);
-    }
+    pushImages(blocks, images);
     return blocks;
   }
 
-  /** 默认：先全文，再图片组（双列 masonry 保持各自横竖幅） */
-  for (const text of paragraphs) blocks.push({ type: "paragraph", text });
-
-  if (images.length === 1) {
-    blocks.push({ type: "figure", src: images[0], variant: "wide" });
-  } else if (images.length > 1) {
-    pushImages(blocks, images);
+  if (images.length === 0) {
+    for (const text of paragraphs) blocks.push({ type: "paragraph", text });
+    return blocks;
   }
 
+  if (images.length === 1) {
+    for (const text of paragraphs) blocks.push({ type: "paragraph", text });
+    blocks.push({ type: "figure", src: images[0], variant: "wide" });
+    return blocks;
+  }
+
+  interleaveParagraphsAndImages(blocks, paragraphs, images);
   return blocks;
 }
 

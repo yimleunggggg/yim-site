@@ -458,12 +458,13 @@ export const demoWork: DemoWork[] = [
 
 /* ------------------------------ 关于页 · 项目 ------------------------------- */
 
-export type ProjectStatus = "live" | "building" | "demo" | "fuzzy" | "planned";
+export type ProjectStatus = "live" | "building" | "ongoing" | "demo" | "fuzzy" | "planned";
 export type ProjectCategory = "product" | "travel" | "sport" | "experience";
 
 export const projectStatusLabel: Record<ProjectStatus, LText> = {
   live: { zh: "已上线", en: "Live" },
   building: { zh: "在做", en: "Building" },
+  ongoing: { zh: "持续", en: "Ongoing" },
   demo: { zh: "Demo 中", en: "Demo" },
   fuzzy: { zh: "想法中", en: "Fuzzy" },
   planned: { zh: "计划中", en: "Planned" },
@@ -540,7 +541,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
       zh: "精酿内容 × 社群 × 活动 × 电商，含啤酒旅行社等线下活动",
       en: "Craft content, community, events & e-commerce — including Beer Travel Club trips",
     },
-    status: "building",
+    status: "ongoing",
     categories: ["experience", "travel"],
     liveUrl: "https://beermatters.cn/",
     hasDetailPage: true,
@@ -588,10 +589,11 @@ export const demoAboutProjects: DemoAboutProject[] = [
 
 const PROJECT_STATUS_RANK: Record<ProjectStatus, number> = {
   live: 0,
-  building: 1,
-  demo: 2,
-  fuzzy: 3,
-  planned: 4,
+  ongoing: 1,
+  building: 2,
+  demo: 3,
+  fuzzy: 4,
+  planned: 5,
 };
 
 /** About 项目表：已上线优先，其次在做 / Demo / 想法 / 计划 */

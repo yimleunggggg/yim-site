@@ -16,7 +16,6 @@ function shotsFromFolder(base: string, count: number, label = "截图"): Project
 export const yakushimaBusScreenshots: ProjectShot[] = [
   { src: "/work/projects/yakushima-bus/01.png", alt: "产品概览 · 三语首页", width: 390, height: 844 },
   { src: "/work/projects/yakushima-bus/02.png", alt: "移动端 · 公交时刻表", width: 390, height: 844 },
-  { src: "/work/projects/yakushima-bus/03.png", alt: "桌面端 · 首页", width: 1200, height: 900 },
   { src: "/work/projects/yakushima-bus/04.png", alt: "区间查询 · 下一班高亮", width: 390, height: 844 },
   { src: "/work/projects/yakushima-bus/05.png", alt: "票价预估 · 乘车券", width: 390, height: 844 },
   { src: "/work/projects/yakushima-bus/06.png", alt: "船运时刻 · 上岛衔接", width: 390, height: 844 },

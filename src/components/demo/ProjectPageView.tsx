@@ -12,9 +12,10 @@ import {
   type DemoProject,
   type ProjectCategory,
 } from "@/lib/demo/demo-data";
-import type { DemoProjectMeta } from "@/lib/demo/demo-project-meta";
+import type { DemoProjectMeta, ProjectRelatedLink } from "@/lib/demo/demo-project-meta";
 import { ProjectMetaPanels } from "@/components/demo/ProjectMetaPanels";
 import { ProjectPageScreenshots } from "@/components/demo/ProjectPageScreenshots";
+import { ProjectRelatedLinks } from "@/components/demo/ProjectRelatedLinks";
 import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { useLocale } from "@/components";
 import type { LText } from "@/lib/demo/demo-data";
@@ -51,6 +52,7 @@ export function ProjectPageView({
   const tagline = about ? pickText(about.tagline, zh) : pickText(detail!.tagline, zh);
   const period = detail?.period;
   const body = bodyText ? pickText(bodyText, zh) : mdxBodyZh ?? null;
+  const relatedLinks: ProjectRelatedLink[] = projectMeta?.related ?? [];
 
   return (
     <article className="site-shell py-10 sm:py-14">
@@ -89,8 +91,12 @@ export function ProjectPageView({
         </div>
       </header>
 
+      <div className="mt-8">
+        <ProjectPageScreenshots slug={slug} />
+      </div>
+
       {(liveUrl || demoUrl) && (
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           {liveUrl ? (
             <a
               href={liveUrl}
@@ -114,9 +120,7 @@ export function ProjectPageView({
         </div>
       )}
 
-      <div className="mt-8">
-        <ProjectPageScreenshots slug={slug} />
-      </div>
+      {relatedLinks.length > 0 ? <ProjectRelatedLinks links={relatedLinks} /> : null}
 
       {body ? (
         <div className="prose-playbook demo-article editorial-content mt-10 max-w-none">

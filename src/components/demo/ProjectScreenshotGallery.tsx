@@ -32,7 +32,7 @@ export function ProjectScreenshotGallery({ shots }: { shots: ProjectShot[] }) {
         <p className="project-shot-section-meta">{meta}</p>
       </div>
 
-      <div className="project-shot-grid">
+      <div className="project-shot-grid project-shot-grid--strip">
         {shots.map((shot, i) => {
           const isLoaded = loaded[i];
           return (
@@ -58,7 +58,11 @@ export function ProjectScreenshotGallery({ shots }: { shots: ProjectShot[] }) {
                   onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
                 />
               </div>
-              {shot.alt ? <span className="project-shot-label">{shot.alt}</span> : null}
+              {shot.alt ? (
+                <span className="project-shot-label" title={shot.alt}>
+                  {shot.alt}
+                </span>
+              ) : null}
             </button>
           );
         })}
@@ -67,6 +71,7 @@ export function ProjectScreenshotGallery({ shots }: { shots: ProjectShot[] }) {
       {index !== null ? (
         <ImageLightbox
           images={urls}
+          captions={shots.map((s) => s.alt)}
           index={index}
           onClose={() => setIndex(null)}
           onNavigate={setIndex}

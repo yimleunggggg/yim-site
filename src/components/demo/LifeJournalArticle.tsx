@@ -16,10 +16,12 @@ export function LifeJournalArticle({
   const title = pickText(entry.title, zh);
   const location = entry.location ? pickText(entry.location, zh) : null;
   const paragraphs = entry.body.map((p) => pickText(p, zh));
-  const blocks = buildEditorialLayout(paragraphs, entry.images, {
-    imageFirst: entry.imageFirst,
-    singleLongImage: entry.imageFirst && entry.images.length === 1,
-  });
+  const blocks =
+    entry.flow ??
+    buildEditorialLayout(paragraphs, entry.images, {
+      imageFirst: entry.imageFirst,
+      singleLongImage: entry.imageFirst && entry.images.length === 1,
+    });
 
   return (
     <article className="site-shell py-10 sm:py-14">

@@ -1,19 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import Image from "next/image";
 
 type Props = {
   images: string[];
   index: number;
   onClose: () => void;
   onNavigate: (index: number) => void;
+  captions?: string[];
 };
 
-export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
+export function ImageLightbox({ images, index, onClose, onNavigate, captions }: Props) {
   const hasPrev = index > 0;
   const hasNext = index < images.length - 1;
   const touchRef = useRef<{ x: number; y: number } | null>(null);
+  const caption = captions?.[index];
 
   const goPrev = useCallback(() => {
     if (hasPrev) onNavigate(index - 1);
@@ -53,7 +54,7 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col bg-black/92 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
+      className="image-lightbox fixed inset-0 z-50 flex flex-col bg-black/92 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
       role="dialog"
       aria-modal="true"
       aria-label="图片浏览"
@@ -62,32 +63,39 @@ export function ImageLightbox({ images, index, onClose, onNavigate }: Props) {
       onTouchEnd={onTouchEnd}
     >
       <div
-        className="flex shrink-0 items-center justify-between px-4 py-3"
+        className="flex shrink-0 items-center justify-between gap-3 px-4 py-3"
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="text-sm text-white/70">
-          {index + 1} / {images.length}
-        </span>
+        <div className="min-w-0">
+          <span className="text-sm text-white/70">
+            {index + 1} / {images.length}
+          </span>
+          {caption ? (
+            <p className="mt-0.5 truncate text-xs text-white/55">{caption}</p>
+          ) : null}
+        </div>
         <button
           type="button"
           onClick={onClose}
-          className="tap-target rounded-full px-4 text-sm text-white active:bg-white/15"
+          className="tap-target shrink-0 rounded-full px-4 text-sm text-white active:bg-white/15"
         >
           关闭
         </button>
       </div>
 
       <div
-        className="relative min-h-0 flex-1 px-2"
+        className="image-lightbox-stage flex min-h-0 flex-1 items-center justify-center px-3 pb-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={images[index]}
-          alt=""
-          fill
-          className="object-contain"
-          sizes="100vw"
-          priority
+          alt={caption ?? ""}
+          className="image-lightbox-img max-h-[min(78dvh,calc(100dvh-8rem))] max-w-[min(100%,42rem)] w-auto h-auto object-contain select-none"
+        <img
+          src={images[index]}
+          alt={caption ?? ""}
+          className="image-lightbox-img max-h-[min(78dvh,calc(100dvh-8rem))] max-w-[min(100%,42rem)] w-auto h-auto object-contain select-none"
           draggable={false}
         />
       </div>

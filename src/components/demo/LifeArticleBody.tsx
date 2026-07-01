@@ -5,18 +5,39 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
   if (!blocks.length) return null;
 
   return (
-    <div className="life-article-flow prose-playbook demo-article mt-8 max-w-none">
+    <div className="life-article-flow prose-playbook demo-article editorial-content mt-8 max-w-none">
       {blocks.map((block, idx) => {
         if (block.type === "paragraph") {
-          const isNumbered = /^\d+[.)]\s/.test(block.text);
+          const text = block.text;
+          if (text.startsWith("## ")) {
+            return (
+              <h2 key={idx}>{text.slice(3)}</h2>
+            );
+          }
+          if (text.startsWith("### ")) {
+            return (
+              <h3 key={idx}>{text.slice(4)}</h3>
+            );
+          }
+          if (text.startsWith("> ")) {
+            return <blockquote key={idx}>{text.slice(2)}</blockquote>;
+          }
+          const isNumbered = /^\d+[.)]\s/.test(text);
           if (isNumbered) {
             return (
               <p key={idx} className="life-article-list-item">
-                {block.text}
+                {text}
               </p>
             );
           }
-          return <p key={idx}>{block.text}</p>;
+          if (text.startsWith("- ")) {
+            return (
+              <ul key={idx}>
+                <li>{text.slice(2)}</li>
+              </ul>
+            );
+          }
+          return <p key={idx}>{text}</p>;
         }
         if (block.type === "figure") {
           return (
