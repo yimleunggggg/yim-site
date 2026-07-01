@@ -34,6 +34,7 @@ export default async function FrameDetailPage({ params }: Props) {
         images: frame.images,
         imagesFull: frame.imagesFull,
         imageCaptions: frame.imageCaptions,
+        imageSizes: frame.imageSizes,
         ongoing: frame.ongoing,
         prev,
         next,

@@ -45,6 +45,8 @@ export type Frame = FrameMeta & {
   imagesFull: string[];
   /** 单张说明（如日落：文件名里的时间地点） */
   imageCaptions: FrameImageCaption[];
+  /** 与 images 一一对应的宽高，用于占位防布局跳动 */
+  imageSizes: { width: number; height: number }[];
 };
 
 export const FRAMES_META: FrameMeta[] = [
@@ -198,6 +200,14 @@ function readCaptions(slug: string): FrameImageCaption[] {
   }
 }
 
+function fileForPublicSrc(dir: string, files: string[], publicSrc: string): string | null {
+  const base = publicSrc.split("/").pop() ?? "";
+  if (files.includes(base)) return path.join(dir, base);
+  const full = base.replace(/-thumb\.jpg$/, ".jpg");
+  if (files.includes(full)) return path.join(dir, full);
+  return null;
+}
+
 function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
   const dir = path.join(FRAMES_ROOT, slug);
   const empty = {
@@ -209,6 +219,7 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
     images: [] as string[],
     imagesFull: [] as string[],
     imageCaptions: [] as FrameImageCaption[],
+    imageSizes: [] as { width: number; height: number }[],
   };
   if (!fs.existsSync(dir)) return empty;
   const files = fs.readdirSync(dir);
@@ -264,6 +275,12 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
       ? [{ date: "", place: { zh: "", en: "" } }, ...numberedCaptions]
       : numberedCaptions;
 
+  const imageSizes = images.map((src) => {
+    const fp = fileForPublicSrc(dir, files, src);
+    const size = fp ? readJpegSize(fp) : null;
+    return { width: size?.width ?? 4, height: size?.height ?? 3 };
+  });
+
   return {
     cover,
     coverThumb,
@@ -273,6 +290,7 @@ function readImages(slug: string): Omit<Frame, keyof FrameMeta> {
     images,
     imagesFull,
     imageCaptions: imageCaptions.slice(0, images.length),
+    imageSizes: imageSizes.slice(0, images.length),
   };
 }
 

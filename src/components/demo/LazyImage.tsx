@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 type LazyImageProps = {
   src: string;
@@ -12,11 +12,12 @@ type LazyImageProps = {
   priority?: boolean;
   draggable?: boolean;
   onContextMenu?: (e: React.MouseEvent<HTMLImageElement>) => void;
+  /** object-fit，默认 cover；相册用 contain */
+  fit?: "cover" | "contain";
 };
 
 /**
- * 图片加载：始终挂载 src，用浏览器原生 lazy + 可选 priority。
- * （旧版 IntersectionObserver 延迟设 src 会导致高度从 0 顶高、逐张弹出。）
+ * 预留宽高比 + 占位底色，加载后淡入，避免 masonry 逐张顶高。
  */
 export function LazyImage({
   src,
@@ -27,18 +28,20 @@ export function LazyImage({
   priority = false,
   draggable,
   onContextMenu,
+  fit = "cover",
 }: LazyImageProps) {
-  const ref = useRef<HTMLImageElement | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
+  const ratio = width && height ? `${width} / ${height}` : undefined;
 
   useEffect(() => {
+    setLoaded(false);
     setFailed(false);
   }, [src]);
 
-  return (
+  const img = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      ref={ref}
       src={failed ? undefined : src}
       alt={alt}
       width={width}
@@ -46,10 +49,19 @@ export function LazyImage({
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
       fetchPriority={priority ? "high" : "auto"}
-      className={className}
       draggable={draggable}
       onContextMenu={onContextMenu}
+      onLoad={() => setLoaded(true)}
       onError={() => setFailed(true)}
+      className={`lazy-img__el lazy-img__el--${fit} ${loaded ? "is-loaded" : ""} ${className}`.trim()}
     />
+  );
+
+  if (!ratio) return img;
+
+  return (
+    <span className="lazy-img-slot" style={{ aspectRatio: ratio }}>
+      {img}
+    </span>
   );
 }

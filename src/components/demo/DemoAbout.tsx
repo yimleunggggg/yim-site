@@ -101,8 +101,27 @@ function ProjectTableRow({ project: p, zh }: { project: DemoAboutProject; zh: bo
 
   return (
     <li>
-      <Link href={`/projects/${p.slug}`} className="demo-project-table-row tap-target">
-        {inner}
+      <Link
+        href={`/projects/${p.slug}`}
+        className="demo-project-table-row demo-project-table-row--link tap-target"
+      >
+        <span className="demo-project-table-name">
+          {pickText(p.title, zh)}
+          <span className="demo-project-table-go" aria-hidden>
+            →
+          </span>
+        </span>
+        <span className="demo-project-table-desc">{pickText(p.tagline, zh)}</span>
+        <span className="demo-project-table-cats">
+          {p.categories.map((c: ProjectCategory) => (
+            <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
+              {pickText(projectCategoryLabel[c], zh)}
+            </span>
+          ))}
+        </span>
+        <span className="demo-project-table-status">
+          <DemoStatusTag tone={p.status}>{pickText(projectStatusLabel[p.status], zh)}</DemoStatusTag>
+        </span>
       </Link>
     </li>
   );

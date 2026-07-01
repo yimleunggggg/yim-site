@@ -48,6 +48,15 @@ export function DemoLife() {
                     {location ? (
                       <span className="life-dispatch-date-loc">{location}</span>
                     ) : null}
+                    {entry.tags.length > 0 ? (
+                      <div className="life-dispatch-tags">
+                        {entry.tags.map((tag) => (
+                          <span key={tag} className="life-tag life-tag--meta">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
                   <div className="life-dispatch-copy">
                     <h3 className="life-dispatch-title">{title}</h3>
@@ -55,17 +64,6 @@ export function DemoLife() {
                       <p className="life-dispatch-oneline">
                         {pickText(entry.oneLine, zh)}
                       </p>
-                    ) : null}
-                    {entry.tags.length > 0 ? (
-                      <div className="life-dispatch-foot">
-                        <div className="life-tag-row">
-                          {entry.tags.map((tag) => (
-                            <span key={tag} className="life-tag">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
                     ) : null}
                   </div>
                   <span className="life-dispatch-arrow" aria-hidden>

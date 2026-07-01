@@ -1923,6 +1923,52 @@
   object-position: center;
 }
 
+/* LazyImage：预留比例 + 淡入 */
+.lazy-img-slot {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-callout);
+}
+
+.lazy-img__el {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.lazy-img__el.is-loaded {
+  opacity: 1;
+}
+
+.lazy-img__el--cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.lazy-img__el--contain {
+  object-fit: contain;
+  object-position: center;
+}
+
+.demo-frames-gallery-img {
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+.demo-frames-gallery-item .lazy-img-slot {
+  width: 100%;
+}
+
+.demo-frames-gallery-item .lazy-img__el--contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .demo-frames-count {
   position: absolute;
   right: 0.625rem;
@@ -2249,7 +2295,8 @@
 .demo-work-tags-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem 0.4rem;
+  gap: 0.4rem 0.5rem;
+  margin-top: 0.1rem;
 }
 
 .demo-work-tags-inline {
@@ -2297,12 +2344,12 @@
 .demo-work-tag {
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.5625rem;
-  letter-spacing: 0.08em;
-  padding: 0.2rem 0.5rem;
-  border: 0.5px solid color-mix(in srgb, var(--color-border) 90%, transparent);
-  border-radius: 2px;
+  letter-spacing: 0.06em;
+  padding: 0.28rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-radius: 9999px;
   color: var(--color-ink-muted);
-  background: color-mix(in srgb, var(--color-callout) 65%, var(--color-paper));
+  background: color-mix(in srgb, var(--color-callout) 50%, var(--color-paper));
 }
 
 .demo-work-bullets {
@@ -2370,7 +2417,7 @@
 
 /* 项目表格（About 页） */
 .demo-project-table {
-  border-top: 1px solid var(--color-border);
+  border-top: none;
 }
 
 .demo-project-table-head,
@@ -2416,19 +2463,55 @@
   border-bottom: 1px solid var(--color-border);
   text-decoration: none;
   color: inherit;
-  transition: background 0.15s ease;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.demo-project-table-row:hover {
-  background: color-mix(in srgb, var(--color-callout) 45%, transparent);
+.demo-project-table-row--link {
+  box-shadow: inset 3px 0 0 transparent;
+}
+
+.demo-project-table-row--link:hover,
+.demo-project-table-row--link:focus-visible {
+  background: color-mix(in srgb, var(--color-forest) 5%, transparent);
+  box-shadow: inset 3px 0 0 var(--color-terracotta);
 }
 
 .demo-project-table-name {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
   font-family: var(--font-serif, Georgia, serif);
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.35;
   color: var(--color-ink);
+  transition: color 0.15s ease;
+}
+
+.demo-project-table-row--link:hover .demo-project-table-name,
+.demo-project-table-row--link:focus-visible .demo-project-table-name {
+  color: var(--color-forest);
+}
+
+.demo-project-table-go {
+  flex-shrink: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-terracotta);
+  opacity: 0.5;
+  transform: translateX(-1px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.demo-project-table-row--link:hover .demo-project-table-go,
+.demo-project-table-row--link:focus-visible .demo-project-table-go {
+  opacity: 1;
+  transform: translateX(2px);
 }
 
 .demo-project-table-desc {
@@ -2661,7 +2744,7 @@
 
 .life-dispatch-row {
   display: grid;
-  grid-template-columns: minmax(4.75rem, 5.75rem) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(5.25rem, 6.75rem) minmax(0, 1fr) auto;
   gap: 0.75rem 1.25rem;
   align-items: start;
   width: 100%;
@@ -2704,7 +2787,7 @@
 
 .life-dispatch-row--static {
   display: grid;
-  grid-template-columns: minmax(4.75rem, 5.75rem) minmax(0, 1fr);
+  grid-template-columns: minmax(5.25rem, 6.75rem) minmax(0, 1fr);
   gap: 0.75rem 1.25rem;
   align-items: start;
   width: 100%;
@@ -2731,6 +2814,19 @@
   letter-spacing: 0.03em;
   line-height: 1.4;
   color: color-mix(in srgb, var(--color-ink-muted) 88%, var(--color-forest));
+}
+
+.life-dispatch-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.15rem;
+}
+
+.life-tag--meta {
+  font-size: 0.5rem;
+  padding: 0.12rem 0.35rem;
+  letter-spacing: 0.04em;
 }
 
 .life-dispatch-copy {
@@ -3412,8 +3508,8 @@
   max-height: min(68vh, 34rem);
   margin-inline: auto;
   object-fit: contain;
-  border-radius: 6px;
-  background: var(--color-callout);
+  border-radius: 0;
+  background: transparent;
 }
 
 .life-gallery {
@@ -3448,12 +3544,10 @@
   align-items: center;
   justify-content: center;
   min-height: 0;
-  border-radius: 6px;
+  border-radius: 0;
   line-height: 0;
-  background: var(--color-callout);
-  box-shadow:
-    0 1px 2px rgb(26 26 24 / 5%),
-    0 6px 18px -8px rgb(26 26 24 / 12%);
+  background: transparent;
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -3461,22 +3555,10 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 15rem;
+  max-height: none;
   object-fit: contain;
-  border-radius: 6px;
-  background: var(--color-callout);
-}
-
-@media (min-width: 640px) {
-  .life-gallery-img {
-    max-height: 18rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .life-gallery-img {
-    max-height: 20rem;
-  }
+  border-radius: 0;
+  background: transparent;
 }
 
 /* legacy aliases (BeerMatters gallery 等仍可能引用) */

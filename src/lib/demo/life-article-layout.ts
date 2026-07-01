@@ -51,14 +51,16 @@ export type BuildLifeArticleOptions = {
   imagesAtEnd?: boolean;
 };
 
-/** 段落全部在前，图片 masonry 集中在文末 */
+/** 段落全部在前，图片以全宽 figure 集中在文末（无 masonry 边框） */
 export function buildImagesAtEndLayout(
   paragraphs: string[],
   images: string[],
 ): LayoutBlock[] {
   const blocks: LayoutBlock[] = [];
   for (const text of paragraphs) blocks.push({ type: "paragraph", text });
-  pushImages(blocks, images);
+  for (const src of images) {
+    blocks.push({ type: "figure", src, variant: "wide" });
+  }
   return blocks;
 }
 

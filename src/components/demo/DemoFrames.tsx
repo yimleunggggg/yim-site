@@ -50,7 +50,8 @@ export function DemoFrames({ frames }: { frames: FrameCard[] }) {
                     alt={pickText(f.title, zh)}
                     width={f.coverWidth}
                     height={f.coverHeight}
-                    priority={i < 4}
+                    priority={i < 8}
+                    fit="contain"
                     className="demo-frames-cover-img"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

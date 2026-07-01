@@ -20,6 +20,7 @@ type FrameDetail = {
   images: string[];
   imagesFull: string[];
   imageCaptions: FrameImageCaption[];
+  imageSizes: { width: number; height: number }[];
   ongoing?: boolean;
   prev: FrameNeighbor | null;
   next: FrameNeighbor | null;
@@ -67,6 +68,7 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
         <div className="demo-frames-gallery mt-8">
           {frame.images.map((src, i) => {
             const cap = frame.imageCaptions[i];
+            const size = frame.imageSizes[i];
             return (
               <figure key={src} className="demo-frames-gallery-figure">
                 <div className="demo-frames-gallery-item demo-frames-gallery-item--static">
@@ -77,8 +79,11 @@ export function DemoFrameDetail({ frame }: { frame: FrameDetail }) {
                         ? `${cap.date} · ${pickText(cap.place, zh)}`
                         : `${title} ${i + 1}`
                     }
-                    priority={i < 1}
-                    className="h-auto w-full select-none"
+                    width={size?.width}
+                    height={size?.height}
+                    priority={i < 6}
+                    fit="contain"
+                    className="demo-frames-gallery-img"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
                   />
