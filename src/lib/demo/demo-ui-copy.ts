@@ -31,6 +31,9 @@ export const demoUiCopy = {
     showAll: { zh: "展开全部", en: "Show all" } as LText,
     showLess: { zh: "收起", en: "Show less" } as LText,
   },
+  aboutPage: {
+    readMore: { zh: "继续阅读", en: "Read more" } as LText,
+  },
   writingPage: {
     backLink: { zh: "← Writing", en: "← Writing" } as LText,
     related: { zh: "相关文章", en: "Related" } as LText,

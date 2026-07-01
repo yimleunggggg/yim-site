@@ -13,7 +13,7 @@ export function DemoPageHeader({
   className = "",
 }: {
   eyebrow: string;
-  title: ReactNode;
+  title?: ReactNode;
   lead?: ReactNode;
   quote?: ReactNode;
   attribution?: ReactNode;
@@ -23,7 +23,7 @@ export function DemoPageHeader({
   return (
     <header className={`demo-page-header ${className}`.trim()}>
       <p className="demo-eyebrow">{eyebrow}</p>
-      <h1 className="demo-page-title">{title}</h1>
+      {title ? <h1 className="demo-page-title">{title}</h1> : null}
       {lead ? <p className="demo-page-lead">{lead}</p> : null}
       {quote ? (
         <blockquote className="demo-page-quote">

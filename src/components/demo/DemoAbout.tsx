@@ -24,16 +24,19 @@ export function DemoAbout() {
   const zh = locale === "zh";
   const aboutTags = zh ? demoAbout.tags.zh : demoAbout.tags.en;
   const [workExpanded, setWorkExpanded] = useState(false);
+  const [introExpanded, setIntroExpanded] = useState(false);
   const workCollapsible = demoWork.length > MOBILE_LIST_INITIAL;
+  const introCollapsible = demoAbout.intro.length > 0;
 
   return (
     <>
       <header className="site-shell demo-page-shell">
-        <DemoPageHeader
-          eyebrow="ABOUT"
-          title={zh ? "梁言 · 一个持续在动的人" : "Yim · always in motion"}
-        >
-          <div className="demo-page-lead demo-page-lead-stack">
+        <DemoPageHeader eyebrow="ABOUT" className="demo-about-header">
+          <div
+            className={`demo-page-lead demo-page-lead-stack demo-about-intro-stack${
+              introCollapsible && !introExpanded ? " demo-about-intro-stack--collapsed" : ""
+            }`}
+          >
             {demoAbout.intro.map((block, i) => (
               <p key={i}>
                 {block.parts.map((part, j) =>
@@ -48,8 +51,21 @@ export function DemoAbout() {
               </p>
             ))}
           </div>
+          {introCollapsible ? (
+            <button
+              type="button"
+              className="demo-list-expand-btn demo-list-expand-btn--mobile-only"
+              aria-expanded={introExpanded}
+              onClick={() => setIntroExpanded((v) => !v)}
+            >
+              {pickText(
+                introExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.aboutPage.readMore,
+                zh,
+              )}
+            </button>
+          ) : null}
         </DemoPageHeader>
-        <div className="demo-about-tags demo-page-content">
+        <div className="demo-about-tags demo-about-header demo-page-content">
           {aboutTags.map((t) => (
             <span key={t} className="demo-about-tag">
               {t}
@@ -71,7 +87,7 @@ export function DemoAbout() {
         {workCollapsible ? (
           <button
             type="button"
-            className="demo-list-expand-btn"
+            className="demo-list-expand-btn demo-list-expand-btn--mobile-only"
             aria-expanded={workExpanded}
             onClick={() => setWorkExpanded((v) => !v)}
           >

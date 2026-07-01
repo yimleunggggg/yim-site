@@ -5,11 +5,18 @@
 
 import type { LText } from "./demo-data";
 
-export type ProjectRelatedLink = {
+export type ProjectRelatedSubLink = {
   kind: "wechat" | "external" | "writing" | "demo";
   title: LText;
   url: string;
+};
+
+export type ProjectRelatedLink = {
+  kind?: "wechat" | "external" | "writing" | "demo";
+  title: LText;
+  url?: string;
   note?: LText;
+  items?: ProjectRelatedSubLink[];
 };
 
 export type ProjectStackGroup = {
@@ -92,14 +99,19 @@ export const demoProjectMeta: Record<string, DemoProjectMeta> = {
       {
         kind: "wechat",
         title: { zh: "制作过程与经验总结", en: "Build log & lessons learned" },
-        url: "https://mp.weixin.qq.com/s/bN7wbRI6TsWguZ59fTBYoQ",
         note: { zh: "从需求、数据到上线的完整记录", en: "From problem to launch" },
-      },
-      {
-        kind: "external",
-        title: { zh: "静态站 Vibe Coding 教程", en: "Static site vibe coding guide" },
-        url: "https://github.com/yimleunggggg/vibe-coding-static-site-guide",
-        note: { zh: "可复用的建站与 SEO 清单", en: "Reusable site & SEO checklist" },
+        items: [
+          {
+            kind: "wechat",
+            title: { zh: "制作过程与经验总结", en: "Build log & lessons learned" },
+            url: "https://mp.weixin.qq.com/s/bN7wbRI6TsWguZ59fTBYoQ",
+          },
+          {
+            kind: "external",
+            title: { zh: "静态站 Vibe Coding 教程", en: "Static site vibe coding guide" },
+            url: "https://github.com/yimleunggggg/vibe-coding-static-site-guide",
+          },
+        ],
       },
     ],
   },

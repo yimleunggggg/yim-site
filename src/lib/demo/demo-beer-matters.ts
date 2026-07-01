@@ -12,7 +12,7 @@ export type BeerMattersHighlight = {
 
 export const beerMattersHighlights: BeerMattersHighlight[] = [
   {
-    title: "啤酒旅行社 · 皖南行",
+    title: "啤酒旅行社 · 酒花研学",
     links: [
       {
         label: "招募",

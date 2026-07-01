@@ -33,10 +33,11 @@ export function DemoFooter() {
               href={instagram.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="demo-footer-link demo-footer-link--icon"
+              className="demo-footer-link"
               aria-label={`Instagram ${instagram.handle ?? ""}`.trim()}
             >
               <InstagramIcon />
+              <span>{instagram.handle ?? pickText(demoFooterUi.instagramLabel, zh)}</span>
             </a>
           ) : null}
         </div>

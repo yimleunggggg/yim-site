@@ -1,6 +1,6 @@
 /** 生产域名：Vercel 项目 yim-site；本地可用 .env 覆盖 */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://yim-site.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://yimleung.com";
 
 export const siteConfig = {
   url: siteUrl,

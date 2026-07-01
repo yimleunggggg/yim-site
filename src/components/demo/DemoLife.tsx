@@ -23,10 +23,9 @@ export function DemoLife() {
 
   return (
     <div className="life-page">
-      <header className="site-shell demo-page-shell">
+      <header className="site-shell demo-page-shell demo-life-header">
         <DemoPageHeader
           eyebrow="LIFE ARCHIVE"
-          title={pickText(demoLifeHeader.title, zh)}
           lead={pickText(demoLifeHeader.tagline, zh)}
         />
       </header>
@@ -38,8 +37,9 @@ export function DemoLife() {
           subtitle={pickText(demoLifeJournalIntro, zh)}
         />
         <ul
-          className="life-dispatch-feed demo-page-content demo-collapsible-list"
-          data-collapsed={journalCollapsible && !journalExpanded ? "true" : "false"}
+          className={`life-dispatch-feed demo-page-content${
+            journalCollapsible && !journalExpanded ? " life-dispatch-feed--collapsed" : ""
+          }`}
         >
           {demoLifeJournal.map((entry) => {
             const title = pickText(entry.title, zh);

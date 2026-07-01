@@ -2,7 +2,7 @@
 
 探索者 · 运营人 · AI 实践者。首页、关于、生活、摄影与 AI 内训笔记。
 
-**生产**：https://yim-site.vercel.app  
+**生产**：https://yimleung.com（DNS 配置中；Vercel 预览 https://ai-playbook-site-beige.vercel.app）  
 **说明**：个人站已迁到根路径 `/`（原 `/demo` 会自动跳转）
 
 ## 链接结构

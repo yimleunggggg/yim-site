@@ -176,7 +176,7 @@ export const demoExplore: DemoExploreCard[] = [
     id: "about",
     icon: "◈",
     eyebrow: "ABOUT",
-    title: { zh: "还是「关于我」", en: 'Still "About me"' },
+    title: { zh: "关于我", en: "About me" },
     desc: {
       zh: "9 年的运营经验，电商、产品、品牌、会员、社群、跨境、精酿、旅行策划、线下活动...看着散乱，但新的场景会推着人长出新的办法。最近在玩 AI，欢迎看看我做的小玩具。",
       en: "Nine years in ops — e-commerce, product, brand, membership, community, cross-border, craft beer, trip planning, offline events… looks scattered, but new scenes keep pushing out new moves. Playing with AI lately — welcome to peek at my little toys.",
@@ -192,8 +192,8 @@ export const demoExplore: DemoExploreCard[] = [
     eyebrow: "LIFE ARCHIVE",
     title: { zh: "life archieve", en: "life archieve" },
     desc: {
-      zh: "旅行、禅修、运动、生活体验...更多和工作无关的「我」。",
-      en: "Travel, retreats, sports, life experiments… more of me that has nothing to do with work.",
+      zh: "和工作无关的事。",
+      en: "Things outside of work.",
     },
     status: "ONGOING",
     latest: { zh: "屋久岛徒步 · 2026.05", en: "Yakushima trek · 2026.05" },
