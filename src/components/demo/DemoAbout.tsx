@@ -7,6 +7,7 @@ import {
   demoAbout,
   demoWork,
   getAboutProjectsGrouped,
+  isAboutFeaturedProject,
   projectStatusLabel,
   projectCategoryLabel,
   pickText,
@@ -31,6 +32,7 @@ export function DemoAbout() {
   const introCollapsible = demoAbout.intro.length > 0;
   const workDetailCollapsible = demoWork.length > 0;
   const { featured: featuredProjects, rest: restProjects } = getAboutProjectsGrouped();
+  const mobileProjects = [...featuredProjects, ...restProjects];
 
   return (
     <>
@@ -73,6 +75,52 @@ export function DemoAbout() {
         </DemoPageHeader>
       </header>
 
+      <section id="projects" className="site-shell demo-page-section scroll-mt-20">
+        <DemoSectionHeading
+          eyebrow="PROJECTS"
+          title={zh ? "项目" : "Projects"}
+          subtitle={pickText(demoAbout.projectsLead, zh)}
+          className="demo-section-heading--projects"
+        />
+        {featuredProjects.length > 0 ? (
+          <ul className="demo-project-featured-grid demo-page-content">
+            {featuredProjects.map((p) => (
+              <FeaturedProjectCard key={p.slug} project={p} zh={zh} />
+            ))}
+          </ul>
+        ) : null}
+        {mobileProjects.length > 0 ? (
+          <div className="demo-project-table demo-page-content">
+            {restProjects.length > 0 ? (
+              <p className="demo-project-more-label">
+                {pickText(demoUiCopy.aboutPage.moreProjects, zh)}
+              </p>
+            ) : null}
+            <div className="demo-project-table-head" aria-hidden>
+              <span>{zh ? "名称" : "Name"}</span>
+              <span>{zh ? "简介" : "About"}</span>
+              <span>{zh ? "分类" : "Tags"}</span>
+              <span>{zh ? "状态" : "Status"}</span>
+            </div>
+            <ul className="demo-project-table-body demo-project-table-body--desktop">
+              {restProjects.map((p) => (
+                <ProjectTableRow key={p.slug} project={p} zh={zh} />
+              ))}
+            </ul>
+            <ul className="demo-project-table-body demo-project-table-body--mobile">
+              {mobileProjects.map((p) => (
+                <ProjectTableRow
+                  key={p.slug}
+                  project={p}
+                  zh={zh}
+                  featured={isAboutFeaturedProject(p.slug)}
+                />
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </section>
+
       <section id="work" className="site-shell demo-page-section scroll-mt-20">
         <DemoSectionHeading eyebrow="WORK" title={zh ? "工作履历" : "Experience"} />
         <ul
@@ -108,42 +156,6 @@ export function DemoAbout() {
               <p className="demo-work-expand-hint">{pickText(demoUiCopy.aboutPage.workExpandHint, zh)}</p>
             ) : null}
           </div>
-        ) : null}
-      </section>
-
-      <section id="projects" className="site-shell demo-page-section scroll-mt-20">
-        <DemoSectionHeading
-          eyebrow="PROJECTS"
-          title={zh ? "项目" : "Projects"}
-          subtitle={pickText(demoAbout.projectsLead, zh)}
-          className="demo-section-heading--projects"
-        />
-        {featuredProjects.length > 0 ? (
-          <ul className="demo-project-featured-grid demo-page-content">
-            {featuredProjects.map((p) => (
-              <FeaturedProjectCard key={p.slug} project={p} zh={zh} />
-            ))}
-          </ul>
-        ) : null}
-        {restProjects.length > 0 ? (
-          <>
-            <p className="demo-project-more-label demo-page-content">
-              {pickText(demoUiCopy.aboutPage.moreProjects, zh)}
-            </p>
-            <div className="demo-project-table demo-page-content">
-              <div className="demo-project-table-head" aria-hidden>
-                <span>{zh ? "名称" : "Name"}</span>
-                <span>{zh ? "简介" : "About"}</span>
-                <span>{zh ? "分类" : "Tags"}</span>
-                <span>{zh ? "状态" : "Status"}</span>
-              </div>
-              <ul className="demo-project-table-body">
-                {restProjects.map((p) => (
-                  <ProjectTableRow key={p.slug} project={p} zh={zh} />
-                ))}
-              </ul>
-            </div>
-          </>
         ) : null}
       </section>
     </>
@@ -191,8 +203,17 @@ function FeaturedProjectCard({ project: p, zh }: { project: DemoAboutProject; zh
   );
 }
 
-function ProjectTableRow({ project: p, zh }: { project: DemoAboutProject; zh: boolean }) {
+function ProjectTableRow({
+  project: p,
+  zh,
+  featured = false,
+}: {
+  project: DemoAboutProject;
+  zh: boolean;
+  featured?: boolean;
+}) {
   const clickable = p.hasDetailPage !== false;
+  const rowClass = `demo-project-table-row${featured ? " demo-project-table-row--featured" : ""}`;
   const inner = (
     <>
       <span className="demo-project-table-name">{pickText(p.title, zh)}</span>
@@ -213,7 +234,7 @@ function ProjectTableRow({ project: p, zh }: { project: DemoAboutProject; zh: bo
   if (!clickable) {
     return (
       <li>
-        <div className="demo-project-table-row demo-project-table-row--static">{inner}</div>
+        <div className={`${rowClass} demo-project-table-row--static`}>{inner}</div>
       </li>
     );
   }
@@ -222,7 +243,7 @@ function ProjectTableRow({ project: p, zh }: { project: DemoAboutProject; zh: bo
     <li>
       <Link
         href={`/projects/${p.slug}`}
-        className="demo-project-table-row demo-project-table-row--link tap-target"
+        className={`${rowClass} demo-project-table-row--link tap-target`}
       >
         <span className="demo-project-table-name">
           {pickText(p.title, zh)}

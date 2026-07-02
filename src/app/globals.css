@@ -2428,20 +2428,21 @@
   margin-top: 0;
 }
 
-#work.demo-page-section {
+#projects.demo-page-section {
+  padding-top: 0;
   padding-bottom: 1rem;
 }
 
-#projects.demo-page-section {
+#work.demo-page-section {
   padding-top: 1.25rem;
 }
 
 @media (min-width: 640px) {
-  #work.demo-page-section {
+  #projects.demo-page-section {
     padding-bottom: 1.25rem;
   }
 
-  #projects.demo-page-section {
+  #work.demo-page-section {
     padding-top: 1.5rem;
   }
 }
@@ -3128,6 +3129,21 @@
   padding: 0;
 }
 
+.demo-project-table-body--mobile {
+  display: none;
+}
+
+.demo-project-table-row--featured {
+  border-left-color: color-mix(in srgb, var(--color-forest) 55%, transparent);
+  background: color-mix(in srgb, var(--color-forest) 4%, transparent);
+}
+
+.demo-project-table-row--featured.demo-project-table-row--link:hover,
+.demo-project-table-row--featured.demo-project-table-row--link:focus-visible {
+  border-left-color: var(--color-forest);
+  background: color-mix(in srgb, var(--color-forest) 7%, transparent);
+}
+
 .demo-project-table-row {
   padding: 1.0625rem 0.625rem 1.0625rem 0.875rem;
   border-bottom: 1px solid var(--color-border);
@@ -3410,6 +3426,19 @@
 }
 
 @media (max-width: 767px) {
+  .demo-project-table-body--desktop {
+    display: none;
+  }
+
+  .demo-project-table-body--mobile {
+    display: block;
+  }
+
+  .demo-project-featured-grid,
+  .demo-project-more-label {
+    display: none;
+  }
+
   .demo-project-table-head {
     display: none;
   }
@@ -4526,58 +4555,6 @@
 
   .demo-page .movement-tile-scrim {
     padding: 1.35rem 0.35rem 0.35rem;
-  }
-
-  .demo-page .demo-project-featured-grid {
-    grid-template-columns: 1fr;
-    max-width: none;
-    gap: 0.5rem;
-  }
-
-  .demo-page .demo-project-featured-card {
-    padding: 0.75rem 0;
-    gap: 0.35rem;
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .demo-page .demo-project-featured-card:hover,
-  .demo-page .demo-project-featured-card:focus-visible {
-    transform: none;
-    box-shadow: none;
-    border-color: color-mix(in srgb, var(--color-border) 75%, transparent);
-  }
-
-  .demo-page .demo-project-featured-head {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .demo-page .demo-project-featured-name {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .demo-page .demo-project-featured-head > span:last-child {
-    flex-shrink: 0;
-    padding: 0.08rem 0.4rem;
-    font-size: 0.5625rem;
-    line-height: 1.3;
-  }
-
-  .demo-page .demo-project-featured-foot {
-    padding-top: 0.25rem;
-    border-top: none;
-  }
-
-  .demo-page .demo-project-featured-desc {
-    -webkit-line-clamp: 2;
-    font-size: 0.8125rem;
-    line-height: 1.5;
   }
 
   .demo-page .demo-work-company {

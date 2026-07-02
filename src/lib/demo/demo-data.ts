@@ -679,11 +679,16 @@ export function getAboutProjectsGrouped(): {
   rest: DemoAboutProject[];
 } {
   const sorted = getSortedAboutProjects();
+  const featuredSlugs = new Set<string>(aboutFeaturedProjectSlugs);
   const featured = aboutFeaturedProjectSlugs
     .map((slug) => sorted.find((p) => p.slug === slug))
     .filter((p): p is DemoAboutProject => Boolean(p));
-  const rest = sorted;
+  const rest = sorted.filter((p) => !featuredSlugs.has(p.slug));
   return { featured, rest };
+}
+
+export function isAboutFeaturedProject(slug: string): boolean {
+  return (aboutFeaturedProjectSlugs as readonly string[]).includes(slug);
 }
 
 /* ------------------------------ 项目（详情页） ------------------------------- */
