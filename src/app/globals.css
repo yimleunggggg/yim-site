@@ -2428,8 +2428,18 @@
   margin-top: 0;
 }
 
+.demo-page-shell:has(.demo-about-header) {
+  padding-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .demo-page-shell:has(.demo-about-header) {
+    padding-bottom: 1.25rem;
+  }
+}
+
 #projects.demo-page-section {
-  padding-top: 0;
+  padding-top: 1.5rem;
   padding-bottom: 1rem;
 }
 
@@ -2439,6 +2449,7 @@
 
 @media (min-width: 640px) {
   #projects.demo-page-section {
+    padding-top: 2.5rem;
     padding-bottom: 1.25rem;
   }
 
@@ -4647,9 +4658,17 @@
     padding-top: 2rem;
   }
 
+  .demo-page-shell:has(.demo-about-header) {
+    padding-bottom: 0.625rem;
+  }
+
   .demo-page-section {
     padding-top: 1.75rem;
     padding-bottom: 1.75rem;
+  }
+
+  #projects.demo-page-section {
+    padding-top: 1.25rem;
   }
 
   .demo-page-section:first-of-type {
