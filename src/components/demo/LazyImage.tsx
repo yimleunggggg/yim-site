@@ -40,13 +40,22 @@ export function LazyImage({
   const [failed, setFailed] = useState(false);
   const ratio = width && height ? `${width} / ${height}` : undefined;
 
-  useEffect(() => {
-    setLoaded(false);
-    setFailed(false);
-  }, [src]);
-
   useLayoutEffect(() => {
     if (markLoaded(imgRef.current)) setLoaded(true);
+  }, [src]);
+
+  useEffect(() => {
+    setFailed(false);
+    setLoaded(false);
+    const img = imgRef.current;
+    if (markLoaded(img)) {
+      setLoaded(true);
+      return;
+    }
+    if (!img) return;
+    const onLoad = () => setLoaded(true);
+    img.addEventListener("load", onLoad);
+    return () => img.removeEventListener("load", onLoad);
   }, [src]);
 
   const img = (

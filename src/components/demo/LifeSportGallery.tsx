@@ -1,19 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { pickText } from "@/lib/demo/demo-data";
-import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
+import { formatSportEntryDate, formatSportKeyword, formatSportPlace, type LifeSportEntry } from "@/lib/demo/demo-life-sport";
 import { MovementNoteBadge } from "./DemoPrimitives";
 import { LazyImage } from "./LazyImage";
 import { LifeSportNoteModal } from "./LifeSportNoteModal";
-
-function formatSportDate(raw: string): string {
-  const m = raw.match(/^(\d{4})[-./](\d{1,2})(?:[-./](\d{1,2}))?/);
-  if (!m) return raw;
-  const [, y, mo, d] = m;
-  if (d) return `${y.slice(2)}.${mo.padStart(2, "0")}.${d.padStart(2, "0")}`;
-  return `${y.slice(2)}.${mo.padStart(2, "0")}`;
-}
 
 function SportTile({
   entry,
@@ -27,9 +20,9 @@ function SportTile({
   onOpenNote: (entry: LifeSportEntry) => void;
 }) {
   const title = pickText(entry.title, zh);
-  const location = entry.location ? pickText(entry.location, zh) : null;
+  const location = formatSportPlace(entry.place, zh);
   const hasNotes = Boolean(entry.body);
-  const primaryKw = entry.keywords[0] ?? "";
+  const primaryKw = formatSportKeyword(entry.keyword, zh);
 
   if (!entry.cover) {
     if (!hasNotes) return null;
@@ -41,13 +34,12 @@ function SportTile({
         onClick={() => onOpenNote(entry)}
       >
         <MovementNoteBadge />
-        <time className="movement-text-date">{formatSportDate(entry.date)}</time>
+        <time className="movement-text-date">{formatSportEntryDate(entry.date, entry.dateEnd, zh)}</time>
         <p className="movement-text-title">{title}</p>
         {location ? <p className="movement-text-loc">{location}</p> : null}
-        {primaryKw ? <span className="movement-kw movement-kw--text">{primaryKw}</span> : null}
-        <span className="movement-text-read-hint" aria-hidden>
-          {zh ? "阅读笔记" : "Read notes"}
-        </span>
+        {primaryKw ? (
+          <span className={`movement-kw movement-kw--text${zh ? "" : " movement-kw--en"}`}>{primaryKw}</span>
+        ) : null}
       </button>
     );
   }
@@ -59,23 +51,33 @@ function SportTile({
           src={entry.cover}
           alt=""
           priority={priority}
-          className="movement-tile-img h-full w-full object-cover"
+          fit="cover"
+          className="movement-tile-img"
         />
       </div>
-      {primaryKw ? <span className="movement-kw">{primaryKw}</span> : null}
+      {primaryKw ? (
+        <span className={`movement-kw${zh ? "" : " movement-kw--en"}`}>{primaryKw}</span>
+      ) : null}
       {hasNotes ? <MovementNoteBadge /> : null}
       <div className="movement-tile-scrim">
-        <time className="movement-tile-date">{formatSportDate(entry.date)}</time>
+        <time className="movement-tile-date">{formatSportEntryDate(entry.date, entry.dateEnd, zh)}</time>
         <p className="movement-tile-title">{title}</p>
         {location ? <p className="movement-tile-loc">{location}</p> : null}
-        {hasNotes ? (
-          <span className="movement-tile-read-hint" aria-hidden>
-            {zh ? "阅读笔记" : "Read notes"}
-          </span>
-        ) : null}
       </div>
     </>
   );
+
+  if (entry.href) {
+    return (
+      <Link
+        href={entry.href}
+        className="movement-tile movement-tile--static movement-tile--link tap-target"
+        aria-label={title}
+      >
+        {inner}
+      </Link>
+    );
+  }
 
   if (hasNotes) {
     return (

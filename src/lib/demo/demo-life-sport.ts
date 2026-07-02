@@ -1,16 +1,29 @@
-import type { LText } from "./demo-data";
+import { pickText, type LText } from "./demo-data";
+
+/** 国家 · 省/州 · 城市（中文用 · 连接；英文 City, Region, Country） */
+export type LifeSportPlace = {
+  country?: LText;
+  region?: LText;
+  city?: LText;
+};
 
 export type LifeSportEntry = {
   id: string;
+  /** ISO：YYYY-MM-DD（运动墙统一格式化为 YY.MM.DD） */
   date: string;
+  /** 区间结束日 YYYY-MM-DD → 26.05.01–05 */
+  dateEnd?: string;
   title: LText;
-  location?: LText;
-  keywords: string[];
+  place?: LifeSportPlace;
+  /** 角标：随语言切换中/英 */
+  keyword: LText;
   cover?: string;
   /** 文章内图片（通常为 display 档） */
   images?: string[];
   /** 空则无展开文字 */
   body?: LText;
+  /** 点击跳转（如 Life 日记文章） */
+  href?: string;
 };
 
 function sportDisplay(cover?: string): string[] {
@@ -18,12 +31,160 @@ function sportDisplay(cover?: string): string[] {
   return [cover.replace("cover.jpg", "display.jpg")];
 }
 
+type ParsedSportDate = {
+  y: string;
+  yFull: number;
+  mo: string;
+  moIdx: number;
+  d?: string;
+  dNum?: number;
+};
+
+const MONTHS_SHORT = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
+
+function parseSportDate(raw: string): ParsedSportDate | null {
+  const m = raw.match(/^(\d{4})[-./](\d{1,2})(?:[-./](\d{1,2}))?/);
+  if (!m) return null;
+  const [, y, mo, d] = m;
+  const moIdx = Number(mo);
+  return {
+    y: y.slice(2),
+    yFull: Number(y),
+    mo: mo.padStart(2, "0"),
+    moIdx,
+    d: d ? d.padStart(2, "0") : undefined,
+    dNum: d ? Number(d) : undefined,
+  };
+}
+
+function formatParsedZh(d: ParsedSportDate): string {
+  if (d.d) return `${d.y}.${d.mo}.${d.d}`;
+  return `${d.y}.${d.mo}`;
+}
+
+function formatSportEntryDateZh(date: string, dateEnd?: string): string {
+  const start = parseSportDate(date);
+  if (!start) return date;
+  if (!dateEnd) return formatParsedZh(start);
+
+  const end = parseSportDate(dateEnd);
+  if (!end) return formatParsedZh(start);
+
+  if (start.y === end.y && start.mo === end.mo && start.d && end.d) {
+    if (start.d === end.d) return `${start.y}.${start.mo}.${start.d}`;
+    return `${start.y}.${start.mo}.${start.d}–${end.d}`;
+  }
+
+  if (start.y === end.y) {
+    const startPart = start.d ? `${start.mo}.${start.d}` : start.mo;
+    const endPart = end.d ? `${end.mo}.${end.d}` : end.mo;
+    return `${start.y}.${startPart}–${endPart}`;
+  }
+
+  return `${formatParsedZh(start)}–${formatParsedZh(end)}`;
+}
+
+function formatSportEntryDateEn(date: string, dateEnd?: string): string {
+  const start = parseSportDate(date);
+  if (!start) return date;
+  const startMo = MONTHS_SHORT[start.moIdx - 1];
+  const yr = `'${start.y}`;
+
+  if (!dateEnd) {
+    if (start.dNum) return `${startMo} ${start.dNum}, ${yr}`;
+    return `${startMo} ${yr}`;
+  }
+
+  const end = parseSportDate(dateEnd);
+  if (!end) {
+    if (start.dNum) return `${startMo} ${start.dNum}, ${yr}`;
+    return `${startMo} ${yr}`;
+  }
+
+  const endMo = MONTHS_SHORT[end.moIdx - 1];
+
+  if (start.y === end.y && start.moIdx === end.moIdx && start.dNum && end.dNum) {
+    if (start.dNum === end.dNum) return `${startMo} ${start.dNum}, ${yr}`;
+    return `${startMo} ${start.dNum}–${end.dNum}, ${yr}`;
+  }
+
+  if (start.y === end.y && start.moIdx === end.moIdx) {
+    return `${startMo}–${endMo} ${yr}`;
+  }
+
+  if (start.y === end.y) {
+    const startPart = start.dNum ? `${startMo} ${start.dNum}` : startMo;
+    const endPart = end.dNum ? `${endMo} ${end.dNum}` : endMo;
+    return `${startPart}–${endPart}, ${yr}`;
+  }
+
+  const startLabel = start.dNum ? `${startMo} ${start.dNum}, ${yr}` : `${startMo} ${yr}`;
+  const endLabel = end.dNum ? `${endMo} ${end.dNum}, '${end.y}` : `${endMo} '${end.y}`;
+  return `${startLabel}–${endLabel}`;
+}
+
+/** 运动墙 / 笔记弹窗：统一日期（中文 YY.MM.DD；英文 May 24, '26） */
+export function formatSportEntryDate(date: string, dateEnd?: string, zh = true): string {
+  return zh ? formatSportEntryDateZh(date, dateEnd) : formatSportEntryDateEn(date, dateEnd);
+}
+
+export function formatSportKeyword(keyword: LText | undefined, zh: boolean): string | null {
+  if (!keyword) return null;
+  const text = pickText(keyword, zh).trim();
+  return text || null;
+}
+
+const PLACE_SEP_ZH = " · ";
+
+/** 运动墙：统一地点（中文 国家·省·市；英文 City, Region, Country） */
+export function formatSportPlace(place: LifeSportPlace | undefined, zh: boolean): string | null {
+  if (!place) return null;
+
+  const country = place.country ? pickText(place.country, zh) : null;
+  const region = place.region ? pickText(place.region, zh) : null;
+  const city = place.city ? pickText(place.city, zh) : null;
+
+  if (zh) {
+    const parts = [country, region, city].filter(Boolean);
+    return parts.length ? parts.join(PLACE_SEP_ZH) : null;
+  }
+
+  const parts = [city, region, country].filter(Boolean);
+  return parts.length ? parts.join(", ") : null;
+}
+
+/** 排序键：优先 dateEnd（区间取结束日），其次 date */
+function sportEntrySortKey(entry: LifeSportEntry): number {
+  const raw = entry.dateEnd ?? entry.date;
+  const parsed = parseSportDate(raw);
+  if (!parsed) return 0;
+  return parsed.yFull * 10000 + parsed.moIdx * 100 + (parsed.dNum ?? 1);
+}
+
+function compareSportEntries(a: LifeSportEntry, b: LifeSportEntry): number {
+  const diff = sportEntrySortKey(b) - sportEntrySortKey(a);
+  return diff !== 0 ? diff : a.id.localeCompare(b.id);
+}
+
 export const demoLifeSportIntro: LText = {
   zh: "冲线是另一个开场",
   en: "The finish line is another kind of opening.",
 };
 
-export const demoLifeSport: LifeSportEntry[] = [
+const demoLifeSportEntries: LifeSportEntry[] = [
   {
     id: "hoka-rain-2026-5",
     date: "2026-05-24",
@@ -31,24 +192,24 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "Hoka 20km · 首次雨战",
       en: "HOKA Run Wilder Trail Run Moganshan · 20K · First Rain Race",
     },
-    location: { zh: "浙江湖州", en: "Huzhou, Zhejiang" },
-    keywords: ["trail run", "越野"],
+    place: { region: { zh: "浙江", en: "Zhejiang" }, city: { zh: "湖州", en: "Huzhou" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/首次雨战/cover.jpg",
     images: sportDisplay("/life/sport/首次雨战/cover.jpg"),
   },
   {
-    id: "running-milestone-2026-5",
-    date: "2026-05-29",
+    id: "yakushima-camp-2026-5",
+    date: "2026-05-01",
+    dateEnd: "2026-05-05",
     title: {
-      zh: "跑步两周年 · 10km才刚进1小时",
-      en: "Two Years Running · Sub-1-Hour 10K",
+      zh: "背山向海的野营",
+      en: "Camping — mountains behind, sea ahead",
     },
-    location: { zh: "上海", en: "Shanghai" },
-    keywords: ["road run", "路跑"],
-    body: {
-      zh: "用了两年提升了一分钟配速。跑步两周年，越野跑一周年。到现在菜腿第一次在 1h 内跑完 10km 呜呜呜呜😭\n\n24年5月 Aboro 的拳击训练营开始跑步，三个月的训练，路跑从 2km 终于能跑到 8km 了。25年5月凯乐石的三个月越野跑训练营，菜腿也敢跑 40km+，两千多爬升的山了。\n\n24年12月第一次半马，25年5月第一次越野跑，加一加刚好 2 年时间， 2 场半马，10 场越野。\n\n所以我真的很菜，真的不是一开始就能跑！！！大家加油啊！！",
-      en: "Two years to shave one minute off my pace. Two years of running, one year of trail. And finally — weak legs and all — a 10K under an hour 😭\n\nStarted running in May 2024 during Aboro's boxing camp. Three months later I went from 2 km to 8 km on the road. In May 2025, Kailas's three-month trail camp got these same weak legs to 40 km+ and 2,000 m+ of climbing.\n\nFirst half marathon December 2024, first trail race May 2025 — two years, two halves, ten trail races.\n\nI'm really not fast. I definitely couldn't run from day one!!! You can do it too!!",
-    },
+    place: { country: { zh: "日本", en: "Japan" }, city: { zh: "屋久岛", en: "Yakushima" } },
+    keyword: { zh: "露营", en: "camping" },
+    cover: "/life/sport/2026-5-1-屋久岛野营-日本/cover.jpg",
+    images: sportDisplay("/life/sport/2026-5-1-屋久岛野营-日本/cover.jpg"),
+    href: "/life/journal/yakushima",
   },
   {
     id: "moganshan-2026-4",
@@ -57,8 +218,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "莫干山 by UTMB · 20km",
       en: "Ultra-Trail Moganshan by UTMB · EMG 20K",
     },
-    location: { zh: "浙江", en: "Zhejiang" },
-    keywords: ["trail run", "越野"],
+    place: { region: { zh: "浙江", en: "Zhejiang" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/2026-4-13-莫干山byutmb-20km组完赛/cover.jpg",
     images: sportDisplay("/life/sport/2026-4-13-莫干山byutmb-20km组完赛/cover.jpg"),
   },
@@ -69,8 +230,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "温岭黄金海岸越野赛 · 42km",
       en: "Wenling Golden Coast Mountain Running Race · 42K",
     },
-    location: { zh: "浙江温岭", en: "Wenling, Zhejiang" },
-    keywords: ["trail run", "越野"],
+    place: { region: { zh: "浙江", en: "Zhejiang" }, city: { zh: "温岭", en: "Wenling" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/2026-3-22-温岭黄金海岸越野赛42km组完赛/cover.jpg",
     images: sportDisplay("/life/sport/2026-3-22-温岭黄金海岸越野赛42km组完赛/cover.jpg"),
   },
@@ -81,8 +242,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "终于跑上了上海半马 ",
       en: "Shanghai Half Marathon",
     },
-    location: { zh: "上海", en: "Shanghai" },
-    keywords: ["road run", "半马"],
+    place: { city: { zh: "上海", en: "Shanghai" } },
+    keyword: { zh: "半马", en: "road run" },
     cover: "/life/sport/2026-3-15-上海半马完赛-上海/cover.jpg",
     images: sportDisplay("/life/sport/2026-3-15-上海半马完赛-上海/cover.jpg"),
     body: {
@@ -97,8 +258,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "首次斯巴达 Deka Fit 组",
       en: "First Spartan Deka Fit",
     },
-    location: { zh: "上海", en: "Shanghai" },
-    keywords: ["Spartan", "障碍赛"],
+    place: { city: { zh: "上海", en: "Shanghai" } },
+    keyword: { zh: "障碍赛", en: "Spartan" },
     cover: "/life/sport/2025-12-20-首次斯巴达deka-fit组完赛/cover.jpg",
     images: sportDisplay("/life/sport/2025-12-20-首次斯巴达deka-fit组完赛/cover.jpg"),
   },
@@ -109,8 +270,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "Xterra 太湖 · 50km 第一次退赛",
       en: "XTERRA Taihu Trail Run · 55K · DNF",
     },
-    location: { zh: "江苏苏州", en: "Suzhou, Jiangsu" },
-    keywords: ["trail run", "Xterra"],
+    place: { region: { zh: "江苏", en: "Jiangsu" }, city: { zh: "苏州", en: "Suzhou" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/2025-12-6-xterra-太湖-50km组退赛/cover.jpg",
     images: sportDisplay("/life/sport/2025-12-6-xterra-太湖-50km组退赛/cover.jpg"),
     body: {
@@ -125,8 +286,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "大武夷 · 35km组",
       en: "Grand Wuyi Trail Race · GWY-35K (First Injury)",
     },
-    location: { zh: "福建武夷山", en: "Wuyishan, Fujian" },
-    keywords: ["trail run", "越野"],
+    place: { region: { zh: "福建", en: "Fujian" }, city: { zh: "武夷山", en: "Wuyishan" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/2025-11-10-大武夷35km安全完赛/cover.jpg",
     images: sportDisplay("/life/sport/2025-11-10-大武夷35km安全完赛/cover.jpg"),
     body: {
@@ -141,8 +302,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "Xterra 张家界 · 30km 组",
       en: "XTERRA Zhangjiajie Wulingyuan · 30K",
     },
-    location: { zh: "湖南张家界", en: "Zhangjiajie, Hunan" },
-    keywords: ["trail run", "Xterra"],
+    place: { region: { zh: "湖南", en: "Hunan" }, city: { zh: "张家界", en: "Zhangjiajie" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/2025-10-26-xterra张家界-30km组完赛/cover.jpg",
     images: sportDisplay("/life/sport/2025-10-26-xterra张家界-30km组完赛/cover.jpg"),
     body: {
@@ -152,13 +313,14 @@ export const demoLifeSport: LifeSportEntry[] = [
   },
   {
     id: "kailas-camp-2025-9",
-    date: "2025-09 — 11",
+    date: "2025-09",
+    dateEnd: "2025-11",
     title: {
       zh: "3个月的凯乐石大坡王训练营",
       en: "Kailas FUGA Trail Training Camp",
     },
-    location: { zh: "浙江杭州", en: "Hangzhou, Zhejiang" },
-    keywords: ["trail run", "训练营"],
+    place: { region: { zh: "浙江", en: "Zhejiang" }, city: { zh: "杭州", en: "Hangzhou" } },
+    keyword: { zh: "训练营", en: "training" },
     cover: "/life/sport/2025-9-11月-凯乐石大坡王训练营/cover.jpg",
     images: sportDisplay("/life/sport/2025-9-11月-凯乐石大坡王训练营/cover.jpg"),
     body: {
@@ -170,8 +332,8 @@ export const demoLifeSport: LifeSportEntry[] = [
     id: "hike-2025-9",
     date: "2025-09",
     title: { zh: "开始尝试徒步", en: "Started Hiking" },
-    location: { zh: "广东广州", en: "Guangzhou, Guangdong" },
-    keywords: ["hiking", "徒步"],
+    place: { region: { zh: "广东", en: "Guangdong" }, city: { zh: "广州", en: "Guangzhou" } },
+    keyword: { zh: "徒步", en: "hiking" },
     cover: "/life/sport/2025-9-开始尝试徒步-广东广州/cover.jpg",
     images: sportDisplay("/life/sport/2025-9-开始尝试徒步-广东广州/cover.jpg"),
   },
@@ -182,8 +344,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "人生首野 · 25km / 1675m 爬升",
       en: "Outopia Racing in the Wild · TangMeiYin · 25K · First Trail",
     },
-    location: { zh: "广东深圳", en: "Shenzhen, Guangdong" },
-    keywords: ["trail run", "越野"],
+    place: { region: { zh: "广东", en: "Guangdong" }, city: { zh: "深圳", en: "Shenzhen" } },
+    keyword: { zh: "越野", en: "trail run" },
     cover: "/life/sport/2025-5-19-人生首野完赛-jpg/cover.jpg",
     images: sportDisplay("/life/sport/2025-5-19-人生首野完赛-jpg/cover.jpg"),
   },
@@ -194,8 +356,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "第一次斯巴达 Super 组",
       en: "First Spartan Super",
     },
-    location: { zh: "深圳", en: "Shenzhen" },
-    keywords: ["Spartan", "障碍赛"],
+    place: { city: { zh: "深圳", en: "Shenzhen" } },
+    keyword: { zh: "障碍赛", en: "Spartan" },
     cover: "/life/sport/2025-3-23-第一次斯巴达super组完赛/cover.jpg",
     images: sportDisplay("/life/sport/2025-3-23-第一次斯巴达super组完赛/cover.jpg"),
     body: {
@@ -210,8 +372,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "第一场半马 · 清迈半马",
       en: "First Half Marathon · Chiang Mai",
     },
-    location: { zh: "泰国清迈", en: "Chiang Mai, Thailand" },
-    keywords: ["road run", "半马"],
+    place: { country: { zh: "泰国", en: "Thailand" }, city: { zh: "清迈", en: "Chiang Mai" } },
+    keyword: { zh: "半马", en: "road run" },
     cover: "/life/sport/2024-12-22-人生第一场半马-清迈半马/cover.jpg",
     images: sportDisplay("/life/sport/2024-12-22-人生第一场半马-清迈半马/cover.jpg"),
     body: {
@@ -220,14 +382,31 @@ export const demoLifeSport: LifeSportEntry[] = [
     },
   },
   {
+    id: "maclehose-2024-9",
+    date: "2024-09-14",
+    title: {
+      zh: "首次中距离徒步",
+      en: "First Medium-Distance Hike",
+    },
+    place: {
+      country: { zh: "中国", en: "China" },
+      region: { zh: "香港", en: "Hong Kong" },
+      city: { zh: "麦理浩径", en: "MacLehose Trail" },
+    },
+    keyword: { zh: "徒步", en: "hiking" },
+    cover: "/life/sport/2024-9-14-麦理浩径-香港/cover.jpg",
+    images: sportDisplay("/life/sport/2024-9-14-麦理浩径-香港/cover.jpg"),
+  },
+  {
     id: "aboro-2024-4",
-    date: "2024-04 — 06",
+    date: "2024-04",
+    dateEnd: "2024-06",
     title: {
       zh: "Aboro 三个月拳击训练营",
       en: "Aboro 3-Month Boxing Camp",
     },
-    location: { zh: "上海", en: "Shanghai" },
-    keywords: ["boxing", "训练营"],
+    place: { city: { zh: "上海", en: "Shanghai" } },
+    keyword: { zh: "拳击", en: "boxing" },
     cover: "/life/sport/aboro三个月的拳击训练营/cover.jpg",
     images: sportDisplay("/life/sport/aboro三个月的拳击训练营/cover.jpg"),
     body: {
@@ -242,8 +421,8 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "开始跑步 · 3km 到 5km",
       en: "Started Running · 3K to 5K",
     },
-    location: { zh: "上海", en: "Shanghai" },
-    keywords: ["road run", "路跑"],
+    place: { city: { zh: "上海", en: "Shanghai" } },
+    keyword: { zh: "路跑", en: "road run" },
   },
   {
     id: "gym-2023-9",
@@ -252,10 +431,22 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "走进健身房 · 力量训练",
       en: "Started Strength Training",
     },
-    location: { zh: "上海", en: "Shanghai" },
-    keywords: ["strength", "力量"],
+    place: { city: { zh: "上海", en: "Shanghai" } },
+    keyword: { zh: "力量", en: "strength" },
     cover: "/life/sport/开始走进健身房-力量训练-jpg/cover.jpg",
     images: sportDisplay("/life/sport/开始走进健身房-力量训练-jpg/cover.jpg"),
+  },
+  {
+    id: "sup-kk-2023-8",
+    date: "2023-08-11",
+    title: {
+      zh: "首次海上浆板",
+      en: "First Open-Water SUP",
+    },
+    place: { country: { zh: "马来西亚", en: "Malaysia" }, city: { zh: "亚庇", en: "Kota Kinabalu" } },
+    keyword: { zh: "桨板", en: "SUP" },
+    cover: "/life/sport/2023-8-11-亚庇海上浆板-马来西亚/cover.jpg",
+    images: sportDisplay("/life/sport/2023-8-11-亚庇海上浆板-马来西亚/cover.jpg"),
   },
   {
     id: "ow-2023-8",
@@ -264,10 +455,11 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "来到海里，考了OW",
       en: "Open Water Dive Certification",
     },
-    location: { zh: "马来西亚仙本那", en: "Semporna, Malaysia" },
-    keywords: ["diving", "潜水"],
+    place: { country: { zh: "马来西亚", en: "Malaysia" }, city: { zh: "仙本那", en: "Semporna" } },
+    keyword: { zh: "潜水", en: "diving" },
     cover: "/life/sport/考取了ow潜水证-马来西亚仙本那/cover.jpg",
     images: sportDisplay("/life/sport/考取了ow潜水证-马来西亚仙本那/cover.jpg"),
+    href: "/life/journal/sabah-ow",
   },
   {
     id: "surf-2023-7",
@@ -276,12 +468,16 @@ export const demoLifeSport: LifeSportEntry[] = [
       zh: "开始学冲浪",
       en: "Started Learning to Surf",
     },
-    location: { zh: "广东惠州", en: "Huizhou, Guangdong" },
-    keywords: ["surf", "冲浪"],
+    place: { region: { zh: "广东", en: "Guangdong" }, city: { zh: "惠州", en: "Huizhou" } },
+    keyword: { zh: "冲浪", en: "surf" },
     cover: "/life/sport/2023-7-开始学习冲浪-广东惠州/cover.jpg",
     images: sportDisplay("/life/sport/2023-7-开始学习冲浪-广东惠州/cover.jpg"),
+    href: "/life/journal/surf-volunteer",
   },
 ];
+
+/** 运动墙：按日期倒序（新 → 旧） */
+export const demoLifeSport: LifeSportEntry[] = [...demoLifeSportEntries].sort(compareSportEntries);
 
 export function getLifeSportIds(): string[] {
   return demoLifeSport.filter((e) => e.body).map((e) => e.id);

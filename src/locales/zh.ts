@@ -51,7 +51,7 @@ export const zh = {
         title: "项目案例",
         desc: "屋久岛公交查询、培训工具链，以及还在迭代中的 side projects。",
         meta: "Projects →",
-        href: "/projects",
+        href: "/about#projects",
       },
       {
         index: "04",

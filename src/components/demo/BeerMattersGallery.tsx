@@ -12,7 +12,7 @@ export function BeerMattersGallery() {
   return (
     <figure className="beer-matters-gallery" aria-label="啤酒事务局活动与内容">
       <div className="beer-matters-gallery-hero">
-        <LazyImage src={hero} alt="" priority fit="cover" className="beer-matters-gallery-img beer-matters-gallery-img--hero" />
+        <LazyImage src={hero} alt="" priority fit="contain" className="beer-matters-gallery-img beer-matters-gallery-img--hero" />
       </div>
       {rest.length > 0 ? (
         <div className="beer-matters-gallery-grid">
@@ -22,7 +22,7 @@ export function BeerMattersGallery() {
                 src={src}
                 alt=""
                 priority={index < 3}
-                fit="cover"
+                fit="contain"
                 className="beer-matters-gallery-img beer-matters-gallery-img--tile"
               />
             </div>

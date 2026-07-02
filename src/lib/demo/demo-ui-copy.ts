@@ -33,6 +33,15 @@ export const demoUiCopy = {
   },
   aboutPage: {
     readMore: { zh: "继续阅读", en: "Read more" } as LText,
+    jumpWork: { zh: "工作履历", en: "Experience" } as LText,
+    jumpProjects: { zh: "项目", en: "Projects" } as LText,
+    jumpToProjects: { zh: "查看项目 ↓", en: "See projects ↓" } as LText,
+    moreProjects: { zh: "更多项目", en: "More projects" } as LText,
+    expandWorkDetail: { zh: "展开详情", en: "More detail" } as LText,
+    workExpandHint: {
+      zh: "含职责描述与技能标签 · 支付宝、京东、卡士等",
+      en: "Roles, tags & highlights · Alipay, JD.com, CLASSY KISS, etc.",
+    } as LText,
   },
   writingPage: {
     backLink: { zh: "← Writing", en: "← Writing" } as LText,

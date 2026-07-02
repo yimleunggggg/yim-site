@@ -3,17 +3,9 @@
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { pickText } from "@/lib/demo/demo-data";
-import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
+import { formatSportEntryDate, formatSportKeyword, formatSportPlace, type LifeSportEntry } from "@/lib/demo/demo-life-sport";
 import { splitArticleBody } from "@/lib/demo/life-article-layout";
 import { LazyImage } from "./LazyImage";
-
-function formatSportDate(raw: string): string {
-  const m = raw.match(/^(\d{4})[-./](\d{1,2})(?:[-./](\d{1,2}))?/);
-  if (!m) return raw;
-  const [, y, mo, d] = m;
-  if (d) return `${y.slice(2)}.${mo.padStart(2, "0")}.${d.padStart(2, "0")}`;
-  return `${y.slice(2)}.${mo.padStart(2, "0")}`;
-}
 
 function isBriefNote(bodyRaw: string): boolean {
   const trimmed = bodyRaw.trim();
@@ -60,12 +52,12 @@ export function LifeSportNoteModal({
   if (!entry?.body) return null;
 
   const title = pickText(entry.title, zh);
-  const location = entry.location ? pickText(entry.location, zh) : null;
+  const location = formatSportPlace(entry.place, zh);
   const bodyRaw = pickText(entry.body, zh);
   const paragraphs = splitArticleBody(bodyRaw);
   const brief = isBriefNote(bodyRaw);
   const hero = modalHeroSrc(entry);
-  const keywords = entry.keywords.join(" / ");
+  const keyword = formatSportKeyword(entry.keyword, zh);
 
   return createPortal(
     <div
@@ -85,7 +77,7 @@ export function LifeSportNoteModal({
           <div
             className={`life-sport-modal-cover${brief ? " life-sport-modal-cover--brief" : ""}`}
           >
-            <LazyImage src={hero} alt="" className="h-full w-full object-cover" />
+            <LazyImage src={hero} alt="" fit="contain" className="life-sport-modal-cover-img" />
           </div>
         ) : null}
 
@@ -95,17 +87,17 @@ export function LifeSportNoteModal({
               {title}
             </h2>
             <p className="life-modal-meta">
-              <time>{formatSportDate(entry.date)}</time>
+              <time>{formatSportEntryDate(entry.date, entry.dateEnd, zh)}</time>
               {location ? (
                 <>
                   <span aria-hidden> · </span>
                   <span>{location}</span>
                 </>
               ) : null}
-              {keywords ? (
+              {keyword ? (
                 <>
                   <span aria-hidden> · </span>
-                  <span>{keywords}</span>
+                  <span>{keyword}</span>
                 </>
               ) : null}
             </p>

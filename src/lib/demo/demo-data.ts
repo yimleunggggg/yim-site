@@ -178,8 +178,8 @@ export const demoExplore: DemoExploreCard[] = [
     eyebrow: "ABOUT",
     title: { zh: "关于我", en: "About me" },
     desc: {
-      zh: "9 年的运营经验，电商、产品、品牌、会员、社群、跨境、精酿、旅行策划、线下活动...看着散乱，但新的场景会推着人长出新的办法。最近在玩 AI，欢迎看看我做的小玩具。",
-      en: "Nine years in ops — e-commerce, product, brand, membership, community, cross-border, craft beer, trip planning, offline events… looks scattered, but new scenes keep pushing out new moves. Playing with AI lately — welcome to peek at my little toys.",
+      zh: "毕业9年，电商、产品、品牌、用户、私域、跨境、精酿、旅行策划、线下活动...新的场景会推着人长出新的方法。最近在玩AI，欢迎看看我做的小玩具。",
+      en: "Nine years since graduation — e-commerce, product, brand, users, private domain, cross-border, craft beer, trip planning, offline events… new scenes keep pushing out new moves. Playing with AI lately — welcome to peek at my little toys.",
     },
     status: "CURRENT FOCUS",
     latest: { zh: "Yakushima Bus 上线 · 2026.05", en: "Yakushima Bus shipped · 2026.05" },
@@ -432,7 +432,7 @@ export const demoWork: DemoWork[] = [
   {
     id: "classy-kiss",
     company: { zh: "卡士乳业 · CLASSY KISS Yoghurt", en: "CLASSY KISS Yoghurt" },
-    role: { zh: "全域会员运营经理", en: "Membership & Digital Operations Manager" },
+    role: { zh: "全域运营经理", en: "Omni-channel Operations Manager" },
     period: "2021.08 – 2023.07",
     location: { zh: "上海", en: "Shanghai" },
     tags: {
@@ -524,7 +524,7 @@ export const demoWork: DemoWork[] = [
 /* ------------------------------ 关于页 · 项目 ------------------------------- */
 
 export type ProjectStatus = "live" | "building" | "ongoing" | "demo" | "fuzzy" | "planned";
-export type ProjectCategory = "product" | "travel" | "sport" | "experience";
+export type ProjectCategory = "product" | "travel" | "sport" | "experience" | "podcast";
 
 export const projectStatusLabel: Record<ProjectStatus, LText> = {
   live: { zh: "已上线", en: "Live" },
@@ -542,6 +542,7 @@ export const projectCategoryLabel: Record<ProjectCategory, LText> = {
   travel: { zh: "旅行", en: "Travel" },
   sport: { zh: "运动", en: "Sport" },
   experience: { zh: "体验", en: "Experience" },
+  podcast: { zh: "播客", en: "Podcast" },
 };
 
 export type DemoAboutProject = {
@@ -605,11 +606,11 @@ export const demoAboutProjects: DemoAboutProject[] = [
     slug: "beer-matters",
     title: { zh: "啤酒事务局", en: "Beer Matters" },
     tagline: {
-      zh: "精酿内容 × 社群 × 活动 × 电商，含啤酒旅行社等线下活动",
-      en: "Craft content, community, events & e-commerce — including Beer Travel Club trips",
+      zh: "精酿内容 × 社群 × 活动 × 电商 × 播客，含啤酒旅行社等线下活动",
+      en: "Craft content, community, events, e-commerce & podcast — including Beer Travel Club trips",
     },
     status: "ongoing",
-    categories: ["experience", "travel"],
+    categories: ["experience", "travel", "podcast"],
     liveUrl: "https://beermatters.cn/",
     hasDetailPage: true,
   },
@@ -631,7 +632,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
   {
     slug: "camino-de-santiago",
     title: { zh: "西班牙朝圣之路 · Camino de Santiago", en: "Camino de Santiago" },
-    tagline: { zh: "步行穿越西班牙", en: "Walking across Spain" },
+    tagline: { zh: "徒步走向圣地亚哥", en: "Pilgrimage trek to Santiago" },
     status: "planned",
     categories: ["travel", "sport"],
     hasDetailPage: false,
@@ -663,11 +664,26 @@ const PROJECT_STATUS_RANK: Record<ProjectStatus, number> = {
   fuzzy: 3,
 };
 
+/** About 项目表：精选大卡展示（其余进表格） */
+export const aboutFeaturedProjectSlugs = ["yakushima-bus-now", "beer-matters"] as const;
+
 /** About 项目表：已上线优先，其次在做 / Demo / 想法 / 计划 */
 export function getSortedAboutProjects(): DemoAboutProject[] {
   return [...demoAboutProjects].sort(
     (a, b) => PROJECT_STATUS_RANK[a.status] - PROJECT_STATUS_RANK[b.status],
   );
+}
+
+export function getAboutProjectsGrouped(): {
+  featured: DemoAboutProject[];
+  rest: DemoAboutProject[];
+} {
+  const sorted = getSortedAboutProjects();
+  const featured = aboutFeaturedProjectSlugs
+    .map((slug) => sorted.find((p) => p.slug === slug))
+    .filter((p): p is DemoAboutProject => Boolean(p));
+  const rest = sorted;
+  return { featured, rest };
 }
 
 /* ------------------------------ 项目（详情页） ------------------------------- */

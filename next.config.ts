@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
       { source: "/demo/frames/:slug", destination: "/frames/:slug", permanent: true },
       { source: "/demo/writing/:slug", destination: "/writing/:slug", permanent: true },
       { source: "/demo/projects/:slug", destination: "/projects/:slug", permanent: true },
+      { source: "/projects", destination: "/about#projects", permanent: true },
       // 旧静态图路径（勿再使用 /demo/ 存 public 资源）
       { source: "/demo/marquee/:path*", destination: "/marquee/:path*", permanent: true },
       { source: "/demo/frames/:slug/:file", destination: "/media/frames/:slug/:file", permanent: true },

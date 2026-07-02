@@ -1,5 +1,10 @@
 import { pickText } from "@/lib/demo/demo-data";
-import type { LifeSportEntry } from "@/lib/demo/demo-life-sport";
+import {
+  formatSportEntryDate,
+  formatSportKeyword,
+  formatSportPlace,
+  type LifeSportEntry,
+} from "@/lib/demo/demo-life-sport";
 import {
   buildEditorialLayout,
   splitArticleBody,
@@ -15,10 +20,11 @@ export function LifeSportArticle({
   zh?: boolean;
 }) {
   const title = pickText(entry.title, zh);
-  const location = entry.location ? pickText(entry.location, zh) : null;
+  const location = formatSportPlace(entry.place, zh);
   const bodyRaw = entry.body ? pickText(entry.body, zh) : "";
   const paragraphs = splitArticleBody(bodyRaw);
   const images = entry.images ?? [];
+  const keyword = formatSportKeyword(entry.keyword, zh);
   const blocks = buildEditorialLayout(paragraphs, images);
 
   return (
@@ -36,17 +42,17 @@ export function LifeSportArticle({
             {title}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-[var(--color-ink-muted)]">
-            <time>{entry.date}</time>
+            <time>{formatSportEntryDate(entry.date, entry.dateEnd, zh)}</time>
             {location ? (
               <>
                 <span>·</span>
                 <span>{location}</span>
               </>
             ) : null}
-            {entry.keywords.length > 0 ? (
+            {keyword ? (
               <>
                 <span>·</span>
-                <span>{entry.keywords.join(" / ")}</span>
+                <span>{keyword}</span>
               </>
             ) : null}
           </div>

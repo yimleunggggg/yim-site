@@ -6,7 +6,7 @@ import { useLocale } from "@/components";
 import {
   demoAbout,
   demoWork,
-  getSortedAboutProjects,
+  getAboutProjectsGrouped,
   projectStatusLabel,
   projectCategoryLabel,
   pickText,
@@ -17,15 +17,20 @@ import {
 import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { DemoPageHeader, DemoSectionHeading, DemoStatusTag } from "./DemoPrimitives";
 
-const MOBILE_LIST_INITIAL = 3;
+function workCompanyShort(work: DemoWork, zh: boolean): string {
+  const full = pickText(work.company, zh);
+  const head = full.split(" · ")[0]?.trim() ?? full;
+  return head.replace(/\s*·.*$/, "").trim();
+}
 
 export function DemoAbout() {
   const { locale } = useLocale();
   const zh = locale === "zh";
   const [workExpanded, setWorkExpanded] = useState(false);
   const [introExpanded, setIntroExpanded] = useState(false);
-  const workCollapsible = demoWork.length > MOBILE_LIST_INITIAL;
   const introCollapsible = demoAbout.intro.length > 0;
+  const workDetailCollapsible = demoWork.length > 0;
+  const { featured: featuredProjects, rest: restProjects } = getAboutProjectsGrouped();
 
   return (
     <>
@@ -51,40 +56,58 @@ export function DemoAbout() {
             ))}
           </div>
           {introCollapsible ? (
-            <button
-              type="button"
-              className="demo-list-expand-btn demo-list-expand-btn--mobile-only"
-              aria-expanded={introExpanded}
-              onClick={() => setIntroExpanded((v) => !v)}
-            >
-              {pickText(
-                introExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.aboutPage.readMore,
-                zh,
-              )}
-            </button>
+            <div className="demo-about-intro-actions">
+              <button
+                type="button"
+                className="demo-list-expand-btn demo-list-expand-btn--mobile-only"
+                aria-expanded={introExpanded}
+                onClick={() => setIntroExpanded((v) => !v)}
+              >
+                {pickText(
+                  introExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.aboutPage.readMore,
+                  zh,
+                )}
+              </button>
+            </div>
           ) : null}
         </DemoPageHeader>
       </header>
 
-      <section className="site-shell demo-page-section">
+      <section id="work" className="site-shell demo-page-section scroll-mt-20">
         <DemoSectionHeading eyebrow="WORK" title={zh ? "工作履历" : "Experience"} />
         <ul
-          className="demo-work-list demo-page-content demo-collapsible-list"
-          data-collapsed={workCollapsible && !workExpanded ? "true" : "false"}
+          className="demo-work-compact-list demo-page-content"
+          data-expanded={workExpanded ? "true" : "false"}
+        >
+          {demoWork.map((w) => (
+            <WorkCompactRow key={w.id} work={w} zh={zh} />
+          ))}
+        </ul>
+        <ul
+          className="demo-work-list demo-page-content demo-work-list--detail"
+          data-expanded={workExpanded ? "true" : "false"}
         >
           {demoWork.map((w) => (
             <WorkRow key={w.id} work={w} zh={zh} />
           ))}
         </ul>
-        {workCollapsible ? (
-          <button
-            type="button"
-            className="demo-list-expand-btn demo-list-expand-btn--mobile-only"
-            aria-expanded={workExpanded}
-            onClick={() => setWorkExpanded((v) => !v)}
-          >
-            {pickText(workExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.lifePage.showAll, zh)}
-          </button>
+        {workDetailCollapsible ? (
+          <div className="demo-work-expand-wrap">
+            <button
+              type="button"
+              className="demo-list-expand-btn demo-list-expand-btn--mobile-only"
+              aria-expanded={workExpanded}
+              onClick={() => setWorkExpanded((v) => !v)}
+            >
+              {pickText(
+                workExpanded ? demoUiCopy.lifePage.showLess : demoUiCopy.aboutPage.expandWorkDetail,
+                zh,
+              )}
+            </button>
+            {!workExpanded ? (
+              <p className="demo-work-expand-hint">{pickText(demoUiCopy.aboutPage.workExpandHint, zh)}</p>
+            ) : null}
+          </div>
         ) : null}
       </section>
 
@@ -95,21 +118,76 @@ export function DemoAbout() {
           subtitle={pickText(demoAbout.projectsLead, zh)}
           className="demo-section-heading--projects"
         />
-        <div className="demo-project-table demo-page-content">
-          <div className="demo-project-table-head" aria-hidden>
-            <span>{zh ? "名称" : "Name"}</span>
-            <span>{zh ? "简介" : "About"}</span>
-            <span>{zh ? "分类" : "Tags"}</span>
-            <span>{zh ? "状态" : "Status"}</span>
-          </div>
-          <ul className="demo-project-table-body">
-            {getSortedAboutProjects().map((p) => (
-              <ProjectTableRow key={p.slug} project={p} zh={zh} />
+        {featuredProjects.length > 0 ? (
+          <ul className="demo-project-featured-grid demo-page-content">
+            {featuredProjects.map((p) => (
+              <FeaturedProjectCard key={p.slug} project={p} zh={zh} />
             ))}
           </ul>
-        </div>
+        ) : null}
+        {restProjects.length > 0 ? (
+          <>
+            <p className="demo-project-more-label demo-page-content">
+              {pickText(demoUiCopy.aboutPage.moreProjects, zh)}
+            </p>
+            <div className="demo-project-table demo-page-content">
+              <div className="demo-project-table-head" aria-hidden>
+                <span>{zh ? "名称" : "Name"}</span>
+                <span>{zh ? "简介" : "About"}</span>
+                <span>{zh ? "分类" : "Tags"}</span>
+                <span>{zh ? "状态" : "Status"}</span>
+              </div>
+              <ul className="demo-project-table-body">
+                {restProjects.map((p) => (
+                  <ProjectTableRow key={p.slug} project={p} zh={zh} />
+                ))}
+              </ul>
+            </div>
+          </>
+        ) : null}
       </section>
     </>
+  );
+}
+
+function WorkCompactRow({ work, zh }: { work: DemoWork; zh: boolean }) {
+  return (
+    <li className="demo-work-compact-item">
+      <span className="demo-work-compact-main">
+        <span className="demo-work-compact-company">{workCompanyShort(work, zh)}</span>
+        <span className="demo-work-compact-sep" aria-hidden>
+          ·
+        </span>
+        <span className="demo-work-compact-role">{pickText(work.role, zh)}</span>
+      </span>
+      <span className="demo-work-compact-meta">{work.period}</span>
+    </li>
+  );
+}
+
+function FeaturedProjectCard({ project: p, zh }: { project: DemoAboutProject; zh: boolean }) {
+  return (
+    <li>
+      <Link href={`/projects/${p.slug}`} className="demo-project-featured-card tap-target">
+        <div className="demo-project-featured-head">
+          <span className="demo-project-featured-name">{pickText(p.title, zh)}</span>
+          <DemoStatusTag tone={p.status}>{pickText(projectStatusLabel[p.status], zh)}</DemoStatusTag>
+        </div>
+        <p className="demo-project-featured-desc">{pickText(p.tagline, zh)}</p>
+        <div className="demo-project-featured-foot">
+          <span className="demo-project-featured-cats">
+            {p.categories.map((c: ProjectCategory) => (
+              <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
+                {pickText(projectCategoryLabel[c], zh)}
+              </span>
+            ))}
+          </span>
+          <span className="demo-project-featured-go" aria-hidden>
+            →
+          </span>
+        </div>
+      </Link>
+    </li>
   );
 }
 
@@ -174,7 +252,7 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
   const bullets = zh ? work.bullets.zh : work.bullets.en;
 
   return (
-    <li className="demo-work-item">
+    <li className={`demo-work-item${open ? " is-open" : ""}`}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

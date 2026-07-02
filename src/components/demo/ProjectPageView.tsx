@@ -10,15 +10,16 @@ import {
   projectStatusLabel,
   type DemoAboutProject,
   type DemoProject,
+  type LText,
   type ProjectCategory,
 } from "@/lib/demo/demo-data";
-import type { DemoProjectMeta, ProjectRelatedLink } from "@/lib/demo/demo-project-meta";
+import type { DemoProjectMeta } from "@/lib/demo/demo-project-meta";
 import { ProjectMetaPanels } from "@/components/demo/ProjectMetaPanels";
 import { ProjectPageScreenshots } from "@/components/demo/ProjectPageScreenshots";
 import { ProjectRelatedLinks } from "@/components/demo/ProjectRelatedLinks";
 import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
 import { useLocale } from "@/components";
-import type { LText } from "@/lib/demo/demo-data";
+import { filterDuplicateProjectRelatedLinks, projectActionUrlsMatch } from "@/lib/demo/project-page-links";
 
 type WritingLink = { slug: string; title: string; readingMinutes: number };
 
@@ -52,11 +53,13 @@ export function ProjectPageView({
   const tagline = about ? pickText(about.tagline, zh) : pickText(detail!.tagline, zh);
   const period = detail?.period;
   const body = bodyText ? pickText(bodyText, zh) : mdxBodyZh ?? null;
-  const relatedLinks: ProjectRelatedLink[] = projectMeta?.related ?? [];
-  const demoOnlyRelated =
-    relatedLinks.length > 0 &&
-    relatedLinks.every((link) => link.kind === "demo" && !link.items?.length);
-  const hideDemoRelatedOnMobile = demoOnlyRelated && Boolean(demoUrl || liveUrl);
+  const relatedLinks = filterDuplicateProjectRelatedLinks(projectMeta?.related ?? [], [
+    liveUrl,
+    demoUrl,
+  ]);
+  const primaryUrl = liveUrl ?? demoUrl;
+  const secondaryDemoUrl =
+    demoUrl && liveUrl && !projectActionUrlsMatch(demoUrl, liveUrl) ? demoUrl : undefined;
 
   return (
     <article className="project-page-view site-shell py-8 sm:py-14">
@@ -99,24 +102,26 @@ export function ProjectPageView({
         <ProjectPageScreenshots slug={slug} />
       </div>
 
-      {(liveUrl || demoUrl) && (
-        <div className="project-demo-actions mt-6 flex flex-wrap gap-3">
-          {liveUrl ? (
+      {(primaryUrl || secondaryDemoUrl) && (
+        <div className="project-page-actions mt-6">
+          {primaryUrl ? (
             <a
-              href={liveUrl}
+              href={primaryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="tap-target inline-flex items-center rounded-full bg-[var(--color-forest)] px-5 text-sm font-medium text-white"
+              className="project-page-external-link tap-target"
             >
-              {pickText(demoUiCopy.projectPage.visitLive, zh)}
+              {liveUrl
+                ? pickText(demoUiCopy.projectPage.visitLive, zh)
+                : pickText(demoUiCopy.projectPage.openDemo, zh)}
             </a>
           ) : null}
-          {demoUrl && demoUrl !== liveUrl ? (
+          {secondaryDemoUrl ? (
             <a
-              href={demoUrl}
+              href={secondaryDemoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="tap-target inline-flex items-center rounded-full border border-[var(--color-forest)] px-5 text-sm font-medium text-[var(--color-forest)]"
+              className="project-page-external-link project-page-external-link--secondary tap-target"
             >
               {pickText(demoUiCopy.projectPage.openDemo, zh)}
             </a>
@@ -124,12 +129,7 @@ export function ProjectPageView({
         </div>
       )}
 
-      {relatedLinks.length > 0 ? (
-        <ProjectRelatedLinks
-          links={relatedLinks}
-          className={hideDemoRelatedOnMobile ? "project-related-section--hide-mobile" : ""}
-        />
-      ) : null}
+      {relatedLinks.length > 0 ? <ProjectRelatedLinks links={relatedLinks} /> : null}
 
       {body ? (
         <div className="prose-playbook demo-article editorial-content mt-8 max-w-none sm:mt-10">

@@ -35,7 +35,7 @@ export default async function WritingPage({ params }: Props) {
         </Link>
 
         <header className="mt-6 border-b border-[var(--color-border)] pb-6">
-          <h1 className="editorial-article-title font-medium">
+          <h1 className="editorial-article-title">
             {article.title}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-[var(--color-ink-muted)]">

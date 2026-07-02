@@ -53,7 +53,7 @@ export const en: LocaleDict = {
         title: "Projects",
         desc: "Yakushima bus lookup, training toolchain, and side projects in progress.",
         meta: "Projects →",
-        href: "/projects",
+        href: "/about#projects",
       },
       {
         index: "04",

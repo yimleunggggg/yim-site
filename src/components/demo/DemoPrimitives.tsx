@@ -159,22 +159,22 @@ export function DemoLiveIndicator({
   );
 }
 
-/** 运动墙：有赛后笔记的卡片角标（文档图标，无 ◆ 文案） */
+/** 运动墙：有赛后笔记的卡片角标 */
 export function MovementNoteBadge() {
   return (
     <span className="movement-note-badge" aria-hidden>
-      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
         <path
-          d="M2.25 1.75h4.55l2.95 2.95v5.05H2.25z"
+          d="M2.5 2h4.2l2.8 2.8V10H2.5V2z"
           stroke="currentColor"
-          strokeWidth="1.15"
+          strokeWidth="1.1"
           strokeLinejoin="round"
         />
-        <path d="M6.8 1.75v3h3" stroke="currentColor" strokeWidth="1.15" strokeLinejoin="round" />
+        <path d="M6.7 2v2.8H9.5" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
         <path
-          d="M3.75 6.25h4.5M3.75 8.25h2.75"
+          d="M4 6.2h4M4 8h2.6"
           stroke="currentColor"
-          strokeWidth="1.15"
+          strokeWidth="1.1"
           strokeLinecap="round"
         />
       </svg>

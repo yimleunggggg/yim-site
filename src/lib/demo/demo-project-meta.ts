@@ -99,19 +99,13 @@ export const demoProjectMeta: Record<string, DemoProjectMeta> = {
       {
         kind: "wechat",
         title: { zh: "制作过程与经验总结", en: "Build log & lessons learned" },
+        url: "https://mp.weixin.qq.com/s/bN7wbRI6TsWguZ59fTBYoQ",
         note: { zh: "从需求、数据到上线的完整记录", en: "From problem to launch" },
-        items: [
-          {
-            kind: "wechat",
-            title: { zh: "制作过程与经验总结", en: "Build log & lessons learned" },
-            url: "https://mp.weixin.qq.com/s/bN7wbRI6TsWguZ59fTBYoQ",
-          },
-          {
-            kind: "external",
-            title: { zh: "静态站 Vibe Coding 教程", en: "Static site vibe coding guide" },
-            url: "https://github.com/yimleunggggg/vibe-coding-static-site-guide",
-          },
-        ],
+      },
+      {
+        kind: "external",
+        title: { zh: "静态站 Vibe Coding 教程", en: "Static site vibe coding guide" },
+        url: "https://github.com/yimleunggggg/vibe-coding-static-site-guide",
       },
     ],
   },
