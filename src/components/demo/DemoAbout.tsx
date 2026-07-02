@@ -291,7 +291,7 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
               {pickText(work.location, zh)}
             </span>
           </span>
-          {tags.length > 0 ? (
+          {open && tags.length > 0 ? (
             <span className="demo-work-tags-row">
               {tags.map((tag) => (
                 <span key={tag} className="demo-work-tag">

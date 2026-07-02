@@ -2525,9 +2525,13 @@
 
   .demo-about-intro-stack--collapsed p:first-child {
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .demo-about-page .demo-about-intro-stack--collapsed p:first-child {
+    -webkit-line-clamp: 2;
   }
 }
 
@@ -4599,7 +4603,86 @@
   }
 
   .demo-page .demo-section-title {
+    font-family: var(--font-sans);
     font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  /* About · 移动端：统一分区标题与列表节奏，减字减样式 */
+  .demo-about-page .demo-section-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.4rem;
+    padding-bottom: 0.375rem;
+    border-bottom: none;
+  }
+
+  .demo-about-page .demo-section-heading .demo-section-title {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+  }
+
+  .demo-about-page .demo-section-heading .demo-section-eyebrow {
+    font-size: 0.5625rem;
+    letter-spacing: 0.12em;
+    color: color-mix(in srgb, var(--color-forest) 85%, var(--color-ink-muted));
+  }
+
+  .demo-about-page .demo-section-heading .demo-section-eyebrow::after {
+    content: "·";
+    margin-left: 0.4rem;
+    color: color-mix(in srgb, var(--color-ink-muted) 70%, transparent);
+    letter-spacing: 0;
+  }
+
+  .demo-about-page .demo-section-heading--projects .demo-section-lead {
+    display: none;
+  }
+
+  .demo-about-page .demo-section-heading + .demo-page-content {
+    margin-top: 0.25rem;
+  }
+
+  .demo-about-page .demo-about-intro-stack {
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+
+  .demo-about-page .demo-work-trigger {
+    padding: 0.65rem 0;
+  }
+
+  .demo-about-page .demo-work-main {
+    gap: 0.3rem;
+  }
+
+  .demo-about-page .demo-work-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+  }
+
+  .demo-about-page .demo-work-meta {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.01em;
+  }
+
+  .demo-about-page .demo-project-pin,
+  .demo-about-page .demo-project-mobile-go {
+    display: none;
+  }
+
+  .demo-about-page .demo-project-mobile-item {
+    padding: 0.55rem 0;
+  }
+
+  .demo-about-page .demo-project-mobile-name {
     font-weight: 400;
   }
 

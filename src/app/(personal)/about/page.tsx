@@ -6,5 +6,9 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return <DemoAbout />;
+  return (
+    <div className="demo-about-page">
+      <DemoAbout />
+    </div>
+  );
 }
