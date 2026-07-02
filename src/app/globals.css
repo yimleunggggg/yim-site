@@ -4414,22 +4414,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 9rem;
+  min-height: 0;
   border-radius: 0;
   line-height: 0;
-  background: var(--color-callout);
+  background: transparent;
   box-shadow: none;
   overflow: hidden;
-}
-
-.life-gallery-item:has(.lazy-img__el.is-loaded) {
-  min-height: 0;
-  background: transparent;
 }
 
 .life-gallery-item .lazy-img-host,
 .life-gallery-item .lazy-img-slot {
   width: 100%;
+}
+
+.life-gallery-item .lazy-img__el,
+.life-figure .lazy-img__el {
+  opacity: 1;
 }
 
 .life-gallery-item .lazy-img__el {

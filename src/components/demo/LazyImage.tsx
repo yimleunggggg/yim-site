@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 type LazyImageProps = {
   src: string;
@@ -21,8 +21,8 @@ function markLoaded(img: HTMLImageElement | null): boolean {
 }
 
 /**
- * 始终输出 src，靠浏览器原生 lazy + priority 控制加载顺序。
- * 缓存命中时需读 complete，否则 onLoad 已错过会一直 opacity:0。
+ * 原生 img + lazy；缓存命中或同步解码时用 ref 回调立即标记 loaded，
+ * 避免 useEffect 重置 state 导致 opacity 一直为 0。
  */
 export function LazyImage({
   src,
@@ -35,33 +35,43 @@ export function LazyImage({
   onContextMenu,
   fit = "cover",
 }: LazyImageProps) {
-  const imgRef = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const ratio = width && height ? `${width} / ${height}` : undefined;
 
-  useLayoutEffect(() => {
-    if (markLoaded(imgRef.current)) setLoaded(true);
-  }, [src]);
+  const setImgRef = useCallback(
+    (node: HTMLImageElement | null) => {
+      if (!node) return;
 
-  useEffect(() => {
-    setFailed(false);
-    setLoaded(false);
-    const img = imgRef.current;
-    if (markLoaded(img)) {
-      setLoaded(true);
-      return;
-    }
-    if (!img) return;
-    const onLoad = () => setLoaded(true);
-    img.addEventListener("load", onLoad);
-    return () => img.removeEventListener("load", onLoad);
-  }, [src]);
+      const onLoad = () => {
+        setLoaded(true);
+        setFailed(false);
+      };
+      const onError = () => setFailed(true);
+
+      if (markLoaded(node)) {
+        setLoaded(true);
+        setFailed(false);
+        return;
+      }
+
+      setLoaded(false);
+      setFailed(false);
+      node.addEventListener("load", onLoad);
+      node.addEventListener("error", onError);
+
+      return () => {
+        node.removeEventListener("load", onLoad);
+        node.removeEventListener("error", onError);
+      };
+    },
+    [src],
+  );
 
   const img = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      ref={imgRef}
+      ref={setImgRef}
       src={failed ? undefined : src}
       alt={alt}
       width={width}
@@ -71,7 +81,10 @@ export function LazyImage({
       fetchPriority={priority ? "high" : "auto"}
       draggable={draggable}
       onContextMenu={onContextMenu}
-      onLoad={() => setLoaded(true)}
+      onLoad={() => {
+        setLoaded(true);
+        setFailed(false);
+      }}
       onError={() => setFailed(true)}
       className={`lazy-img__el lazy-img__el--${fit} ${loaded ? "is-loaded" : ""} ${failed ? "is-failed" : ""} ${className}`.trim()}
     />

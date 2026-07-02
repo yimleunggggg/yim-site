@@ -91,7 +91,7 @@ export function LifeArticleBody({ blocks }: { blocks: LayoutBlock[] }) {
                 <LazyImage
                   src={src}
                   alt=""
-                  priority={groupIdx < 2}
+                  priority={groupIdx < 2 || j < 3}
                   className="life-gallery-img"
                 />
               </div>
