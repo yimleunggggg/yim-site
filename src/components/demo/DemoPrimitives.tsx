@@ -123,15 +123,17 @@ const TONE_CLASS: Record<string, string> = {
 export function DemoStatusTag({
   children,
   tone = "done",
+  compact = false,
 }: {
   children: ReactNode;
   tone?: keyof typeof TONE_CLASS | string;
+  compact?: boolean;
 }) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center rounded-full border px-2.5 py-0.5 text-xs ${
-        TONE_CLASS[tone] ?? TONE_CLASS.done
-      }`}
+      className={`inline-flex shrink-0 items-center rounded-full border ${
+        compact ? "px-1.5 py-0 text-[0.5625rem] leading-snug" : "px-2.5 py-0.5 text-xs"
+      } ${TONE_CLASS[tone] ?? TONE_CLASS.done}`}
     >
       {children}
     </span>

@@ -99,9 +99,9 @@ export function DemoAbout() {
                 <ProjectTableRow key={p.slug} project={p} zh={zh} />
               ))}
             </ul>
-            <ul className="demo-project-table-body demo-project-table-body--mobile">
+            <ul className="demo-project-mobile-list demo-project-table-body--mobile">
               {mobileProjects.map((p) => (
-                <ProjectTableRow
+                <ProjectMobileRow
                   key={p.slug}
                   project={p}
                   zh={zh}
@@ -122,6 +122,55 @@ export function DemoAbout() {
         </ul>
       </section>
     </>
+  );
+}
+
+function ProjectMobileRow({
+  project: p,
+  zh,
+  featured = false,
+}: {
+  project: DemoAboutProject;
+  zh: boolean;
+  featured?: boolean;
+}) {
+  const clickable = p.hasDetailPage !== false;
+  const title = pickText(p.title, zh);
+  const status = pickText(projectStatusLabel[p.status], zh);
+  const desc = pickText(p.tagline, zh);
+
+  const inner = (
+    <>
+      <div className="demo-project-mobile-head">
+        <span className="demo-project-mobile-title">
+          {featured ? (
+            <span className="demo-project-pin">{zh ? "精选" : "Featured"}</span>
+          ) : null}
+          <span className="demo-project-mobile-name">{title}</span>
+          {clickable ? (
+            <span className="demo-project-mobile-go" aria-hidden>
+              →
+            </span>
+          ) : null}
+        </span>
+        <DemoStatusTag tone={p.status} compact>
+          {status}
+        </DemoStatusTag>
+      </div>
+      <p className="demo-project-mobile-desc">{desc}</p>
+    </>
+  );
+
+  if (!clickable) {
+    return <li className="demo-project-mobile-item">{inner}</li>;
+  }
+
+  return (
+    <li className="demo-project-mobile-item">
+      <Link href={`/projects/${p.slug}`} className="demo-project-mobile-row tap-target">
+        {inner}
+      </Link>
+    </li>
   );
 }
 
