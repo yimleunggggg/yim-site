@@ -2644,61 +2644,14 @@
 }
 
 @media (min-width: 768px) {
-  .demo-work-compact-list,
-  .demo-work-expand-wrap {
-    display: none;
-  }
-
   .demo-work-list--detail {
     display: block;
   }
 }
 
 @media (max-width: 767px) {
-  .demo-work-compact-list[data-expanded="true"] {
-    display: none;
-  }
-
   .demo-work-list--detail {
-    display: none;
-  }
-
-  .demo-work-list--detail[data-expanded="true"] {
     display: block;
-  }
-
-  .demo-work-compact-item {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.2rem;
-    padding: 0.7rem 0;
-  }
-
-  .demo-work-compact-main {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.15rem;
-  }
-
-  .demo-work-compact-sep {
-    display: none;
-  }
-
-  .demo-work-compact-company {
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.35;
-  }
-
-  .demo-work-compact-role {
-    font-size: 0.8125rem;
-    line-height: 1.4;
-  }
-
-  .demo-work-compact-meta {
-    align-self: flex-start;
-    font-size: 0.5625rem;
-    letter-spacing: 0.02em;
   }
 
   .demo-about-jump-wrap {
