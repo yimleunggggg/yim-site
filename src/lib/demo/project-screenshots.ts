@@ -45,3 +45,35 @@ export function getProjectScreenshotsForPage(slug: string): ProjectShot[] | null
   if (!key) return null;
   return projectScreenshotCatalog[key];
 }
+
+export type ProjectAboutThumb =
+  | { kind: "image"; src: string; alt: string; width?: number; height?: number }
+  | { kind: "gradient"; gradient: string };
+
+const ABOUT_THUMB_GRADIENTS: Record<string, string> = {
+  "self-discovery": "linear-gradient(145deg, #6b5b95 0%, #9a8bb8 48%, #ebe4d8 100%)",
+};
+
+/** About 项目卡片顶栏缩略图（首屏截图或渐变占位） */
+export function getProjectAboutThumb(slug: string, title = ""): ProjectAboutThumb {
+  const shots = getProjectScreenshotsForPage(slug);
+  if (shots?.[0]) {
+    const s = shots[0];
+    return { kind: "image", src: s.src, alt: s.alt || title, width: s.width, height: s.height };
+  }
+  if (slug === "beer-matters") {
+    return {
+      kind: "image",
+      src: "/work/beer-matters/gallery/01.jpg",
+      alt: title || "Beer Matters",
+      width: 800,
+      height: 500,
+    };
+  }
+  const gradient = ABOUT_THUMB_GRADIENTS[slug];
+  if (gradient) return { kind: "gradient", gradient };
+  return {
+    kind: "gradient",
+    gradient: "linear-gradient(145deg, var(--color-forest) 0%, #5a7a6a 55%, var(--color-callout) 100%)",
+  };
+}

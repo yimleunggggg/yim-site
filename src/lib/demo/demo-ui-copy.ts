@@ -37,6 +37,7 @@ export const demoUiCopy = {
     jumpProjects: { zh: "项目", en: "Projects" } as LText,
     jumpToProjects: { zh: "查看项目 ↓", en: "See projects ↓" } as LText,
     moreProjects: { zh: "更多项目", en: "More projects" } as LText,
+    allProjects: { zh: "全部项目", en: "All projects" } as LText,
     expandWorkDetail: { zh: "展开详情", en: "More detail" } as LText,
     workExpandHint: {
       zh: "含职责描述与技能标签 · 支付宝、京东、卡士等",

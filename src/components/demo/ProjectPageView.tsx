@@ -6,12 +6,10 @@ import { DemoStatusTag } from "@/components/demo/DemoPrimitives";
 import { DemoProjectVideo } from "@/components/demo/DemoProjectVideo";
 import {
   pickText,
-  projectCategoryLabel,
   projectStatusLabel,
   type DemoAboutProject,
   type DemoProject,
   type LText,
-  type ProjectCategory,
 } from "@/lib/demo/demo-data";
 import type { DemoProjectMeta } from "@/lib/demo/demo-project-meta";
 import { ProjectMetaPanels } from "@/components/demo/ProjectMetaPanels";
@@ -75,9 +73,9 @@ export function ProjectPageView({
           {tagline}
         </p>
         <div className="project-page-meta mt-3 flex flex-wrap items-center gap-1.5 sm:mt-4 sm:gap-2">
-          {about?.categories.map((c: ProjectCategory) => (
-            <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
-              {pickText(projectCategoryLabel[c], zh)}
+          {about?.tags.map((tag, i) => (
+            <span key={i} className="demo-project-tag-pill">
+              {pickText(tag, zh)}
             </span>
           ))}
           {about ? (

@@ -1,21 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/components";
 import {
   demoAbout,
   demoWork,
-  getAboutProjectsGrouped,
+  getSortedAboutProjects,
   isAboutFeaturedProject,
   projectStatusLabel,
-  projectCategoryLabel,
   pickText,
   type DemoWork,
-  type ProjectCategory,
   type DemoAboutProject,
 } from "@/lib/demo/demo-data";
 import { demoUiCopy } from "@/lib/demo/demo-ui-copy";
+import { getProjectAboutThumb } from "@/lib/demo/project-screenshots";
 import { DemoPageHeader, DemoSectionHeading, DemoStatusTag } from "./DemoPrimitives";
 
 export function DemoAbout() {
@@ -23,8 +23,7 @@ export function DemoAbout() {
   const zh = locale === "zh";
   const [introExpanded, setIntroExpanded] = useState(false);
   const introCollapsible = demoAbout.intro.length > 0;
-  const { featured: featuredProjects, rest: restProjects } = getAboutProjectsGrouped();
-  const mobileProjects = [...featuredProjects, ...restProjects];
+  const allProjects = getSortedAboutProjects();
 
   return (
     <>
@@ -74,42 +73,17 @@ export function DemoAbout() {
           subtitle={pickText(demoAbout.projectsLead, zh)}
           className="demo-section-heading--projects"
         />
-        {featuredProjects.length > 0 ? (
-          <ul className="demo-project-featured-grid demo-page-content">
-            {featuredProjects.map((p) => (
-              <FeaturedProjectCard key={p.slug} project={p} zh={zh} />
+        {allProjects.length > 0 ? (
+          <ul className="demo-project-card-grid demo-page-content">
+            {allProjects.map((p) => (
+              <ProjectCard
+                key={p.slug}
+                project={p}
+                zh={zh}
+                featured={isAboutFeaturedProject(p.slug)}
+              />
             ))}
           </ul>
-        ) : null}
-        {mobileProjects.length > 0 ? (
-          <div className="demo-project-table demo-page-content">
-            {restProjects.length > 0 ? (
-              <p className="demo-project-more-label">
-                {pickText(demoUiCopy.aboutPage.moreProjects, zh)}
-              </p>
-            ) : null}
-            <div className="demo-project-table-head" aria-hidden>
-              <span>{zh ? "名称" : "Name"}</span>
-              <span>{zh ? "简介" : "About"}</span>
-              <span>{zh ? "分类" : "Tags"}</span>
-              <span>{zh ? "状态" : "Status"}</span>
-            </div>
-            <ul className="demo-project-table-body demo-project-table-body--desktop">
-              {restProjects.map((p) => (
-                <ProjectTableRow key={p.slug} project={p} zh={zh} />
-              ))}
-            </ul>
-            <ul className="demo-project-mobile-list demo-project-table-body--mobile">
-              {mobileProjects.map((p) => (
-                <ProjectMobileRow
-                  key={p.slug}
-                  project={p}
-                  zh={zh}
-                  featured={isAboutFeaturedProject(p.slug)}
-                />
-              ))}
-            </ul>
-          </div>
         ) : null}
       </section>
 
@@ -125,7 +99,35 @@ export function DemoAbout() {
   );
 }
 
-function ProjectMobileRow({
+function ProjectCardThumb({ slug, title }: { slug: string; title: string }) {
+  const thumb = getProjectAboutThumb(slug, title);
+
+  if (thumb.kind === "image") {
+    return (
+      <div className="demo-project-card-thumb">
+        <Image
+          src={thumb.src}
+          alt=""
+          width={thumb.width ?? 390}
+          height={thumb.height ?? 844}
+          sizes="(max-width: 767px) 45vw, 32vw"
+          className="demo-project-card-thumb-img"
+          draggable={false}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="demo-project-card-thumb demo-project-card-thumb--gradient"
+      style={{ background: thumb.gradient }}
+      aria-hidden
+    />
+  );
+}
+
+function ProjectCard({
   project: p,
   zh,
   featured = false,
@@ -136,129 +138,55 @@ function ProjectMobileRow({
 }) {
   const clickable = p.hasDetailPage !== false;
   const title = pickText(p.title, zh);
-  const status = pickText(projectStatusLabel[p.status], zh);
-  const desc = pickText(p.tagline, zh);
+  const cardClass = [
+    "demo-project-featured-card",
+    featured ? "demo-project-featured-card--highlight" : "",
+    clickable ? "tap-target" : "demo-project-featured-card--static",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   const inner = (
     <>
-      <div className="demo-project-mobile-head">
-        <span className="demo-project-mobile-title">
-          {featured ? (
-            <span className="demo-project-pin">{zh ? "精选" : "Featured"}</span>
-          ) : null}
-          <span className="demo-project-mobile-name">{title}</span>
-          {clickable ? (
-            <span className="demo-project-mobile-go" aria-hidden>
-              →
-            </span>
-          ) : null}
-        </span>
-        <DemoStatusTag tone={p.status} compact>
-          {status}
-        </DemoStatusTag>
-      </div>
-      <p className="demo-project-mobile-desc">{desc}</p>
-    </>
-  );
-
-  if (!clickable) {
-    return <li className="demo-project-mobile-item">{inner}</li>;
-  }
-
-  return (
-    <li className="demo-project-mobile-item">
-      <Link href={`/projects/${p.slug}`} className="demo-project-mobile-row tap-target">
-        {inner}
-      </Link>
-    </li>
-  );
-}
-
-function FeaturedProjectCard({ project: p, zh }: { project: DemoAboutProject; zh: boolean }) {
-  return (
-    <li>
-      <Link href={`/projects/${p.slug}`} className="demo-project-featured-card tap-target">
+      <ProjectCardThumb slug={p.slug} title={title} />
+      <div className="demo-project-card-body">
         <div className="demo-project-featured-head">
-          <span className="demo-project-featured-name">{pickText(p.title, zh)}</span>
-          <DemoStatusTag tone={p.status}>{pickText(projectStatusLabel[p.status], zh)}</DemoStatusTag>
+          <span className="demo-project-featured-name">{title}</span>
+          <DemoStatusTag tone={p.status} compact>
+            {pickText(projectStatusLabel[p.status], zh)}
+          </DemoStatusTag>
         </div>
         <p className="demo-project-featured-desc">{pickText(p.tagline, zh)}</p>
         <div className="demo-project-featured-foot">
           <span className="demo-project-featured-cats">
-            {p.categories.map((c: ProjectCategory) => (
-              <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
-                {pickText(projectCategoryLabel[c], zh)}
+            {p.tags.map((tag, i) => (
+              <span key={i} className="demo-project-tag-pill">
+                {pickText(tag, zh)}
               </span>
             ))}
           </span>
-          <span className="demo-project-featured-go" aria-hidden>
-            →
-          </span>
+          {clickable ? (
+            <span className="demo-project-featured-go" aria-hidden>
+              →
+            </span>
+          ) : null}
         </div>
-      </Link>
-    </li>
-  );
-}
-
-function ProjectTableRow({
-  project: p,
-  zh,
-  featured = false,
-}: {
-  project: DemoAboutProject;
-  zh: boolean;
-  featured?: boolean;
-}) {
-  const clickable = p.hasDetailPage !== false;
-  const rowClass = `demo-project-table-row${featured ? " demo-project-table-row--featured" : ""}`;
-  const inner = (
-    <>
-      <span className="demo-project-table-name">{pickText(p.title, zh)}</span>
-      <span className="demo-project-table-desc">{pickText(p.tagline, zh)}</span>
-      <span className="demo-project-table-cats">
-        {p.categories.map((c: ProjectCategory) => (
-          <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
-            {pickText(projectCategoryLabel[c], zh)}
-          </span>
-        ))}
-      </span>
-      <span className="demo-project-table-status">
-        <DemoStatusTag tone={p.status}>{pickText(projectStatusLabel[p.status], zh)}</DemoStatusTag>
-      </span>
+      </div>
     </>
   );
 
   if (!clickable) {
     return (
-      <li>
-        <div className={`${rowClass} demo-project-table-row--static`}>{inner}</div>
+      <li className="demo-project-card-grid-item">
+        <div className={cardClass}>{inner}</div>
       </li>
     );
   }
 
   return (
-    <li>
-      <Link
-        href={`/projects/${p.slug}`}
-        className={`${rowClass} demo-project-table-row--link tap-target`}
-      >
-        <span className="demo-project-table-name">
-          {pickText(p.title, zh)}
-          <span className="demo-project-table-go" aria-hidden>
-            →
-          </span>
-        </span>
-        <span className="demo-project-table-desc">{pickText(p.tagline, zh)}</span>
-        <span className="demo-project-table-cats">
-          {p.categories.map((c: ProjectCategory) => (
-            <span key={c} className={`demo-cat-pill demo-cat-pill--${c}`}>
-              {pickText(projectCategoryLabel[c], zh)}
-            </span>
-          ))}
-        </span>
-        <span className="demo-project-table-status">
-          <DemoStatusTag tone={p.status}>{pickText(projectStatusLabel[p.status], zh)}</DemoStatusTag>
-        </span>
+    <li className="demo-project-card-grid-item">
+      <Link href={`/projects/${p.slug}`} className={cardClass}>
+        {inner}
       </Link>
     </li>
   );
@@ -291,7 +219,7 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
               {pickText(work.location, zh)}
             </span>
           </span>
-          {open && tags.length > 0 ? (
+          {tags.length > 0 ? (
             <span className="demo-work-tags-row">
               {tags.map((tag) => (
                 <span key={tag} className="demo-work-tag">
@@ -305,15 +233,17 @@ function WorkRow({ work, zh }: { work: DemoWork; zh: boolean }) {
           ⌄
         </span>
       </button>
-      {open ? (
-        <div className="demo-work-body">
-          <ul className="demo-work-bullets">
-            {bullets.map((b, i) => (
-              <li key={i}>{b}</li>
-            ))}
-          </ul>
+      <div className={`demo-work-body-wrap${open ? " is-open" : ""}`} aria-hidden={!open}>
+        <div className="demo-work-body-inner">
+          <div className="demo-work-body">
+            <ul className="demo-work-bullets">
+              {bullets.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
+            </ul>
+          </div>
         </div>
-      ) : null}
+      </div>
     </li>
   );
 }

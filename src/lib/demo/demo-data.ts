@@ -551,7 +551,8 @@ export type DemoAboutProject = {
   tagline: LText;
   desc?: LText;
   status: ProjectStatus;
-  categories: ProjectCategory[];
+  /** About 卡片底部展示的分类标签 */
+  tags: LText[];
   /** 已上线站点 */
   liveUrl?: string;
   /** Demo / 内测地址 */
@@ -572,7 +573,12 @@ export const demoAboutProjects: DemoAboutProject[] = [
       en: "A free info tool for Yakushima travelers, born from my own transit pain — my first vibe coding project",
     },
     status: "live",
-    categories: ["product", "travel"],
+    tags: [
+      { zh: "Vibe Coding", en: "Vibe Coding" },
+      { zh: "产品", en: "Product" },
+      { zh: "网页", en: "Web" },
+      { zh: "工具", en: "Tool" },
+    ],
     liveUrl: "https://yakushimabus.com/",
     githubUrl: "https://github.com/yimleunggggg/Yakushima-bus",
     hasDetailPage: true,
@@ -585,7 +591,12 @@ export const demoAboutProjects: DemoAboutProject[] = [
       en: "Scenario-based gear management for outdoor & frequent travelers",
     },
     status: "demo",
-    categories: ["product"],
+    tags: [
+      { zh: "Vibe Coding", en: "Vibe Coding" },
+      { zh: "产品", en: "Product" },
+      { zh: "APP", en: "App" },
+      { zh: "旅行", en: "Travel" },
+    ],
     demoUrl: "https://packlog.yimleung-ly.workers.dev/",
     githubUrl: "https://github.com/yimleunggggg/packlog-the-travel-gear-companion",
     hasDetailPage: true,
@@ -598,7 +609,12 @@ export const demoAboutProjects: DemoAboutProject[] = [
       en: "Outdoor social platform built on real activity data",
     },
     status: "demo",
-    categories: ["product", "sport"],
+    tags: [
+      { zh: "Vibe Coding", en: "Vibe Coding" },
+      { zh: "产品", en: "Product" },
+      { zh: "APP", en: "App" },
+      { zh: "社交", en: "Social" },
+    ],
     demoUrl: "https://offtrack-eta.vercel.app/",
     hasDetailPage: true,
   },
@@ -610,7 +626,11 @@ export const demoAboutProjects: DemoAboutProject[] = [
       en: "Craft content, community, events, e-commerce & podcast — including Beer Travel Club trips",
     },
     status: "ongoing",
-    categories: ["experience", "travel", "podcast"],
+    tags: [
+      { zh: "自媒体", en: "Media" },
+      { zh: "旅行", en: "Travel" },
+      { zh: "播客", en: "Podcast" },
+    ],
     liveUrl: "https://beermatters.cn/",
     hasDetailPage: true,
   },
@@ -626,32 +646,12 @@ export const demoAboutProjects: DemoAboutProject[] = [
       en: "Music DNA is live; CineMate and a diary timeline are in ideation.",
     },
     status: "planned",
-    categories: ["product", "experience"],
+    tags: [
+      { zh: "Vibe Coding", en: "Vibe Coding" },
+      { zh: "产品", en: "Product" },
+      { zh: "体验", en: "Experience" },
+    ],
     hasDetailPage: true,
-  },
-  {
-    slug: "camino-de-santiago",
-    title: { zh: "西班牙朝圣之路 · Camino de Santiago", en: "Camino de Santiago" },
-    tagline: { zh: "徒步走向圣地亚哥", en: "Pilgrimage trek to Santiago" },
-    status: "planned",
-    categories: ["travel", "sport"],
-    hasDetailPage: false,
-  },
-  {
-    slug: "triathlon",
-    title: { zh: "铁人三项", en: "Triathlon" },
-    tagline: { zh: "学游泳中", en: "Currently learning to swim" },
-    status: "planned",
-    categories: ["sport", "experience"],
-    hasDetailPage: false,
-  },
-  {
-    slug: "kazakhstan-horse-trek",
-    title: { zh: "哈萨克斯坦 Horse Trek", en: "Kazakhstan Horse Trek" },
-    tagline: { zh: "骑马穿越草原", en: "Horseback across the steppe" },
-    status: "planned",
-    categories: ["travel", "experience"],
-    hasDetailPage: false,
   },
 ];
 
@@ -664,7 +664,7 @@ const PROJECT_STATUS_RANK: Record<ProjectStatus, number> = {
   fuzzy: 3,
 };
 
-/** About 项目表：精选大卡展示（其余进表格） */
+/** About 项目表：精选大卡展示（列表仍含全部项目） */
 export const aboutFeaturedProjectSlugs = ["yakushima-bus-now", "beer-matters"] as const;
 
 /** About 项目表：已上线优先，其次在做 / Demo / 想法 / 计划 */
@@ -674,17 +674,16 @@ export function getSortedAboutProjects(): DemoAboutProject[] {
   );
 }
 
+/** About 项目表：精选大卡 + 下方完整列表（精选项仍在列表中） */
 export function getAboutProjectsGrouped(): {
   featured: DemoAboutProject[];
-  rest: DemoAboutProject[];
+  all: DemoAboutProject[];
 } {
   const sorted = getSortedAboutProjects();
-  const featuredSlugs = new Set<string>(aboutFeaturedProjectSlugs);
   const featured = aboutFeaturedProjectSlugs
     .map((slug) => sorted.find((p) => p.slug === slug))
     .filter((p): p is DemoAboutProject => Boolean(p));
-  const rest = sorted.filter((p) => !featuredSlugs.has(p.slug));
-  return { featured, rest };
+  return { featured, all: sorted };
 }
 
 export function isAboutFeaturedProject(slug: string): boolean {

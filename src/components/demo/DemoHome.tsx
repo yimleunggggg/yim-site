@@ -17,7 +17,7 @@ export function DemoHome() {
 
   return (
     <>
-      <section className="site-shell demo-hero pt-8 pb-4 sm:pt-14 sm:pb-7">
+      <section className="site-shell demo-hero demo-hero--enter pt-8 pb-4 sm:pt-14 sm:pb-7">
         <div className="demo-hero-copy">
           <p className="demo-eyebrow">{demoHero.eyebrow}</p>
           <h1 className="demo-hero-title mt-6">
