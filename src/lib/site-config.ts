@@ -2,6 +2,10 @@
 export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://yimleung.com";
 
+/** GA4 衡量 ID，在 Vercel / .env.local 设置 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXX */
+export const gaMeasurementId =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ?? "";
+
 export const siteConfig = {
   url: siteUrl,
   title: "Yim Leung",

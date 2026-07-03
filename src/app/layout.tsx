@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { LocaleProvider } from "@/components";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="min-h-screen overflow-x-hidden">
         <LocaleProvider>{children}</LocaleProvider>
       </body>
+      <SiteAnalytics />
     </html>
   );
 }
