@@ -97,7 +97,7 @@ export function ProjectPageView({
       </header>
 
       <div className="mt-8">
-        <ProjectPageScreenshots slug={slug} />
+        <ProjectPageScreenshots slug={slug} title={title} />
       </div>
 
       {(primaryUrl || secondaryDemoUrl) && (

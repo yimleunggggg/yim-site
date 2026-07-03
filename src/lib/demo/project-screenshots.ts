@@ -69,10 +69,9 @@ const ABOUT_COVER_IMAGES: Record<string, { src: string; width: number; height: n
     height: 682,
   },
   "self-discovery": {
-    src: "/work/projects/self-discovery/cover-about.svg",
+    src: "/work/projects/self-discovery/cover-about.jpg",
     width: 1024,
     height: 682,
-    vector: true,
   },
 };
 

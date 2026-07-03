@@ -1129,6 +1129,24 @@
   padding-bottom: 0;
 }
 
+.project-page-cover {
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+  background: linear-gradient(
+    165deg,
+    #fbf8f1 0%,
+    var(--color-paper) 42%,
+    color-mix(in srgb, var(--color-callout) 92%, #f4f0e8) 100%
+  );
+}
+
+.project-page-cover-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 @media (min-width: 768px) {
   .prose-playbook:not(.editorial-content) h2 {
     font-size: 1.375rem;

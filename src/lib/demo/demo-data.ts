@@ -636,7 +636,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
   },
   {
     slug: "self-discovery",
-    title: { zh: "自我探索系列", en: "Self-discovery series" },
+    title: { zh: "Preference Map · 自我探索系列", en: "Preference Map · Self-discovery series" },
     tagline: {
       zh: "音乐、电影与日常记录——读清楚品味与选择里藏着的那个自己",
       en: "Music, film, and daily logs — reading the self hidden in taste and choice",
