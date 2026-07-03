@@ -638,12 +638,12 @@ export const demoAboutProjects: DemoAboutProject[] = [
     slug: "self-discovery",
     title: { zh: "自我探索系列", en: "Self-discovery series" },
     tagline: {
-      zh: "从听歌、观影与日常记录里，看见真正属于你的偏好与模式",
-      en: "See your real tastes and patterns in music, film, and daily life",
+      zh: "音乐、电影与日常记录——读清楚品味与选择里藏着的那个自己",
+      en: "Music, film, and daily logs — reading the self hidden in taste and choice",
     },
     desc: {
-      zh: "Music DNA 已跑通；CineMate 与日记 timeline 在构思中。",
-      en: "Music DNA is live; CineMate and a diary timeline are in ideation.",
+      zh: "Music DNA 雏形已跑通；CineMate 与轨迹记录在构思中。",
+      en: "Music DNA prototype is working; CineMate and activity trail are in ideation.",
     },
     status: "planned",
     tags: [

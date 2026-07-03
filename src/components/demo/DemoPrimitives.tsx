@@ -109,7 +109,8 @@ export function DemoCover({
 
 const TONE_CLASS: Record<string, string> = {
   live: "border-[var(--color-forest)] bg-[var(--color-forest)] text-[#fbf8f1] font-medium",
-  building: "border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[color-mix(in_srgb,var(--color-terracotta)_12%,transparent)] font-medium",
+  ongoing: "border-[var(--color-forest)] bg-[var(--color-forest)] text-[#fbf8f1] font-medium",
+  building: "border-[var(--color-forest)] bg-[var(--color-forest)] text-[#fbf8f1] font-medium",
   demo: "border-[var(--color-terracotta)] text-[var(--color-terracotta)] bg-[color-mix(in_srgb,var(--color-terracotta)_14%,var(--color-paper))] font-semibold ring-1 ring-[color-mix(in_srgb,var(--color-terracotta)_25%,transparent)]",
   fuzzy: "border-dashed border-[var(--color-border)] text-[var(--color-ink-muted)] bg-transparent",
   planned: "border-[var(--color-accent-warm)] text-[var(--color-accent-warm)] bg-[color-mix(in_srgb,var(--color-accent-warm)_10%,transparent)]",

@@ -65,7 +65,7 @@ export function ProjectPageView({
         {pickText(demoUiCopy.projectPage.backLink, zh)}
       </Link>
 
-      <header className="project-page-header mt-5 border-b border-[var(--color-border)] pb-5 sm:mt-6 sm:pb-6">
+      <header className="project-page-header mt-5 pb-5 sm:mt-6 sm:pb-6">
         <h1 className="editorial-article-title">
           {title}
         </h1>
