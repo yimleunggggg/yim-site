@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.title}`,
   },
   description: siteConfig.description,
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: { index: false, follow: true },
+  },
 };
 
 export default function PersonalLayout({ children }: { children: React.ReactNode }) {

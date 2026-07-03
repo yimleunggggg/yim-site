@@ -47,19 +47,47 @@ export function getProjectScreenshotsForPage(slug: string): ProjectShot[] | null
 }
 
 export type ProjectAboutThumb =
-  | { kind: "image"; src: string; alt: string; width?: number; height?: number }
+  | { kind: "image"; src: string; alt: string; width?: number; height?: number; vector?: boolean }
   | { kind: "gradient"; gradient: string };
 
-const ABOUT_THUMB_GRADIENTS: Record<string, string> = {
-  "self-discovery": "linear-gradient(145deg, #6b5b95 0%, #9a8bb8 48%, #ebe4d8 100%)",
+const ABOUT_THUMB_GRADIENTS: Record<string, string> = {};
+
+const ABOUT_COVER_IMAGES: Record<string, { src: string; width: number; height: number; vector?: boolean }> = {
+  "yakushima-bus-now": {
+    src: "/work/projects/yakushima-bus/cover-about.png",
+    width: 1024,
+    height: 682,
+  },
+  packlog: {
+    src: "/work/projects/packlog/cover-about.png",
+    width: 1024,
+    height: 682,
+  },
+  offtrack: {
+    src: "/work/projects/offtrack/cover-about.png",
+    width: 1024,
+    height: 682,
+  },
+  "self-discovery": {
+    src: "/work/projects/self-discovery/cover-about.svg",
+    width: 1024,
+    height: 682,
+    vector: true,
+  },
 };
 
-/** About 项目卡片顶栏缩略图（首屏截图或渐变占位） */
+/** About 项目卡片顶栏缩略图（专用头图 / 渐变占位） */
 export function getProjectAboutThumb(slug: string, title = ""): ProjectAboutThumb {
-  const shots = getProjectScreenshotsForPage(slug);
-  if (shots?.[0]) {
-    const s = shots[0];
-    return { kind: "image", src: s.src, alt: s.alt || title, width: s.width, height: s.height };
+  const cover = ABOUT_COVER_IMAGES[slug];
+  if (cover) {
+    return {
+      kind: "image",
+      src: cover.src,
+      alt: title,
+      width: cover.width,
+      height: cover.height,
+      vector: cover.vector,
+    };
   }
   if (slug === "beer-matters") {
     return {

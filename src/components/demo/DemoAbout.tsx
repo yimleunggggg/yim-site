@@ -103,17 +103,27 @@ function ProjectCardThumb({ slug, title }: { slug: string; title: string }) {
   const thumb = getProjectAboutThumb(slug, title);
 
   if (thumb.kind === "image") {
+    const imgClass = "demo-project-card-thumb-img";
     return (
-      <div className="demo-project-card-thumb">
-        <Image
-          src={thumb.src}
-          alt=""
-          width={thumb.width ?? 390}
-          height={thumb.height ?? 844}
-          sizes="(max-width: 767px) 45vw, 32vw"
-          className="demo-project-card-thumb-img"
-          draggable={false}
-        />
+      <div className="demo-project-card-thumb demo-project-card-thumb--cover">
+        {thumb.vector ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={thumb.src}
+            alt=""
+            className={imgClass}
+            draggable={false}
+          />
+        ) : (
+          <Image
+            src={thumb.src}
+            alt=""
+            fill
+            sizes="(max-width: 767px) 45vw, 32vw"
+            className={imgClass}
+            draggable={false}
+          />
+        )}
       </div>
     );
   }
@@ -152,9 +162,11 @@ function ProjectCard({
       <div className="demo-project-card-body">
         <div className="demo-project-featured-head">
           <span className="demo-project-featured-name">{title}</span>
-          <DemoStatusTag tone={p.status} compact>
-            {pickText(projectStatusLabel[p.status], zh)}
-          </DemoStatusTag>
+          <span className="demo-project-card-status">
+            <DemoStatusTag tone={p.status}>
+              {pickText(projectStatusLabel[p.status], zh)}
+            </DemoStatusTag>
+          </span>
         </div>
         <p className="demo-project-featured-desc">{pickText(p.tagline, zh)}</p>
         <div className="demo-project-featured-foot">

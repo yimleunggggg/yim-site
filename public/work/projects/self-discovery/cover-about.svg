@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 682" fill="none" role="img" aria-label="Self-discovery series">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="682" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbf8f1"/>
+      <stop offset="45%" stop-color="#f4f0e8"/>
+      <stop offset="100%" stop-color="#ebe4d8"/>
+    </linearGradient>
+    <linearGradient id="wash" x1="120" y1="80" x2="920" y2="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6b5b95" stop-opacity="0.12"/>
+      <stop offset="55%" stop-color="#385348" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#9a8bb8" stop-opacity="0.14"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="682" fill="url(#bg)"/>
+  <rect width="1024" height="682" fill="url(#wash)"/>
+
+  <circle cx="860" cy="120" r="72" fill="#9a8bb8" opacity="0.16" filter="url(#soft)"/>
+  <circle cx="180" cy="560" r="96" fill="#385348" opacity="0.08" filter="url(#soft)"/>
+
+  <path d="M120 520 C 260 470, 360 430, 520 390 S 820 300, 900 240" stroke="#6b5b95" stroke-opacity="0.22" stroke-width="2" stroke-dasharray="6 10" fill="none"/>
+
+  <g transform="translate(96 148)">
+    <rect x="0" y="0" width="118" height="28" rx="14" fill="#385348" fill-opacity="0.08" stroke="#385348" stroke-opacity="0.18"/>
+    <text x="59" y="18" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2.2" fill="#385348" fill-opacity="0.85">SELF-DISCOVERY</text>
+    <text x="0" y="72" font-family="Georgia, 'Songti SC', serif" font-size="42" fill="#181714">ê¢"û</text>
+    <text x="2" y="108" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#6f6a61">Music · Film · Patterns</text>
+  </g>
+
+  <g transform="translate(560 170)">
+    <rect x="0" y="0" width="148" height="118" rx="14" fill="#fbf8f1" fill-opacity="0.92" stroke="#ded6c8" stroke-width="1.2"/>
+    <path d="M36 78 L36 52 L48 44 L60 52 L60 78 Z" stroke="#6b5b95" stroke-width="2.2" fill="#6b5b95" fill-opacity="0.08"/>
+    <path d="M78 78 V44 M78 44 L96 56 M78 44 L60 56" stroke="#385348" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="74" y="98" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#6f6a61">Music DNA</text>
+  </g>
+
+  <g transform="translate(730 248)">
+    <rect x="0" y="0" width="148" height="118" rx="14" fill="#fbf8f1" fill-opacity="0.92" stroke="#ded6c8" stroke-width="1.2"/>
+    <rect x="40" y="42" width="68" height="44" rx="4" stroke="#6b5b95" stroke-width="2.2" fill="#6b5b95" fill-opacity="0.06"/>
+    <circle cx="52" cy="54" r="4" fill="#9b543f" fill-opacity="0.55"/>
+    <text x="74" y="98" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#6f6a61">CineMate</text>
+  </g>
+
+  <g transform="translate(640 392)">
+    <rect x="0" y="0" width="148" height="118" rx="14" fill="#fbf8f1" fill-opacity="0.92" stroke="#ded6c8" stroke-width="1.2"/>
+    <circle cx="48" cy="58" r="5" fill="#385348" fill-opacity="0.55"/>
+    <circle cx="74" cy="58" r="5" fill="#385348" fill-opacity="0.35"/>
+    <circle cx="100" cy="58" r="5" fill="#385348" fill-opacity="0.2"/>
+    <path d="M48 58 H100" stroke="#385348" stroke-opacity="0.25" stroke-width="2" stroke-dasharray="2 6"/>
+    <text x="74" y="98" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#6f6a61">Timeline</text>
+  </g>
+</svg>

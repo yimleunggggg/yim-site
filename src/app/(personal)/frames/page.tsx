@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
 import { DemoFrames } from "@/components/demo/DemoFrames";
 import { getAllFrames } from "@/lib/demo/demo-frames";
+import { buildFramesIndexJsonLd, buildFramesIndexMetadata } from "@/lib/demo/frames-seo";
 
-export const metadata: Metadata = {
-  title: "FRAMES",
-  description: "摄影与旅行照片合集",
-};
+export const metadata = buildFramesIndexMetadata();
 
 export default function FramesPage() {
   const frames = getAllFrames().map((f) => ({
@@ -22,5 +20,12 @@ export default function FramesPage() {
     ongoing: f.ongoing,
   }));
 
-  return <DemoFrames frames={frames} />;
+  const allFrames = getAllFrames();
+
+  return (
+    <>
+      <JsonLd data={buildFramesIndexJsonLd(allFrames)} />
+      <DemoFrames frames={frames} />
+    </>
+  );
 }

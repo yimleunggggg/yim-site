@@ -1702,7 +1702,7 @@
 .demo-section-heading {
   margin-bottom: 0;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+  border-bottom: none;
 }
 
 .demo-section-heading .demo-section-eyebrow {
@@ -1841,7 +1841,7 @@
 }
 
 .demo-explore-section {
-  border-top: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-top: none;
 }
 
 .demo-explore-grid {
@@ -1952,7 +1952,7 @@
 
 .demo-footer {
   margin-top: auto;
-  border-top: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-top: none;
   padding: 4rem 0 5rem;
 }
 
@@ -2879,10 +2879,9 @@
 
 .demo-work-body {
   margin: 0;
-  padding: 0.875rem 1rem 1rem 1.125rem;
+  padding: 0.6rem 0.7rem 0.7rem;
   border-radius: 4px;
   background: color-mix(in srgb, var(--color-callout) 42%, var(--color-paper));
-  border-left: 2px solid color-mix(in srgb, var(--color-forest) 28%, var(--color-border));
 }
 
 .demo-work-body-wrap.is-open .demo-work-body {
@@ -2906,11 +2905,25 @@
 
 .demo-work-bullets {
   margin: 0;
-  padding-left: 1.125rem;
+  padding: 0;
+  list-style: none;
   font-size: 0.8125rem;
-  line-height: 1.7;
+  line-height: 1.65;
   color: color-mix(in srgb, var(--color-ink) 78%, var(--color-ink-muted));
-  list-style: disc;
+}
+
+.demo-work-bullets li {
+  position: relative;
+  padding-left: 0.65rem;
+}
+
+.demo-work-bullets li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--color-forest) 75%, var(--color-ink-muted));
 }
 
 .demo-work-tag {
@@ -3050,10 +3063,27 @@
 
 .demo-project-card-thumb {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
-  background: var(--color-callout);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    165deg,
+    #fbf8f1 0%,
+    var(--color-paper) 38%,
+    color-mix(in srgb, var(--color-callout) 88%, var(--color-paper)) 100%
+  );
   border-bottom: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+}
+
+.demo-project-card-thumb--cover {
+  background: linear-gradient(
+    165deg,
+    #fbf8f1 0%,
+    var(--color-paper) 42%,
+    color-mix(in srgb, var(--color-callout) 92%, #f4f0e8) 100%
+  );
 }
 
 .demo-project-card-thumb--gradient {
@@ -3064,9 +3094,14 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  transition: transform 0.35s ease;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: opacity 0.35s ease;
+}
+
+.demo-project-card-thumb--cover .demo-project-card-thumb-img {
+  object-fit: contain;
 }
 
 .demo-project-card-body {
@@ -3098,7 +3133,7 @@
 .demo-project-featured-card:hover .demo-project-card-thumb-img,
 .demo-project-featured-card:focus-visible .demo-project-card-thumb-img,
 .demo-project-featured-card:active .demo-project-card-thumb-img {
-  transform: scale(1.04);
+  opacity: 0.94;
 }
 
 .demo-project-featured-card--static:hover,
@@ -3140,6 +3175,35 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.5rem;
+}
+
+.demo-project-card-status {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.demo-project-card-status span {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.125rem 0.5rem;
+  line-height: 1.35;
+}
+
+@media (min-width: 768px) {
+  .demo-project-card-status span {
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.625rem;
+  }
+
+  .demo-project-featured-name {
+    font-size: 0.875rem;
+  }
+
+  .demo-project-featured-desc {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
 }
 
 .demo-project-featured-name {
@@ -3690,6 +3754,11 @@
     font-size: 0.75rem;
     font-weight: 500;
     line-height: 1.3;
+  }
+
+  .demo-project-card-status span {
+    font-size: 0.5625rem;
+    padding: 0.1rem 0.45rem;
   }
 
   .demo-project-featured-desc {
@@ -4869,6 +4938,19 @@
     font-family: var(--font-sans);
     font-size: 0.6875rem;
     letter-spacing: 0.01em;
+  }
+
+  .demo-about-page .demo-work-body {
+    padding: 0.5rem 0.6rem 0.6rem;
+  }
+
+  .demo-about-page .demo-work-bullets {
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .demo-about-page .demo-work-bullets li {
+    padding-left: 0.55rem;
   }
 
   .demo-about-page .demo-project-pin,
