@@ -2,9 +2,9 @@
 export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://yimleung.com";
 
-/** GA4 衡量 ID，在 Vercel / .env.local 设置 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXX */
+/** GA4 衡量 ID；可用 NEXT_PUBLIC_GA_MEASUREMENT_ID 覆盖 */
 export const gaMeasurementId =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ?? "";
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-GQXX5KDN2D";
 
 export const siteConfig = {
   url: siteUrl,
