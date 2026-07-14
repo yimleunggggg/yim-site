@@ -8,17 +8,27 @@ export const gaMeasurementId =
 
 export const siteConfig = {
   url: siteUrl,
-  title: "Yim Leung",
+  title: "Yim Leung（绊绊绊绊绊）",
   subtitle: "个人站",
   description:
-    "探索者 · 运营人 · AI 实践者。独立旅行、运动、精酿、AI 应用——持续探索的个人实验站。",
+    "Yim Leung（绊绊绊绊绊）的个人站。探索者 · 运营人 · AI 实践者。独立旅行、运动、精酿、AI 应用——持续探索的个人实验站。",
+  keywords: [
+    "Yim Leung",
+    "yimleung",
+    "绊绊绊绊绊",
+    "梁言",
+    "AI 实践",
+    "独立旅行",
+    "个人站",
+  ],
   githubRepoUrl:
     process.env.NEXT_PUBLIC_GITHUB_REPO_URL ??
     "https://github.com/yimleunggggg/yim-site",
   githubContentUrl:
     process.env.NEXT_PUBLIC_GITHUB_CONTENT_URL ??
     "https://github.com/yimleunggggg/yim-site/tree/main/content/ai-playbook",
-  author: "Yim",
+  author: "Yim Leung",
+  alias: "绊绊绊绊绊",
 };
 
 export type ChapterMeta = {

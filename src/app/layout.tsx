@@ -17,8 +17,18 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.title}`,
   },
   description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [
+    { name: siteConfig.author, url: siteConfig.url },
+    { name: siteConfig.alias, url: "https://xhslink.com/m/z9m3VbCucI" },
+  ],
+  creator: `${siteConfig.author} / ${siteConfig.alias}`,
+  publisher: siteConfig.author,
   openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
     siteName: siteConfig.title,
+    url: siteConfig.url,
     locale: "zh_CN",
     type: "website",
   },

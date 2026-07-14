@@ -12,6 +12,7 @@ type SiteFooterProps = {
 export function SiteFooter({ note }: SiteFooterProps) {
   const { locale, t } = useLocale();
   const zh = locale === "zh";
+  const xiaohongshuLabel = zh ? profileConfig.social.xiaohongshu.label : "REDnote";
 
   return (
     <footer
@@ -63,6 +64,16 @@ export function SiteFooter({ note }: SiteFooterProps) {
             <Link href="/resume" className="text-[var(--color-ink-muted)] hover:text-[var(--color-forest)]">
               {zh ? "PDF 简历" : "PDF resume"}
             </Link>
+            <a
+              href={profileConfig.social.xiaohongshu.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${profileConfig.social.xiaohongshu.label} ${profileConfig.social.xiaohongshu.name}`}
+              title={`${profileConfig.social.xiaohongshu.label} ${profileConfig.social.xiaohongshu.name}`}
+              className="text-[var(--color-ink-muted)] hover:text-[var(--color-forest)]"
+            >
+              {xiaohongshuLabel}
+            </a>
           </div>
         </div>
 

@@ -44,7 +44,7 @@ export const demoProfile = {
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/yiiimleung/", handle: "@yiiimleung" },
     { label: "即刻", href: "#" },
-    { label: "小红书", href: "#" },
+    { label: "小红书", href: "https://xhslink.com/m/z9m3VbCucI", handle: "绊绊绊绊绊" },
     { label: "LinkedIn", href: "#" },
     { label: "GitHub", href: "https://github.com/yimleunggggg" },
   ],

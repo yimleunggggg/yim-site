@@ -9,6 +9,13 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.title}`,
   },
   description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [
+    { name: siteConfig.author, url: siteConfig.url },
+    { name: siteConfig.alias, url: "https://xhslink.com/m/z9m3VbCucI" },
+  ],
+  creator: `${siteConfig.author} / ${siteConfig.alias}`,
+  publisher: siteConfig.author,
   robots: {
     index: false,
     follow: true,
