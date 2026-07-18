@@ -4,8 +4,12 @@ import type { LText } from "./demo-data";
 export const demoUiCopy = {
   projectPage: {
     backLink: { zh: "← Projects", en: "← Projects" } as LText,
-    visitLive: { zh: "访问网站 →", en: "Visit site →" } as LText,
-    openDemo: { zh: "打开 Demo →", en: "Open demo →" } as LText,
+    visitLive: { zh: "访问网站", en: "Visit site" } as LText,
+    openDemo: { zh: "打开 Demo", en: "Open demo" } as LText,
+    vercelNetworkNotice: {
+      zh: "Vercel 部署 · 访问时需要科学上网",
+      en: "Vercel deployment · A VPN may be required",
+    } as LText,
     screenshotHeading: { zh: "产品界面", en: "Product UI" } as LText,
     screenshotMeta: {
       zh: "共 {count} 张 · 点击查看大图",

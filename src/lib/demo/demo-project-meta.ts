@@ -176,7 +176,7 @@ export const demoProjectMeta: Record<string, DemoProjectMeta> = {
       {
         kind: "demo",
         title: { zh: "线上 Demo", en: "Live demo" },
-        url: "https://offtrack-eta.vercel.app/",
+        url: "https://offtrack-mobile.vercel.app/",
         note: { zh: "内测预览", en: "Private beta preview" },
       },
     ],

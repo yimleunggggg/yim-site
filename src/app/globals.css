@@ -2512,30 +2512,129 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem 1.25rem;
+  gap: 0.75rem;
+}
+
+.project-page-network-note {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.55rem 0 0 0.15rem;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--color-terracotta);
+}
+
+.project-page-network-note-icon {
+  display: inline-grid;
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-terracotta) 62%, transparent);
+  border-radius: 9999px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .project-page-external-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  color: var(--color-forest);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: color-mix(in srgb, var(--color-forest) 38%, transparent);
-  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 10rem;
+  min-height: 3rem;
+  padding: 0.625rem 0.625rem 0.625rem 1rem;
+  border: 1px solid var(--color-forest);
+  border-radius: 6px;
+  background: var(--color-forest);
+  box-shadow: 0 8px 20px -14px color-mix(in srgb, var(--color-forest) 85%, transparent);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #fbf8f1;
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
 }
 
 .project-page-external-link:hover {
-  color: var(--color-ink);
-  text-decoration-color: var(--color-forest);
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-forest) 78%, var(--color-ink));
+  background: color-mix(in srgb, var(--color-forest) 84%, var(--color-ink));
+  box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--color-forest) 90%, transparent);
+  color: #fbf8f1;
+}
+
+.project-page-external-link:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px -12px color-mix(in srgb, var(--color-forest) 75%, transparent);
+}
+
+.project-page-external-link:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-terracotta) 48%, transparent);
+  outline-offset: 3px;
+}
+
+.project-page-external-icon {
+  display: inline-grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 10%);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.project-page-external-link:hover .project-page-external-icon {
+  transform: translate(2px, -2px);
+  background: rgb(255 255 255 / 16%);
 }
 
 .project-page-external-link--secondary {
-  color: var(--color-ink-muted);
-  text-decoration-color: color-mix(in srgb, var(--color-ink-muted) 45%, transparent);
+  border-color: color-mix(in srgb, var(--color-forest) 55%, var(--color-border));
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-forest);
+}
+
+.project-page-external-link--secondary .project-page-external-icon {
+  border-color: color-mix(in srgb, var(--color-forest) 30%, transparent);
+  background: color-mix(in srgb, var(--color-forest) 8%, transparent);
+}
+
+.project-page-external-link--secondary:hover {
+  border-color: var(--color-forest);
+  background: color-mix(in srgb, var(--color-forest) 8%, var(--color-paper));
+  box-shadow: none;
+  color: var(--color-ink);
+}
+
+@media (max-width: 479px) {
+  .project-page-actions,
+  .project-page-external-link {
+    width: 100%;
+  }
+
+  .project-page-network-note {
+    margin-left: 0;
+  }
 }
 
 .demo-about-jump-wrap {

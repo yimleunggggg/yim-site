@@ -21,6 +21,17 @@ import { filterDuplicateProjectRelatedLinks, projectActionUrlsMatch } from "@/li
 
 type WritingLink = { slug: string; title: string; readingMinutes: number };
 
+function isVercelDeployment(url?: string): boolean {
+  if (!url) return false;
+
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    return hostname === "vercel.app" || hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
+}
+
 export function ProjectPageView({
   slug,
   about,
@@ -58,6 +69,8 @@ export function ProjectPageView({
   const primaryUrl = liveUrl ?? demoUrl;
   const secondaryDemoUrl =
     demoUrl && liveUrl && !projectActionUrlsMatch(demoUrl, liveUrl) ? demoUrl : undefined;
+  const needsNetworkAccess =
+    isVercelDeployment(primaryUrl) || isVercelDeployment(secondaryDemoUrl);
 
   return (
     <article className="project-page-view site-shell py-8 sm:py-14">
@@ -101,28 +114,46 @@ export function ProjectPageView({
       </div>
 
       {(primaryUrl || secondaryDemoUrl) && (
-        <div className="project-page-actions mt-6">
-          {primaryUrl ? (
-            <a
-              href={primaryUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-page-external-link tap-target"
-            >
-              {liveUrl
-                ? pickText(demoUiCopy.projectPage.visitLive, zh)
-                : pickText(demoUiCopy.projectPage.openDemo, zh)}
-            </a>
-          ) : null}
-          {secondaryDemoUrl ? (
-            <a
-              href={secondaryDemoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-page-external-link project-page-external-link--secondary tap-target"
-            >
-              {pickText(demoUiCopy.projectPage.openDemo, zh)}
-            </a>
+        <div className="project-page-action-block mt-6">
+          <div className="project-page-actions">
+            {primaryUrl ? (
+              <a
+                href={primaryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-page-external-link tap-target"
+              >
+                <span>
+                  {liveUrl
+                    ? pickText(demoUiCopy.projectPage.visitLive, zh)
+                    : pickText(demoUiCopy.projectPage.openDemo, zh)}
+                </span>
+                <span className="project-page-external-icon" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ) : null}
+            {secondaryDemoUrl ? (
+              <a
+                href={secondaryDemoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-page-external-link project-page-external-link--secondary tap-target"
+              >
+                <span>{pickText(demoUiCopy.projectPage.openDemo, zh)}</span>
+                <span className="project-page-external-icon" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ) : null}
+          </div>
+          {needsNetworkAccess ? (
+            <p className="project-page-network-note">
+              <span className="project-page-network-note-icon" aria-hidden="true">
+                !
+              </span>
+              {pickText(demoUiCopy.projectPage.vercelNetworkNotice, zh)}
+            </p>
           ) : null}
         </div>
       )}

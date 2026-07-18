@@ -615,7 +615,7 @@ export const demoAboutProjects: DemoAboutProject[] = [
       { zh: "APP", en: "App" },
       { zh: "社交", en: "Social" },
     ],
-    demoUrl: "https://offtrack-eta.vercel.app/",
+    demoUrl: "https://offtrack-mobile.vercel.app/",
     hasDetailPage: true,
   },
   {
